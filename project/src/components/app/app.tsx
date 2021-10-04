@@ -1,15 +1,11 @@
 import MainScreen from '../main/main-screen';
-function App(): JSX.Element {
-  const offers = [
-    {
-      id: 1,
-      src: 'img/apartment-02.jpg',
-      price: 132,
-      name: 'Canal View Prinsengracht',
-      type: 'Apartment',
-    },
-  ];
-  return <MainScreen offers={offers} />;
+import {Data} from '../../index';
+
+type AppProps = Data;
+
+function App(props: AppProps): JSX.Element {
+
+  return <MainScreen offers={props.offers} />;
 }
 
 export default App;

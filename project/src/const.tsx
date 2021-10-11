@@ -9,3 +9,7 @@ export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
 }
+
+export enum Titles {
+  FavoriteTitle = 'Saved listing',
+}

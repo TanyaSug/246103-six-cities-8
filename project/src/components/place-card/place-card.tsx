@@ -1,11 +1,13 @@
 import {Offer} from '../../index';
-
+import {useHistory} from 'react-router-dom';
+import {AppRoute} from '../../const';
 type PlaceCardProps = {
   offer: Offer
 }
 
 function PlaceCard(props: PlaceCardProps): JSX.Element {
   const {offer} = props;
+  const history = useHistory();
 
   return (
     <article className="cities__place-card place-card">
@@ -38,7 +40,7 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{offer.title}</a>
+          <a  onClick={() => history.push(AppRoute.OfferDetails)}>{offer.title}</a>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

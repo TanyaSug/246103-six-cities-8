@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
-import {offers} from './mock-data';
+import {offers} from './mocks/mock-data';
 
 // describe api data structure only
 export type Offer = {

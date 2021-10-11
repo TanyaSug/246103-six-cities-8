@@ -1,7 +1,7 @@
-import PlaceCard  from '../place-card/place-card';
 import { OffersCount } from './offers-count';
 import {Offer} from '../../index';
 import { Logo } from '../logo/logo';
+import { OffersList } from '../offers-list/offers-list';
 
 
 type MainScreenProps = {
@@ -97,7 +97,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {offers.map((offer) => <PlaceCard offer={offer} key={offer.id} />)}
+                <OffersList offers={offers}/>
               </div>
             </section>
             <div className="cities__right-section">

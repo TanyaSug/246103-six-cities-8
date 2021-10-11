@@ -1,13 +1,22 @@
-export function Favorites(): JSX.Element {
+// import {Offer} from '../../index';
+import {Titles} from '../../const';
+import {Logo} from '../logo/logo';
+// import PlaceCard from '../place-card/place-card';
+
+type FavoritesProps = {
+  // offers: Offer[],
+}
+
+
+export function Favorites(props: FavoritesProps): JSX.Element {
+
   return (
     <div className="page">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </a>
+              <Logo />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -32,7 +41,7 @@ export function Favorites(): JSX.Element {
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
+            <h1 className="favorites__title">{Titles.FavoriteTitle}</h1>
             <ul className="favorites__list">
               <li className="favorites__locations-items">
                 <div className="favorites__locations locations locations--current">

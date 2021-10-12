@@ -1,4 +1,4 @@
-import {Offer} from './index';
+import {Offer} from '../index';
 
 export const offers: Offer[] = [
   {
@@ -28,7 +28,7 @@ export const offers: Offer[] = [
     title: 'Canal View Prinsengracht',
     type: 'Apartment',
     rating: 4,
-    isFavorite: false,
+    isFavorite: true,
     isPremium: false,
   },
   {
@@ -48,7 +48,7 @@ export const offers: Offer[] = [
     title: 'Wood and stone place',
     type: 'Private offer-details',
     rating: 4,
-    isFavorite: true,
+    isFavorite: false,
     isPremium: false,
   },
 ];

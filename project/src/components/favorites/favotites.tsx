@@ -9,8 +9,6 @@ type FavoritesProps = {
 }
 
 export function Favorites(props: FavoritesProps): JSX.Element {
-  // eslint-disable-next-line no-console
-  console.log(props.offers);
   const {offers} = props;
 
   return (

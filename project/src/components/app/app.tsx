@@ -25,7 +25,7 @@ function App(props: AppProps): JSX.Element {
           <OfferDetails />
         </Route>
         <PrivateRoute exact path={AppRoute.Favorites}
-          render={() => <Favorites />}
+          render={() => <Favorites offers={props.offers.filter((offer) => offer.isFavorite)}/>}
           authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>

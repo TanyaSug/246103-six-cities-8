@@ -1,17 +1,18 @@
 import PlaceCard from '../place-card/place-card';
 import {Offer} from '../../index';
-// import {useState} from 'react';
+import {useState} from 'react';
 
 type OffersListProps = {
   offers: Offer[],
 }
 export function OffersList(props: OffersListProps): JSX.Element {
   const {offers} = props;
-  // const {id} = offers;
-  // const [activeCard, setActiveCard] = useState(true);
+  const [activeCardId, setActiveCardId] = useState<number | undefined>(undefined);
+  // eslint-disable-next-line no-console
+  console.log(activeCardId);
   return (
     <>
-      {offers.map((offer) => <PlaceCard offer={offer} key={offer.id} />)}
+      {offers.map((offer) => <PlaceCard setActive={setActiveCardId} offer={offer} key={offer.id} />)}
     </>
   );
 }

@@ -1,9 +1,18 @@
+// import {useState} from 'react';
+
+import {Titles} from '../../const';
+
 export function CommentForm (): JSX.Element {
+  // const [reviewsRating, setReviewsRating] = useState('');
+  // const [reviewsTextarea, setReviewsTextarea] = useState('');
+
   return (
     <form className="reviews__form form" action="#" method="post">
-      <label className="reviews__label form__label" htmlFor="review">Your review</label>
+      <label className="reviews__label form__label" htmlFor="review">{Titles.YourReview }</label>
       <div className="reviews__rating-form form__rating">
-        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio"/>
+        <input
+          className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio"
+        />
         <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"/>
@@ -38,7 +47,10 @@ export function CommentForm (): JSX.Element {
           </svg>
         </label>
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review"
+      <textarea
+        className="reviews__textarea form__textarea"
+        id="review"
+        name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
       >
       </textarea>

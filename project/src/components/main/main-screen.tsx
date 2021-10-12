@@ -2,6 +2,8 @@ import { OffersCount } from './offers-count';
 import {Offer} from '../../index';
 import { Logo } from '../logo/logo';
 import { OffersList } from '../offers-list/offers-list';
+import {AppRoute} from '../../const';
+import { Link } from 'react-router-dom';
 
 
 type MainScreenProps = {
@@ -24,7 +26,9 @@ function MainScreen(props: MainScreenProps): JSX.Element {
                   <a className="header__nav-link header__nav-link--profile" href="#">
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                    <Link className="header__user-name user__name" to={AppRoute.Favorites}>
+                      Oliver.conner@gmail.com
+                    </Link>
                   </a>
                 </li>
                 <li className="header__nav-item">

@@ -1,6 +1,6 @@
 export enum AppRoute {
   SignIn = '/login',
-  OfferDetails = '/offer',
+  OfferDetails = '/offer/:id',
   Favorites = '/favorites',
   Main = '/',
 }
@@ -12,4 +12,5 @@ export enum AuthorizationStatus {
 
 export enum Titles {
   FavoriteTitle = 'Saved listing',
+  YourReview = 'Your review',
 }

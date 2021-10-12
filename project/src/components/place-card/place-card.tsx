@@ -1,16 +1,22 @@
 import {Offer} from '../../index';
-import {useHistory} from 'react-router-dom';
 import {AppRoute} from '../../const';
+import { Link } from 'react-router-dom';
+
 type PlaceCardProps = {
-  offer: Offer
+  offer: Offer,
+  setActive: (id: number | undefined) => void,
 }
 
+
 function PlaceCard(props: PlaceCardProps): JSX.Element {
-  const {offer} = props;
-  const history = useHistory();
+  const {offer, setActive} = props;
 
   return (
-    <article className="cities__place-card place-card">
+    <article
+      className="cities__place-card place-card"
+      onMouseEnter={() => setActive(offer.id)}
+      onMouseLeave={() => setActive(undefined)}
+    >
       {offer.isPremium &&
       <div className="place-card__mark">
         <span>Premium</span>
@@ -40,7 +46,7 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a  onClick={() => history.push(AppRoute.OfferDetails)}>{offer.title}</a>
+          <Link  to={AppRoute.OfferDetails}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

@@ -7,6 +7,7 @@ import { OfferDetails } from '../offer-details/offer-details';
 import { SignIn } from '../sign-in/sign-in';
 import { NotFoundScreen } from '../not-found-screen/not-found-screen';
 import { PrivateRoute } from '../private-route/private-route';
+import {CITY} from '../../mocks/city';
 
 type AppProps = Data;
 
@@ -16,7 +17,7 @@ function App(props: AppProps): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainScreen offers={props.offers} />
+          <MainScreen offers={props.offers} city={CITY} />
         </Route>
         <Route exact path={AppRoute.SignIn}>
           <SignIn />

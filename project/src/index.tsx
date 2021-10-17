@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
 import {offers} from './mocks/offers';
+import {City, Host, Point} from './types/types';
 
 // describe api data structure only
 export type Offer = {
@@ -13,7 +14,18 @@ export type Offer = {
   rating: number,
   isFavorite: boolean,
   isPremium: boolean,
+  city: City,
+  location: Point,
 }
+
+export type OfferDetails = {
+  goods: string[],
+  host: Host,
+  bedrooms: number,
+  maxAdults: number,
+  previewImage: string,
+}
+
 
 export type Review = {
   comment: string,
@@ -30,7 +42,6 @@ export type Review = {
 
 export type Data = {
   offers: Offer[];
-  // more
 }
 
 ReactDOM.render(

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './components/app/app';
 import {offers} from './mocks/offers';
 import {City, Host, Point} from './types/types';
+import {reviews} from './mocks/reviews';
 
 // describe api data structure only
 export type Offer = {
@@ -41,12 +42,13 @@ export type Review = {
 }
 
 export type Data = {
-  offers: Offer[];
+  offers: Offer[],
+  reviews: Review[],
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <App offers={offers} />
+    <App offers={offers} reviews={reviews}/>
   </React.StrictMode>,
   document.getElementById('root'));
 

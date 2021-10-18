@@ -1,7 +1,18 @@
 import { CommentForm } from '../comment-form/comment-form';
 import {Logo} from '../logo/logo';
+import {Offer, Review} from '../../index';
+import {ReviewsList} from '../review/reviews-list';
+import {Map} from '../map/map';
+import {City} from '../../types/types';
 
-export function OfferDetails(): JSX.Element {
+type OfferDetailsProps = {
+  reviews: Review [],
+  city: City;
+  offers: Offer[],
+}
+
+export function OfferDetails(props: OfferDetailsProps): JSX.Element {
+  const {reviews, city, offers} = props;
   return (
     <div className="page">
       <header className="header">
@@ -154,39 +165,15 @@ export function OfferDetails(): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-                <ul className="reviews__list">
-                  <li className="reviews__item">
-                    <div className="reviews__user user">
-                      <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width="54" height="54"
-                          alt="Reviews avatar"
-                        />
-                      </div>
-                      <span className="reviews__user-name">
-                        Max
-                      </span>
-                    </div>
-                    <div className="reviews__info">
-                      <div className="reviews__rating rating">
-                        <div className="reviews__stars rating__stars">
-                          <span style={{width: '80%'}}/>
-                          <span className="visually-hidden">Rating</span>
-                        </div>
-                      </div>
-                      <p className="reviews__text">
-                        A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.
-                        The building is green and from 18th century.
-                      </p>
-                      <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
-                    </div>
-                  </li>
-                </ul>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+                <ReviewsList reviews={reviews} />
                 <CommentForm />
               </section>
             </div>
           </div>
-          <section className="property__map map"></section>
+          <section className="property__map map">
+            <Map city={city} points={offers.map((offer) => offer.location)} />
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">

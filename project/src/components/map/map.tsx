@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
 import {City, Point} from '../../types/types';
 import {Icon, Marker} from 'leaflet';
-import {URL_MARKER_DEFAULT} from '../../const';
+import {ICON_ANCHOR, ICON_SIZE, URL_MARKER_DEFAULT} from '../../const';
 
 type MapProps = {
   city: City;
@@ -13,8 +13,8 @@ type MapProps = {
 
 const defaultIcon =  new Icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: ICON_SIZE,
+  iconAnchor: ICON_ANCHOR,
 });
 
 // const activeIcon =  new Icon({

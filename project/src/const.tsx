@@ -24,4 +24,5 @@ export const URL_MARKER_ACTIVE = 'img/pin-active.svg';
 export const ICON_SIZE: PointTuple = [40, 40];
 
 export const ICON_ANCHOR: PointTuple = [20, 40];
+
 export const CITIES_LIST = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];

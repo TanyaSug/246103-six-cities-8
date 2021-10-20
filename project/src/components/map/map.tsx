@@ -23,7 +23,7 @@ const defaultIcon =  new Icon({
 //   iconAnchor: [20, 40],
 // });
 
-export function Map(props: MapProps): JSX.Element {
+export function Map(props: MapProps) {
   const {city, points} = props;
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);

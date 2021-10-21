@@ -8,6 +8,7 @@ import { SignIn } from '../sign-in/sign-in';
 import { NotFoundScreen } from '../not-found-screen/not-found-screen';
 import { PrivateRoute } from '../private-route/private-route';
 import {CITY} from '../../mocks/city';
+import {offers} from '../../mocks/offers';
 
 type AppProps = Data;
 
@@ -23,7 +24,7 @@ function App(props: AppProps): JSX.Element {
           <SignIn />
         </Route>
         <Route exact path={AppRoute.OfferDetails}>
-          <OfferDetails />
+          <OfferDetails reviews={props.reviews} offers={offers} city={CITY}  />
         </Route>
         <PrivateRoute exact path={AppRoute.Favorites}
           render={() => <Favorites offers={props.offers.filter((offer) => offer.isFavorite)}/>}

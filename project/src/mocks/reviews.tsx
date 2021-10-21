@@ -7,7 +7,7 @@ export const reviews: Review[] = [
     id: 1,
     rating: 4,
     user: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: '../img/avatar-max.jpg',
       id: 4,
       isPro: false,
       name: 'Max',
@@ -19,10 +19,10 @@ export const reviews: Review[] = [
     id: 2,
     rating: 5,
     user: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: '../img/avatar-angelina.jpg',
       id: 4,
       isPro: true,
-      name: 'Igor',
+      name: 'Vika',
     },
   },
   {
@@ -31,10 +31,10 @@ export const reviews: Review[] = [
     id: 3,
     rating: 2,
     user: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: '../img/avatar-max.jpg',
       id: 4,
       isPro: false,
-      name: 'Inna',
+      name: 'Igor',
     },
   },
   {
@@ -43,10 +43,10 @@ export const reviews: Review[] = [
     id: 4,
     rating: 1,
     user: {
-      avatarUrl: 'img/1.png',
+      avatarUrl: '../img/avatar-angelina.jpg',
       id: 4,
       isPro: true,
-      name: 'Ivan',
+      name: 'Vera',
     },
   },
 ];

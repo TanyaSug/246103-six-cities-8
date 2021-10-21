@@ -1,22 +1,22 @@
-import { OffersCount } from './offers-count';
-import {Offer} from '../../index';
+import  OffersCount  from './offers-count';
+// import {Offer} from '../../index';
 import { Logo } from '../logo/logo';
-import { OffersList } from '../offers-list/offers-list';
+import  OffersList  from '../offers-list/offers-list';
 import {AppRoute} from '../../const';
 import { Link } from 'react-router-dom';
 // import { CITY} from '../../mocks/city';
-import { CitiesList } from '../cities-list/cities-list';
-import {Map} from '../map/map';
+import  CitiesList  from '../cities-list/cities-list';
+import Map from '../map/map';
 // import {CITY} from '../../mocks/city';
-import {City} from '../../types/types';
+// import {City} from '../../types/types';
 
 type MainScreenProps = {
-  offers: Offer[],
-  city: City;
+  // offers: Offer[],
+  // city: City;
 }
 
 function MainScreen(props: MainScreenProps): JSX.Element {
-  const {offers, city} = props;
+  // const {city} = props;
   // const [selectedPoint, setSelectedPoint] = useState<Point | undefined>(
   //   undefined,
   // );
@@ -67,7 +67,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <OffersCount offersQuantity={offers.length}/>
+              <OffersCount />
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by </span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -84,11 +84,11 @@ function MainScreen(props: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <OffersList offers={offers}/>
+                <OffersList />
               </div>
             </section>
             <div className="cities__right-section">
-              <Map city={city} points={offers.map((offer) => offer.location)} />
+              <Map />
             </div>
           </div>
         </div>

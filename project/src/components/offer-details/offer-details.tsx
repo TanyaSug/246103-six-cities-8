@@ -2,18 +2,16 @@ import { CommentForm } from '../comment-form/comment-form';
 import {Logo} from '../logo/logo';
 import {Offer, Review} from '../../index';
 import {ReviewsList} from '../review/reviews-list';
-import {Map} from '../map/map';
-import {City} from '../../types/types';
+import Map from '../map/map';
 import { NearOffersList } from '../near-offers-list/near-offers-list';
 
 type OfferDetailsProps = {
   reviews: Review [],
-  city: City;
   offers: Offer[],
 }
 
 export function OfferDetails(props: OfferDetailsProps): JSX.Element {
-  const {reviews, city, offers} = props;
+  const {reviews, offers} = props;
   return (
     <div className="page">
       <header className="header">
@@ -173,7 +171,7 @@ export function OfferDetails(props: OfferDetailsProps): JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map city={city} points={offers.map((offer) => offer.location)} />
+            <Map />
           </section>
         </section>
         <div className="container">

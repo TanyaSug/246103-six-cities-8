@@ -8,6 +8,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {reducer} from './store/reducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
+import {getOffers} from './store/action';
 
 // describe api data structure only
 export type Offer = {
@@ -51,10 +52,11 @@ export type Data = {
 }
 
 const store = createStore(reducer, composeWithDevTools());
-// console.log(store.getState());
+store.dispatch(getOffers(offers));
+
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store = {store}>
+    <Provider store={store}>
       <App offers={offers} reviews={reviews}/>
     </Provider>
   </React.StrictMode>,

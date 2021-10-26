@@ -12,8 +12,8 @@ export const offers: Offer[] = [
     isPremium: true,
     city: {
       location: {
-        latitude: 52.370216,
-        longitude: 4.895168,
+        latitude: 48.8566,
+        longitude: 2.3522,
         zoom: 10,
       },
       name: 'Paris',

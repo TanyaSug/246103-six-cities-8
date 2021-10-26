@@ -1,7 +1,7 @@
 import {useEffect, useRef} from 'react';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
-import {Icon, Marker} from 'leaflet';
+import {Icon, latLng, Marker} from 'leaflet';
 import {ICON_ANCHOR, ICON_SIZE, URL_MARKER_DEFAULT} from '../../const';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
@@ -33,7 +33,7 @@ const defaultIcon =  new Icon({
 // });
 
 function Map(props: PropsFromRedux) {
-  const { offersList, activeCity} = props;
+  const {offersList, activeCity} = props;
   const city = offersList.find((offer) => offer.city.name === activeCity)?.city;
   const mapRef = useRef(null);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -41,7 +41,9 @@ function Map(props: PropsFromRedux) {
   const map = useMap(mapRef, city);
 
   useEffect(() => {
-    if (map) {
+    if (map && city) {
+      map.panTo(latLng(city.location.latitude, city.location.longitude));
+      //   map.eachLayer((layer) => map.removeLayer(layer));
       offersList
         .map((offer) => offer.location)
         .forEach((offer) => {
@@ -56,10 +58,11 @@ function Map(props: PropsFromRedux) {
           //     ? activeIcon
           //     : defaultIcon,
           // )
+          // map.addLayer(marker);
             .addTo(map);
         });
     }
-  }, [map, offersList]);
+  }, [map, offersList, activeCity]);
 
 
   return <div style={{height: '100%', width: '100%'}} ref={mapRef} />;

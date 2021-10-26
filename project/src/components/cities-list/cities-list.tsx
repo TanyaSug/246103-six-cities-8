@@ -1,7 +1,7 @@
 import {CITIES_LIST} from '../../const';
 import {connect, ConnectedProps} from 'react-redux';
 import {Dispatch} from 'redux';
-import {Action} from '../../types/action';
+import {Action} from '../../types/action-types';
 import {State} from '../../types/state';
 import {toggleActiveCity} from '../../store/action';
 

@@ -8,6 +8,7 @@ import { SignIn } from '../sign-in/sign-in';
 import { NotFoundScreen } from '../not-found-screen/not-found-screen';
 import { PrivateRoute } from '../private-route/private-route';
 import {offers} from '../../mocks/offers';
+// import browserHistory from '../../browser-history';
 
 type AppProps = Data;
 

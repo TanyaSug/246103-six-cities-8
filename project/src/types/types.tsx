@@ -15,8 +15,13 @@ export type Point = {
 
 export type Host = {
   avatarUrl: string,
-    id: number,
+    hostId: number,
   isPro: boolean,
-  name: string,
-}
+  hostName: string,
+};
+
+export type AuthData = {
+  login: string;
+  password: string;
+};
 

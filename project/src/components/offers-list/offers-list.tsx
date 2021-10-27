@@ -1,18 +1,25 @@
 import PlaceCard from '../place-card/place-card';
-import {Offer} from '../../index';
 import {useState} from 'react';
+import {State} from '../../types/state';
+import {connect, ConnectedProps} from 'react-redux';
 
-type OffersListProps = {
-  offers: Offer[],
-}
-export function OffersList(props: OffersListProps): JSX.Element {
-  const {offers} = props;
+const mapStateToProps = ({offersList, activeCity}: State) => ({
+  offersList: offersList.filter((offer) => offer.city.name === activeCity),
+});
+
+const connector = connect(mapStateToProps, {});
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function OffersList(props: PropsFromRedux): JSX.Element {
+  const {offersList} = props;
   const [activeCardId, setActiveCardId] = useState<number | undefined>(undefined);
   // eslint-disable-next-line no-console
   console.log(activeCardId);
   return (
     <>
-      {offers.map((offer) => <PlaceCard setActive={setActiveCardId} offer={offer} key={offer.id} />)}
+      {offersList.map((offer) => <PlaceCard setActive={setActiveCardId} offer={offer} key={offer.id} />)}
     </>
   );
 }
+
+export default connector(OffersList);

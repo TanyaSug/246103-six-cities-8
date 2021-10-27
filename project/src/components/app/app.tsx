@@ -7,10 +7,21 @@ import { OfferDetails } from '../offer-details/offer-details';
 import { SignIn } from '../sign-in/sign-in';
 import { NotFoundScreen } from '../not-found-screen/not-found-screen';
 import { PrivateRoute } from '../private-route/private-route';
-import {CITY} from '../../mocks/city';
 import {offers} from '../../mocks/offers';
+// import {connect, ConnectedProps} from 'react-redux';
+// import {State} from '../../types/state';
+// import browserHistory from '../../browser-history';
 
 type AppProps = Data;
+
+// const mapStateToProps = ({authorizationStatus, isDataLoaded}: State) => ({
+//   authorizationStatus,
+//   isDataLoaded,
+// });
+
+// const connector = connect(mapStateToProps);
+//
+// type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: AppProps): JSX.Element {
 
@@ -18,13 +29,13 @@ function App(props: AppProps): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <MainScreen offers={props.offers} city={CITY} />
+          <MainScreen />
         </Route>
         <Route exact path={AppRoute.SignIn}>
           <SignIn />
         </Route>
         <Route exact path={AppRoute.OfferDetails}>
-          <OfferDetails reviews={props.reviews} offers={offers} city={CITY}  />
+          <OfferDetails reviews={props.reviews} offers={offers}  />
         </Route>
         <PrivateRoute exact path={AppRoute.Favorites}
           render={() => <Favorites offers={props.offers.filter((offer) => offer.isFavorite)}/>}

@@ -20,6 +20,10 @@ const mapStateToProps = ({offersList, activeCity}: State) => ({
 const connector = connect(mapStateToProps, {});
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
+const deleteMarkers = (markers: Marker[]) => {
+  markers.forEach((marker) => marker.remove());
+};
+
 const defaultIcon =  new Icon({
   iconUrl: URL_MARKER_DEFAULT,
   iconSize: ICON_SIZE,
@@ -36,17 +40,22 @@ function Map(props: PropsFromRedux) {
   const {offersList, activeCity} = props;
   const city = offersList.find((offer) => offer.city.name === activeCity)?.city;
   const mapRef = useRef(null);
+  const markersRef = useRef<Marker[] | null>(null);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const map = useMap(mapRef, city);
 
   useEffect(() => {
+    if (markersRef.current !== null) {
+      deleteMarkers(markersRef.current);
+      markersRef.current = null;
+    }
     if (map && city) {
       map.panTo(latLng(city.location.latitude, city.location.longitude));
       //   map.eachLayer((layer) => map.removeLayer(layer));
-      offersList
+      markersRef.current =  offersList
         .map((offer) => offer.location)
-        .forEach((offer) => {
+        .map((offer) => {
           const marker = new Marker({
             lat: offer.latitude,
             lng: offer.longitude,
@@ -60,8 +69,13 @@ function Map(props: PropsFromRedux) {
           // )
           // map.addLayer(marker);
             .addTo(map);
+          return marker;
+
         });
     }
+    return () => {
+      markersRef.current && deleteMarkers(markersRef.current);
+    };
   }, [map, offersList, activeCity]);
 
 

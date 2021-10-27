@@ -8,9 +8,20 @@ import { SignIn } from '../sign-in/sign-in';
 import { NotFoundScreen } from '../not-found-screen/not-found-screen';
 import { PrivateRoute } from '../private-route/private-route';
 import {offers} from '../../mocks/offers';
+// import {connect, ConnectedProps} from 'react-redux';
+// import {State} from '../../types/state';
 // import browserHistory from '../../browser-history';
 
 type AppProps = Data;
+
+// const mapStateToProps = ({authorizationStatus, isDataLoaded}: State) => ({
+//   authorizationStatus,
+//   isDataLoaded,
+// });
+
+// const connector = connect(mapStateToProps);
+//
+// type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: AppProps): JSX.Element {
 

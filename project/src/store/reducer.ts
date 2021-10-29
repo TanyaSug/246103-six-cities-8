@@ -8,7 +8,8 @@ const initialState: State = {
   activeCity: CITIES_LIST[0],
   offersList: [],
   authorizationStatus: AuthorizationStatus.Unknown,
-  isDataLoaded: false,
+  isDataLoading: false,
+  reviews: [],
 };
 
 const reducer = (state: State = initialState, action: Action):State => {
@@ -18,8 +19,10 @@ const reducer = (state: State = initialState, action: Action):State => {
     case ActionType.GetOffersList:
       // return {...state, offersList: action.payload.filter((offer) => offer.city.name === state.activeCity)};
       return {...state, offersList: action.payload};
-    case ActionType.RequireAuthorization:
-      return {...state, authorizationStatus: action.payload, isDataLoaded: true};
+    // case ActionType.RequireAuthorization:
+    //   return {...state, authorizationStatus: action.payload, isDataLoaded: true};
+    case ActionType.LoadData:
+      return {...state, isDataLoading: action.payload};
     default:
       return state;
   }

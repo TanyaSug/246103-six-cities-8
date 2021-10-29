@@ -1,9 +1,10 @@
-import {Offer} from '../index';
 import {AuthorizationStatus} from '../const';
+import {Offer, Review} from './types';
 
 export type State = {
   activeCity: string,
   offersList: Offer[],
   authorizationStatus: AuthorizationStatus,
-  isDataLoaded: boolean,
+  isDataLoading: boolean,
+  reviews: Review[],
 }

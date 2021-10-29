@@ -1,9 +1,9 @@
 import { CommentForm } from '../comment-form/comment-form';
 import {Logo} from '../logo/logo';
-import {Offer, Review} from '../../index';
 import {ReviewsList} from '../review/reviews-list';
 import Map from '../map/map';
 import { NearOffersList } from '../near-offers-list/near-offers-list';
+import {Offer, Review} from '../../types/types';
 
 type OfferDetailsProps = {
   reviews: Review [],
@@ -164,7 +164,7 @@ export function OfferDetails(props: OfferDetailsProps): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount"></span></h2>
                 <ReviewsList reviews={reviews} />
                 <CommentForm />
               </section>

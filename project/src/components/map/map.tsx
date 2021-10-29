@@ -40,6 +40,8 @@ function Map(props: PropsFromRedux) {
   const {offersList, activeCity} = props;
   const city = offersList.find((offer) => offer.city.name === activeCity)?.city;
   const mapRef = useRef(null);
+  // eslint-disable-next-line
+  console.log(mapRef);
   const markersRef = useRef<Marker[] | null>(null);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -52,7 +54,6 @@ function Map(props: PropsFromRedux) {
     }
     if (map && city) {
       map.panTo(latLng(city.location.latitude, city.location.longitude));
-      //   map.eachLayer((layer) => map.removeLayer(layer));
       markersRef.current =  offersList
         .map((offer) => offer.location)
         .map((offer) => {
@@ -67,7 +68,6 @@ function Map(props: PropsFromRedux) {
           //     ? activeIcon
           //     : defaultIcon,
           // )
-          // map.addLayer(marker);
             .addTo(map);
           return marker;
 
@@ -76,7 +76,7 @@ function Map(props: PropsFromRedux) {
     return () => {
       markersRef.current && deleteMarkers(markersRef.current);
     };
-  }, [map, offersList, activeCity]);
+  }, [map, activeCity]);
 
 
   return <div style={{height: '100%', width: '100%'}} ref={mapRef} />;

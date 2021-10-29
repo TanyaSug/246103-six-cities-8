@@ -1,7 +1,7 @@
-import {Offer} from '../../index';
 import {Titles} from '../../const';
 import {Logo} from '../logo/logo';
 import { FavoritesCard } from './favorites-card';
+import {Offer} from '../../types/types';
 
 
 type FavoritesProps = {

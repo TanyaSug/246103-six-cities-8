@@ -1,6 +1,6 @@
-import {Offer} from '../../index';
 import {AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
+import {Offer} from '../../types/types';
 
 type FavoritesCardProps = {
   offer: Offer,
@@ -12,7 +12,7 @@ export function FavoritesCard(props: FavoritesCardProps): JSX.Element {
   return (
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <a href={`offers/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="150" height="110"
             alt="Place image"
           />

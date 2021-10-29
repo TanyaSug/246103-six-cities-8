@@ -1,4 +1,5 @@
-import {Offer} from '../index';
+import {Offer} from '../types/types';
+
 
 export const adaptOfferToClient = (offer: any): Offer => {
   const adaptedOffer = Object.assign(

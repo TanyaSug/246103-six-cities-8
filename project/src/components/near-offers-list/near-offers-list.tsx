@@ -1,6 +1,6 @@
 import PlaceCard from '../place-card/place-card';
-import {Offer} from '../../index';
 import {useState} from 'react';
+import {Offer} from '../../types/types';
 
 type OffersListProps = {
   offers: Offer[],

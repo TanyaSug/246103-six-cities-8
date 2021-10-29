@@ -1,4 +1,5 @@
-import {Review} from '../index';
+import {Review} from '../types/types';
+
 
 export const reviews: Review[] = [
   {

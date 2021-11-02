@@ -7,6 +7,16 @@ export enum AppRoute {
   Main = '/',
 }
 
+export enum HttpCode {
+  Unauthorized = 401,
+}
+
+export enum Endpoints {
+  Offers =  '/hotels',
+  Logout = '/logout',
+  Login = '/login',
+}
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',

@@ -3,15 +3,24 @@ import {Logo} from '../logo/logo';
 import {ReviewsList} from '../review/reviews-list';
 import Map from '../map/map';
 import { NearOffersList } from '../near-offers-list/near-offers-list';
-import {Offer, Review} from '../../types/types';
+import {Review} from '../../types/types';
+import {State} from '../../types/state';
+import {connect, ConnectedProps} from 'react-redux';
 
 type OfferDetailsProps = {
   reviews: Review [],
-  offers: Offer[],
+  // offers: Offer,
 }
 
-export function OfferDetails(props: OfferDetailsProps): JSX.Element {
-  const {reviews, offers} = props;
+const mapStateToProps = ({offersList}: State) => ({
+  offersList,
+});
+const connector = connect(mapStateToProps, {});
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & OfferDetailsProps;
+
+export function OfferDetails(props: ConnectedComponentProps): JSX.Element {
+  const {reviews, offersList} = props;
   return (
     <div className="page">
       <header className="header">
@@ -178,7 +187,7 @@ export function OfferDetails(props: OfferDetailsProps): JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <NearOffersList offers={offers} />
+              <NearOffersList offersList={offersList} />
 
             </div>
           </section>

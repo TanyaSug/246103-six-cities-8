@@ -1,21 +1,40 @@
 import {AppRoute} from '../../const';
 import { Link } from 'react-router-dom';
+// import {Offer} from '../../types/types';
+// import {State} from '../../types/state';
+import {Dispatch} from 'redux';
+import {Action} from '../../types/action-types';
+import {setActiveCard} from '../../store/action';
+import {connect, ConnectedProps} from 'react-redux';
 import {Offer} from '../../types/types';
 
 type PlaceCardProps = {
   offer: Offer,
-  setActive: (id: number | undefined) => void,
+  isMainScreen?: boolean,
 }
+// const mapStateToProps = (offersList: State) => ({
+//   offersList,
+// });
 
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  setActive: (cardInfo: number | undefined) =>  dispatch(setActiveCard(cardInfo)),
+});
+const connector = connect(null, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & PlaceCardProps;
 
-function PlaceCard(props: PlaceCardProps): JSX.Element {
-  const {offer, setActive} = props;
+function PlaceCard(props: ConnectedComponentProps): JSX.Element {
+  const {offer, setActive, isMainScreen} = props;
 
   return (
     <article
       className="cities__place-card place-card"
-      onMouseEnter={() => setActive(offer.id)}
-      onMouseLeave={() => setActive(undefined)}
+      onMouseEnter={() => {
+        isMainScreen && setActive(offer.id);
+      }}
+      onMouseLeave={() => {
+        isMainScreen && setActive(undefined);
+      }}
     >
       {offer.isPremium &&
       <div className="place-card__mark">
@@ -45,7 +64,7 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name">
+        <h2 className="place-card__name" >
           <Link  to={AppRoute.OfferDetails}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
@@ -54,4 +73,4 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
   );
 }
 
-export default PlaceCard;
+export default connector(PlaceCard);

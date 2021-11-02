@@ -11,7 +11,7 @@ const mapStateToProps = ({activeCity}: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onClick: (city: string) =>  dispatch(toggleActiveCity(city)) ,
+  onClick: (city: string) =>  dispatch(toggleActiveCity(city)),
 });
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;

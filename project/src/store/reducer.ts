@@ -6,6 +6,7 @@ import {Action, ActionType} from '../types/action-types';
 
 const initialState: State = {
   activeCity: CITIES_LIST[0],
+  activeCardId: undefined,
   offersList: [],
   authorizationStatus: AuthorizationStatus.Unknown,
   isDataLoading: false,
@@ -21,8 +22,10 @@ const reducer = (state: State = initialState, action: Action):State => {
       return {...state, offersList: action.payload};
     // case ActionType.RequireAuthorization:
     //   return {...state, authorizationStatus: action.payload, isDataLoaded: true};
-    case ActionType.LoadData:
+    case ActionType.LoadingData:
       return {...state, isDataLoading: action.payload};
+    case ActionType.SetActiveCard:
+      return {...state, activeCardId: action.payload};
     default:
       return state;
   }

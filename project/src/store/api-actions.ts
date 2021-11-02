@@ -1,32 +1,51 @@
-// import {AppRoute, AuthorizationStatus} from '../const';
-// import {authorizationInfo, requireAuthorization} from './action';
-//
-// export const checkAuth = () => (dispatch, _getState, api) => (
-//   api.get(AppRoute.SignIn)
-//     .then(({data}) => dispatch(authorizationInfo(data)))
-//     .then(() => dispatch(requireAuthorization(AuthorizationStatus.Auth)))
-//     .catch(() => {})
-// );
-
-// import {State} from '../types/state';
+import {AppRoute, AuthorizationStatus} from '../const';
+import {redirectToRoute, requireAuthorization, requireLogout} from './action';
 import {Dispatch} from 'redux';
 import {Action, ThunkActionResult} from '../types/action-types';
 import {AxiosInstance} from 'axios';
-import {Endpoints} from '../services/api';
-import {getOffers, loadData} from './action';
+import {getOffers, loadingData} from './action';
 import {adaptOfferToClient} from './adapter';
+import {AuthData, Offer} from '../types/types';
+import {Endpoints} from '../const';
+import {dropToken, saveToken, Token} from '../services/token';
 
-export const fetchOffers = (): ThunkActionResult =>
-  async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
-    dispatch(loadData(true));
+export const checkAuthAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
     try {
-      const {data} = await api.get(Endpoints.Offers);
+      await api.get(Endpoints.Login);
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    } catch (error) {
+      // @TODO later
+    }
+  };
+
+export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    const {data: {token}} = await api.post<{token: Token}>(Endpoints.Login, {email, password});
+    saveToken(token);
+    dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(redirectToRoute(AppRoute.Main));
+  };
+
+
+export const logoutAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    await api.delete(Endpoints.Logout);
+    dropToken();
+    dispatch(requireLogout());
+  };
+
+export const fetchOffersAction = (): ThunkActionResult =>
+  async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
+    dispatch(loadingData(true));
+    try {
+      const {data} = await api.get<Offer[]>(Endpoints.Offers);
       const hotels = data.map((hotel: any) => adaptOfferToClient(hotel));
       dispatch(getOffers(hotels));
     } catch (error) {
       // @TODO later
     }
     finally {
-      dispatch(loadData(false));
+      dispatch(loadingData(false));
     }
   };

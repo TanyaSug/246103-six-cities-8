@@ -13,7 +13,7 @@ export type Offer = {
   maxAdults: number,
   previewImage: string,
   city: City,
-  location: Point,
+  location: Location,
 }
 
 export type Review = {
@@ -43,7 +43,7 @@ export type City = {
   name: string
 };
 
-export type Point = {
+export type Location = {
   zoom: number;
   latitude: number;
   longitude: number;

@@ -37,3 +37,6 @@ export const ICON_SIZE: PointTuple = [40, 40];
 export const ICON_ANCHOR: PointTuple = [20, 40];
 
 export const CITIES_LIST = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
+export const SIGN_IN = ' Sign in';
+export const SIGN_OUT = 'Sign out';

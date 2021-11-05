@@ -32,7 +32,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 function App(props: PropsFromRedux): JSX.Element {
   const {authorizationStatus, isDataLoading, offersList, reviews} = props;
   // const offer = offersList.map((hotel) => hotel.id);
-  if (!isCheckedAuth(authorizationStatus) || isDataLoading) {
+  if (isCheckedAuth(authorizationStatus) || isDataLoading) {
     return (
       <LoadingScreen />
     );

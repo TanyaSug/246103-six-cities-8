@@ -1,5 +1,5 @@
 import {AppRoute} from '../../const';
-import { Link } from 'react-router-dom';
+import { Link, generatePath } from 'react-router-dom';
 // import {Offer} from '../../types/types';
 // import {State} from '../../types/state';
 import {Dispatch} from 'redux';
@@ -65,7 +65,7 @@ function PlaceCard(props: ConnectedComponentProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name" >
-          <Link  to={AppRoute.OfferDetails}>{offer.title}</Link>
+          <Link to={generatePath(AppRoute.OfferDetails, {id: offer.id})}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>

@@ -11,13 +11,20 @@ import {dropToken, saveToken, Token} from '../services/token';
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    try {
-      await api.get(Endpoints.Login);
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    } catch (error) {
-      // @TODO later
-    }
+    // try {
+    await api.get(Endpoints.Login)
+      .then(() => {
+        dispatch(requireAuthorization(AuthorizationStatus.Auth));
+        dispatch(loadingData(false));
+      });
   };
+  //     catch (error) {
+  //     // @TODO later
+  //   }
+  //   finally {
+  //     dispatch(loadingData(false));
+  //   }
+  // };
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {

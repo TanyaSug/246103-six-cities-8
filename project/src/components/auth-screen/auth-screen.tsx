@@ -8,9 +8,7 @@ import {useHistory} from 'react-router-dom';
 import {AppRoute} from '../../const';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSubmit: (authData: AuthData) => {
-    dispatch(loginAction(authData));
-  },
+  onSubmit: (authData: AuthData) => dispatch(loginAction(authData)),
 });
 
 const connector = connect(null, mapDispatchToProps);

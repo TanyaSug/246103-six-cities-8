@@ -20,12 +20,14 @@ const reducer = (state: State = initialState, action: Action):State => {
     case ActionType.GetOffersList:
       // return {...state, offersList: action.payload.filter((offer) => offer.city.name === state.activeCity)};
       return {...state, offersList: action.payload};
-    // case ActionType.RequireAuthorization:
-    //   return {...state, authorizationStatus: action.payload, isDataLoaded: true};
+    case ActionType.RequireAuthorization:
+      return {...state, authorizationStatus: action.payload};
     case ActionType.LoadingData:
       return {...state, isDataLoading: action.payload};
     case ActionType.SetActiveCard:
       return {...state, activeCardId: action.payload};
+    case ActionType.RequireLogout:
+      return {...state, authorizationStatus: AuthorizationStatus.NoAuth};
     default:
       return state;
   }

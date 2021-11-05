@@ -6,7 +6,7 @@ type FavoritesCardProps = {
   offer: Offer,
 }
 
-export function FavoritesCard(props: FavoritesCardProps): JSX.Element {
+export function FavoriteCard(props: FavoritesCardProps): JSX.Element {
   const {offer} = props;
 
   return (

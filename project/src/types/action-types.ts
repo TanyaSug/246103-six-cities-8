@@ -7,7 +7,8 @@ import {
   requireAuthorization,
   loadingData,
   requireLogout,
-  setActiveCard, redirectToRoute
+  setActiveCard,
+  redirectToRoute
 } from '../store/action';
 import {State} from './state';
 

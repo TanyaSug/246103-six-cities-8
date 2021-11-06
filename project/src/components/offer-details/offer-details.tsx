@@ -11,7 +11,7 @@ type OfferDetailsProps = {
   reviews: Review [],
   // offers: Offer,
 }
-
+const ALT_PHOTO= 'Photo studio';
 const mapStateToProps = ({offersList}: State) => ({
   offersList,
 });
@@ -30,22 +30,22 @@ export function OfferDetails(props: ConnectedComponentProps): JSX.Element {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/room.jpg" alt="Photo studio"/>
+                <img className="property__image" src="img/room.jpg" alt={ALT_PHOTO}/>
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio"/>
+                <img className="property__image" src="img/apartment-01.jpg" alt={ALT_PHOTO}/>
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-02.jpg" alt="Photo studio"/>
+                <img className="property__image" src="img/apartment-02.jpg" alt={ALT_PHOTO}/>
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-03.jpg" alt="Photo studio"/>
+                <img className="property__image" src="img/apartment-03.jpg" alt={ALT_PHOTO}/>
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/studio-01.jpg" alt="Photo studio"/>
+                <img className="property__image" src="img/studio-01.jpg" alt={ALT_PHOTO}/>
               </div>
               <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio"/>
+                <img className="property__image" src="img/apartment-01.jpg" alt={ALT_PHOTO}/>
               </div>
             </div>
           </div>

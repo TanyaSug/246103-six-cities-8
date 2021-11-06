@@ -6,6 +6,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {FormEvent, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
 import {AppRoute} from '../../const';
+import { A } from '../helper-co/anchor/anchor';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onSubmit: (authData: AuthData) => dispatch(loginAction(authData)),
@@ -85,9 +86,9 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
+              <A className="locations__item-link" href="#">
                 <span>Amsterdam</span>
-              </a>
+              </A>
             </div>
           </section>
         </div>

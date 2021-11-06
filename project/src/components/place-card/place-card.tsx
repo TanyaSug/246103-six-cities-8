@@ -7,6 +7,7 @@ import {Action} from '../../types/action-types';
 import {setActiveCard} from '../../store/action';
 import {connect, ConnectedProps} from 'react-redux';
 import {Offer} from '../../types/types';
+import { A } from '../helper-co/anchor/anchor';
 
 type PlaceCardProps = {
   offer: Offer,
@@ -15,6 +16,7 @@ type PlaceCardProps = {
 // const mapStateToProps = (offersList: State) => ({
 //   offersList,
 // });
+const ALT_PHOTO ='Place image';
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   setActive: (cardInfo: number | undefined) =>  dispatch(setActiveCard(cardInfo)),
@@ -41,9 +43,9 @@ function PlaceCard(props: ConnectedComponentProps): JSX.Element {
         <span>Premium</span>
       </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>
-        </a>
+        <A href="#">
+          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt={ALT_PHOTO}/>
+        </A>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">

@@ -47,7 +47,7 @@ export const fetchOffersAction = (): ThunkActionResult =>
     dispatch(loadingData(true));
     try {
       const {data} = await api.get<Offer[]>(Endpoints.Offers);
-      const hotels = data.map((hotel: any) => adaptOfferToClient(hotel));
+      const hotels = data.map((hotel: unknown) => adaptOfferToClient(hotel));
       dispatch(getOffers(hotels));
     } catch (error) {
       // @TODO later

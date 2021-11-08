@@ -5,16 +5,19 @@ import {Icon, latLng, Marker} from 'leaflet';
 import {ICON_ANCHOR, ICON_SIZE, URL_MARKER_ACTIVE, URL_MARKER_DEFAULT} from '../../const';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
+import {Offer} from '../../types/types';
 
-
-const mapStateToProps = ({offersList, activeCity, activeCardId}: State) => ({
-  offersList: offersList.filter((offer) => offer.city.name === activeCity),
+type MapProps = {
+  offersList: Offer[],
+}
+const mapStateToProps = ({activeCity, activeCardId}: State) => ({
   activeCity,
   activeCardId,
 });
 
 const connector = connect(mapStateToProps, {});
 type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & MapProps;
 
 const deleteMarkers = (markers: Marker[]) => {
   markers.forEach((marker) => marker.remove());
@@ -32,9 +35,10 @@ const activeIcon =  new Icon({
   iconAnchor: [20, 40],
 });
 
-function Map(props: PropsFromRedux) {
+function Map(props: ConnectedComponentProps) {
   const {offersList, activeCity, activeCardId} = props;
-  const city = offersList.find((offer) => offer.city.name === activeCity)?.city;
+  const filteredOfferList = offersList.filter((offer) => offer.city.name === activeCity);
+  const city = filteredOfferList.find((offer) => offer.city.name === activeCity)?.city;
   const mapRef = useRef(null);
   const markersRef = useRef<Marker[] | null>(null);
   const map = useMap(mapRef, city);
@@ -46,7 +50,7 @@ function Map(props: PropsFromRedux) {
     }
     if (map && city) {
       map.panTo(latLng(city.location.latitude, city.location.longitude));
-      markersRef.current =  offersList
+      markersRef.current =  filteredOfferList
         .map((offer) => {
           const marker = new Marker({
             lat: offer.location.latitude,
@@ -63,7 +67,7 @@ function Map(props: PropsFromRedux) {
     return () => {
       markersRef.current && deleteMarkers(markersRef.current);
     };
-  }, [map, activeCity, activeCardId, offersList, city]);
+  }, [map, activeCity, activeCardId, filteredOfferList, city]);
 
 
   return <div style={{height: '100%', width: '100%'}} ref={mapRef} />;

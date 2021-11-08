@@ -2,25 +2,61 @@ import { CommentForm } from '../comment-form/comment-form';
 import {ReviewsList} from '../review/reviews-list';
 import Map from '../map/map';
 import { NearOffersList } from '../near-offers-list/near-offers-list';
-import {Review} from '../../types/types';
+// import {Review} from '../../types/types';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import {Header} from '../header/header';
+import {useHistory} from 'react-router-dom';
+import {MAX_IMAGES} from '../../const';
+import {useEffect} from 'react';
+// import {Dispatch} from 'redux';
+import {ThunkAppDispatch} from '../../types/action-types';
+// import {setActiveCard, updateOffer} from '../../store/action';
+import {getNearByOffersAction} from '../../store/api-actions';
 
-type OfferDetailsProps = {
-  reviews: Review [],
-  // offers: Offer,
-}
 
-const mapStateToProps = ({offersList}: State) => ({
+const mapStateToProps = ({offersList, reviews}: State) => ({
   offersList,
+  reviews,
 });
-const connector = connect(mapStateToProps, {});
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux & OfferDetailsProps;
 
-export function OfferDetails(props: ConnectedComponentProps): JSX.Element {
-  const {reviews, offersList} = props;
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  getNearByOffers: (offerId: number) =>  dispatch(getNearByOffersAction(offerId)),
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export function OfferDetails(props: PropsFromRedux): JSX.Element {
+  const {offersList, reviews, getNearByOffers} = props;
+
+  const history = useHistory();
+  const id = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
+
+
+  useEffect(() => {
+    getNearByOffers(+id);
+
+  } ,[]);
+
+  const offer = offersList.find((off) => off.id === +id);
+  const imgList = offer?.images;
+  const images = imgList?.slice(0, MAX_IMAGES).map((image, index) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <div className="property__image-wrapper" key={`${image}-${index}`}>
+      <img className="property__image" src={image} alt="Photo studio" />
+    </div>
+  ));
+  const goodList = offer?.goods;
+  const goods = goodList?.map((good, index) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <li key={`${good}-${index}`} className="property__inside-item">
+      {good}
+    </li>
+  ));
+
+  // eslint-disable-next-line no-console
+  console.log(offer);
   return (
     <div className="page">
       < Header />
@@ -29,34 +65,15 @@ export function OfferDetails(props: ConnectedComponentProps): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/room.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-02.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-03.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/studio-01.jpg" alt="Photo studio"/>
-              </div>
-              <div className="property__image-wrapper">
-                <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio"/>
-              </div>
+              {images}
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              <div className="property__mark">
-                <span>Premium</span>
-              </div>
+              {offer?.isPremium && <div className="property__mark"><span>Premium</span></div> }
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  Beautiful &amp; luxurious studio at great location
+                  {offer?.title}
                 </h1>
                 <button className="property__bookmark-button button" type="button">
                   <svg className="property__bookmark-icon" width="31" height="33">
@@ -70,81 +87,48 @@ export function OfferDetails(props: ConnectedComponentProps): JSX.Element {
                   <span style={{width: '80%'}}/>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">4.8</span>
+                <span className="property__rating-value rating__value">{offer?.rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  Apartment
+                  {offer?.type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  3 Bedrooms
+                  {offer?.bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                  Max 4 adults
+                  Max {offer?.maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;120</b>
+                <b className="property__price-value">&euro;{offer?.price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  <li className="property__inside-item">
-                    Wi-Fi
-                  </li>
-                  <li className="property__inside-item">
-                    Washing machine
-                  </li>
-                  <li className="property__inside-item">
-                    Towels
-                  </li>
-                  <li className="property__inside-item">
-                    Heating
-                  </li>
-                  <li className="property__inside-item">
-                    Coffee machine
-                  </li>
-                  <li className="property__inside-item">
-                    Baby seat
-                  </li>
-                  <li className="property__inside-item">
-                    Kitchen
-                  </li>
-                  <li className="property__inside-item">
-                    Dishwasher
-                  </li>
-                  <li className="property__inside-item">
-                    Cabel TV
-                  </li>
-                  <li className="property__inside-item">
-                    Fridge
-                  </li>
+                  {goods}
                 </ul>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74"
+                    <img className="property__avatar user__avatar" src={offer?.host.avatarUrl} width="74" height="74"
                       alt="Host avatar"
                     />
                   </div>
                   <span className="property__user-name">
-                    Angelina
+                    {offer?.host.name}
                   </span>
-                  <span className="property__user-status">
+                  {offer?.host.isPro &&
+                    <span className="property__user-status">
                     Pro
-                  </span>
+                    </span>}
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                    A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The
-                    building is green and from 18th century.
-                  </p>
-                  <p className="property__text">
-                    An independent House, strategically located between Rembrand Square and National Opera, but where
-                    the bustle of the city comes to rest in this alley flowery and colorful.
+                    {offer?.description}
                   </p>
                 </div>
               </div>
@@ -156,15 +140,14 @@ export function OfferDetails(props: ConnectedComponentProps): JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map />
+            <Map offersList={offer?.nearBy ?? []} />
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <NearOffersList offersList={offersList} />
-
+              <NearOffersList offersList={offer?.nearBy ?? []} />
             </div>
           </section>
         </div>
@@ -172,3 +155,5 @@ export function OfferDetails(props: ConnectedComponentProps): JSX.Element {
     </div>
   );
 }
+
+export default connector(OfferDetails);

@@ -1,4 +1,4 @@
-import {Offer} from '../types/types';
+import {Offer, Review} from '../types/types';
 
 
 export const adaptOfferToClient = (offer: any): Offer => {
@@ -29,18 +29,18 @@ export const adaptOfferToClient = (offer: any): Offer => {
   return adaptedOffer;
 };
 
-// export const adaptReviewToClient = (data) => {
-//   const adaptedReview = {
-//     ...data,
-//     user: {
-//       ...data.user,
-//       avatarUrl: data.user.avatar_url,
-//       isPro: data.user.is_pro,
-//     },
-//   };
-//
-//   delete adaptedReview.user.avatar_url;
-//   delete adaptedReview.user.is_pro;
-//
-//   return adaptedReview;
-// };
+export const adaptReviewToClient = (review: any): Review => {
+  const adaptedReview = {
+    ...review,
+    user: {
+      ...review.user,
+      avatarUrl: review.user.avatar_url,
+      isPro: review.user.is_pro,
+    },
+  };
+
+  delete adaptedReview.user.avatar_url;
+  delete adaptedReview.user.is_pro;
+
+  return adaptedReview;
+};

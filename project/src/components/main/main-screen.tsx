@@ -3,11 +3,10 @@ import { Header } from '../header/header';
 import { Sorting } from '../sorting/sorting';
 import  OffersList  from '../offers-list/offers-list';
 import  CitiesList  from '../cities-list/cities-list';
-import Map from '../map/map';
+import MainScreenMap from './main-screen-map';
 
 
 function MainScreen(): JSX.Element {
-
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -29,7 +28,7 @@ function MainScreen(): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <Map />
+              <MainScreenMap  />
             </div>
           </div>
         </div>

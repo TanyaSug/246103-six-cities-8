@@ -1,9 +1,18 @@
 import {useState} from 'react';
+import {changeSorting} from '../../store/action';
+import {useDispatch} from 'react-redux';
+import {SortingTypes} from '../../const';
 
 export function Sorting(): JSX.Element {
+  const dispatch = useDispatch();
   const [openedSorting, setOpenedSorting] = useState(false);
   const handleSortingClick = () => {
     setOpenedSorting((prevState) => !prevState);
+  };
+
+  const handleSortingChange = (evt: any) => {
+    dispatch(changeSorting(evt.target.innerText));
+    setOpenedSorting(false);
   };
 
   return (
@@ -16,11 +25,15 @@ export function Sorting(): JSX.Element {
         </svg>
       </span>
       {openedSorting &&
-      <ul className="places__options places__options--custom places__options--opened">
-        <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-        <li className="places__option" tabIndex={0}>Price: low to high</li>
-        <li className="places__option" tabIndex={0}>Price: high to low</li>
-        <li className="places__option" tabIndex={0}>Top rated first</li>
+      <ul className="places__options places__options--custom places__options--opened" data-testid="places-options">
+        {Object.values(SortingTypes).map((sortingType, id) => (
+          <li className= "places__option places__option--active"
+            key={sortingType}
+            tabIndex={0}
+            onClick={handleSortingChange}
+          >{sortingType}
+          </li>
+        ))}
       </ul>}
     </form>
   );

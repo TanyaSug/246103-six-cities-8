@@ -9,4 +9,5 @@ export type State = {
   authorizationStatus: AuthorizationStatus,
   isDataLoading: boolean,
   reviews: Review[],
+  activeSorting: string,
 }

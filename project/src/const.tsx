@@ -15,6 +15,8 @@ export enum Endpoints {
   Offers =  '/hotels',
   Logout = '/logout',
   Login = '/login',
+  Favorite = '/favorite',
+  Reviews = '/comments,'
 }
 
 export enum AuthorizationStatus {
@@ -39,4 +41,14 @@ export const ICON_ANCHOR: PointTuple = [20, 40];
 export const CITIES_LIST = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 export const SIGN_IN = ' Sign in';
+
 export const SIGN_OUT = 'Sign out';
+
+export const SortingTypes = {
+  POPULAR: 'Popular',
+  PRICE_LOW: 'Price: low to high',
+  PRICE_HIGH: 'Price: high to low',
+  RATING: 'Top rated first',
+};
+
+export const MAX_IMAGES = 6;

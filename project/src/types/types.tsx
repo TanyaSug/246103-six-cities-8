@@ -12,8 +12,10 @@ export type Offer = {
   bedrooms: number,
   maxAdults: number,
   previewImage: string,
+  description: string;
   city: City,
   location: Location,
+  nearBy: Offer[]
 }
 
 export type Review = {
@@ -53,11 +55,12 @@ export type Host = {
   avatarUrl: string,
     hostId: number,
   isPro: boolean,
-  hostName: string,
+  name: string,
 };
 
 export type AuthData = {
   login: string;
   password: string;
 };
+
 

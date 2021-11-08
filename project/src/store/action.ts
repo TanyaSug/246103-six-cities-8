@@ -1,6 +1,6 @@
 import {ActionType} from '../types/action-types';
 import {AppRoute, AuthorizationStatus} from '../const';
-import {Offer} from '../types/types';
+import {Offer, Review} from '../types/types';
 // import {createAction} from '@reduxjs/toolkit';
 
 export const toggleActiveCity = (city: string) => ({
@@ -8,9 +8,24 @@ export const toggleActiveCity = (city: string) => ({
   payload: city,
 } as const);
 
+export const changeSorting = (selectedSortType: string) => ({
+  type: ActionType.ChangeSorting,
+  payload: selectedSortType,
+} as const);
+
 export const getOffers = (offer: Offer[]) => ({
   type: ActionType.GetOffersList,
   payload: offer,
+} as const);
+
+export const updateOffer = (updatedOffer: Offer) => ({
+  type: ActionType.ReplaceOffer,
+  payload: updatedOffer,
+} as const);
+
+export const getReviews = (review: Review[]) => ({
+  type: ActionType.GetReviews,
+  payload: review,
 } as const);
 
 export const loadingData = (value: boolean) => ({

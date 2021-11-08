@@ -1,11 +1,13 @@
 import {State} from '../types/state';
-import {AuthorizationStatus, CITIES_LIST} from '../const';
+import {AuthorizationStatus, CITIES_LIST, SortingTypes} from '../const';
 import {Action, ActionType} from '../types/action-types';
+import {Offer} from '../types/types';
 // import {offers} from '../mocks/offers';
 
 
 const initialState: State = {
   activeCity: CITIES_LIST[0],
+  activeSorting: SortingTypes.POPULAR,
   activeCardId: undefined,
   offersList: [],
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -17,8 +19,9 @@ const reducer = (state: State = initialState, action: Action):State => {
   switch (action.type) {
     case ActionType.ToggleActiveCity:
       return {...state, activeCity: action.payload};
+    case ActionType.ChangeSorting:
+      return {...state, activeSorting: action.payload};
     case ActionType.GetOffersList:
-      // return {...state, offersList: action.payload.filter((offer) => offer.city.name === state.activeCity)};
       return {...state, offersList: action.payload};
     case ActionType.RequireAuthorization:
       return {...state, authorizationStatus: action.payload};
@@ -28,6 +31,10 @@ const reducer = (state: State = initialState, action: Action):State => {
       return {...state, activeCardId: action.payload};
     case ActionType.RequireLogout:
       return {...state, authorizationStatus: AuthorizationStatus.NoAuth};
+    case ActionType.ReplaceOffer:
+      return {...state, offersList: [...state.offersList
+        .filter((offer: Offer) => offer.id !== action.payload.id), action.payload] };
+
     default:
       return state;
   }

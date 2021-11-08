@@ -1,5 +1,5 @@
 import {AppRoute, AuthorizationStatus} from '../const';
-import {redirectToRoute, requireAuthorization, requireLogout} from './action';
+import {redirectToRoute, requireAuthorization, requireLogout, updateOffer} from './action';
 import {Dispatch} from 'redux';
 import {Action, ThunkActionResult} from '../types/action-types';
 import {AxiosInstance} from 'axios';
@@ -56,3 +56,35 @@ export const fetchOffersAction = (): ThunkActionResult =>
       dispatch(loadingData(false));
     }
   };
+
+export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
+  async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
+    // dispatch(loadingData(true));
+    try {
+      const {data} = await api.get<Offer[]>(`${Endpoints.Offers}/${offerId}/nearby`);
+      const nearBy = data.map((offer: any) => adaptOfferToClient(offer));
+      const offer = _getState().offersList.find((off) => off.id === offerId);
+
+      if(offer) {
+        const updatedOffer: Offer = {...offer, nearBy};
+        dispatch(updateOffer(updatedOffer));
+      }
+    } catch (error) {
+      // @TODO later
+    }
+    finally {
+      // dispatch(loadingData(false));
+    }
+  };
+
+
+// export const fetchReviewAction = (hotelId: number): ThunkActionResult =>
+//   async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
+//     try {
+//       const {data} = await api.get<Review[]>(`${Endpoints.Reviews}/${hotelId}`);
+//       const reviews = data.map((review: any) => adaptReviewToClient(review));
+//       dispatch(getReviews(reviews));
+//     } catch (error) {
+//       // @TODO later
+//     }
+//   };

@@ -18,17 +18,19 @@ export type Offer = {
   nearBy: Offer[]
 }
 
+type User = {
+  avatarUrl: string,
+  id: number,
+  isPro: boolean,
+  name: string
+};
+
 export type Review = {
   comment: string,
   date: string,
   id: number,
   rating: number,
-  user: {
-    avatarUrl: string,
-    id: number,
-    isPro: boolean,
-    name: string
-  }
+  user: User,
 }
 
 export type Data = {
@@ -37,18 +39,14 @@ export type Data = {
 }
 
 export type City = {
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  }
-  name: string
+  location: Location,
+  name: string,
 };
 
 export type Location = {
-  zoom: number;
-  latitude: number;
-  longitude: number;
+  zoom: number,
+  latitude: number,
+  longitude: number,
 };
 
 export type Host = {
@@ -59,8 +57,8 @@ export type Host = {
 };
 
 export type AuthData = {
-  login: string;
-  password: string;
+  login: string,
+  password: string,
 };
 
 

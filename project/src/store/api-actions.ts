@@ -4,8 +4,8 @@ import {Dispatch} from 'redux';
 import {Action, ThunkActionResult} from '../types/action-types';
 import {AxiosInstance} from 'axios';
 import {getOffers, loadingData} from './action';
-import {adaptOfferToClient} from './adapter';
-import {AuthData, Offer} from '../types/types';
+import {adaptOfferToClient, adaptReviewToClient} from './adapter';
+import {AuthData, Offer, Review} from '../types/types';
 import {Endpoints} from '../const';
 import {dropToken, saveToken, Token} from '../services/token';
 
@@ -47,7 +47,7 @@ export const fetchOffersAction = (): ThunkActionResult =>
     dispatch(loadingData(true));
     try {
       const {data} = await api.get<Offer[]>(Endpoints.Offers);
-      const hotels = data.map((hotel: any) => adaptOfferToClient(hotel));
+      const hotels = data.map((hotel: unknown) => adaptOfferToClient(hotel));
       dispatch(getOffers(hotels));
     } catch (error) {
       // @TODO later
@@ -62,7 +62,7 @@ export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
     // dispatch(loadingData(true));
     try {
       const {data} = await api.get<Offer[]>(`${Endpoints.Offers}/${offerId}/nearby`);
-      const nearBy = data.map((offer: any) => adaptOfferToClient(offer));
+      const nearBy = data.map((offer: unknown) => adaptOfferToClient(offer));
       const offer = _getState().offersList.find((off) => off.id === offerId);
 
       if(offer) {
@@ -78,13 +78,17 @@ export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
   };
 
 
-// export const fetchReviewAction = (hotelId: number): ThunkActionResult =>
-//   async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
-//     try {
-//       const {data} = await api.get<Review[]>(`${Endpoints.Reviews}/${hotelId}`);
-//       const reviews = data.map((review: any) => adaptReviewToClient(review));
-//       dispatch(getReviews(reviews));
-//     } catch (error) {
-//       // @TODO later
-//     }
-//   };
+export const getReviewsAction = (offerId: number): ThunkActionResult =>
+  async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
+    try {
+      const {data} = await api.get<Review[]>(`${Endpoints.Reviews}/${offerId}`);
+      const reviews = data.map((review: any) => adaptReviewToClient(review));
+      const offer = _getState().offersList.find((off) => off.id === offerId);
+      if(offer) {
+        const updatedOffer: Offer = {...offer, reviews};
+        dispatch(updateOffer(updatedOffer));
+      }
+    } catch (error) {
+      // @TODO later
+    }
+  };

@@ -1,7 +1,5 @@
 import {AppRoute} from '../../const';
 import { Link, generatePath } from 'react-router-dom';
-// import {Offer} from '../../types/types';
-// import {State} from '../../types/state';
 import {Dispatch} from 'redux';
 import {Action} from '../../types/action-types';
 import {setActiveCard} from '../../store/action';
@@ -12,9 +10,6 @@ type PlaceCardProps = {
   offer: Offer,
   isMainScreen?: boolean,
 }
-// const mapStateToProps = (offersList: State) => ({
-//   offersList,
-// });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   setActive: (cardInfo: number | undefined) =>  dispatch(setActiveCard(cardInfo)),

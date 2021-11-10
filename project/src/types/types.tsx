@@ -15,7 +15,8 @@ export type Offer = {
   description: string;
   city: City,
   location: Location,
-  nearBy: Offer[]
+  nearBy: Offer[],
+  review: Review[],
 }
 
 type User = {
@@ -60,5 +61,10 @@ export type AuthData = {
   login: string,
   password: string,
 };
+
+export type ReviewData = {
+  rating: number,
+  comment: string,
+}
 
 

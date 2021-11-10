@@ -10,7 +10,8 @@ import {
   setActiveCard,
   redirectToRoute,
   getReviews,
-  changeSorting, updateOffer
+  changeSorting,
+  updateOffer
 } from '../store/action';
 import {State} from './state';
 
@@ -26,17 +27,7 @@ export enum ActionType {
   ReplaceOffer = 'places/replaceOffer',
   ChangeSorting = 'places/changeSorting',
 }
-//
-//
-// export type ChangeCityAction = {
-//   type: ActionType.ChangeCity;
-//   payload: string;
-// };
-//
-// export type GetOffersListAction = {
-//   type: ActionType.GetOffersList;
-//   payload: Offer[];
-// };
+
 
 export type Action =
   | ReturnType<typeof toggleActiveCity>

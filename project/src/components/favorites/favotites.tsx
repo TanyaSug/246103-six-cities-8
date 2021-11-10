@@ -2,6 +2,7 @@ import {Titles} from '../../const';
 import { FavoriteCard } from './favorites-card';
 import {Offer} from '../../types/types';
 import {Header} from '../header/header';
+import {A} from '../helper-co/anchor/anchor';
 
 
 type FavoritesProps = {
@@ -23,9 +24,9 @@ export function Favorites(props: FavoritesProps): JSX.Element {
               <li className="favorites__locations-items">
                 <div className="favorites__locations locations locations--current">
                   <div className="locations__item">
-                    <a className="locations__item-link" href="#">
+                    <A className="locations__item-link" href="#">
                       <span>Amsterdam</span>
-                    </a>
+                    </A>
                   </div>
                 </div>
                 <div className="favorites__places">
@@ -36,19 +37,19 @@ export function Favorites(props: FavoritesProps): JSX.Element {
               <li className="favorites__locations-items">
                 <div className="favorites__locations locations locations--current">
                   <div className="locations__item">
-                    <a className="locations__item-link" href="#">
+                    <A className="locations__item-link" href="#">
                       <span>Cologne</span>
-                    </a>
+                    </A>
                   </div>
                 </div>
                 <div className="favorites__places">
                   <article className="favorites__card place-card">
                     <div className="favorites__image-wrapper place-card__image-wrapper">
-                      <a href="#">
+                      <A href="#">
                         <img className="place-card__image" src="img/apartment-small-04.jpg" width="150" height="110"
                           alt="Place image"
                         />
-                      </a>
+                      </A>
                     </div>
                     <div className="favorites__card-info place-card__info">
                       <div className="place-card__price-wrapper">
@@ -72,7 +73,7 @@ export function Favorites(props: FavoritesProps): JSX.Element {
                         </div>
                       </div>
                       <h2 className="place-card__name">
-                        <a href="#">White castle</a>
+                        <A href="#">White castle</A>
                       </h2>
                       <p className="place-card__type">Apartment</p>
                     </div>
@@ -84,9 +85,9 @@ export function Favorites(props: FavoritesProps): JSX.Element {
         </div>
       </main>
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <A className="footer__logo-link" href="main.html">
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>
-        </a>
+        </A>
       </footer>
     </div>
   );

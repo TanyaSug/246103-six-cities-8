@@ -16,7 +16,7 @@ export enum Endpoints {
   Logout = '/logout',
   Login = '/login',
   Favorite = '/favorite',
-  Reviews = '/comments,'
+  Reviews = '/comments',
 }
 
 export enum AuthorizationStatus {
@@ -52,3 +52,5 @@ export const SortingTypes = {
 };
 
 export const MAX_IMAGES = 6;
+
+export const MIN_LENGTH_REVIEW = 50;

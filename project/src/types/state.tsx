@@ -1,5 +1,5 @@
 import {AuthorizationStatus} from '../const';
-import {Offer, Review} from './types';
+import {Offer} from './types';
 
 
 export type State = {
@@ -8,6 +8,5 @@ export type State = {
   offersList: Offer[],
   authorizationStatus: AuthorizationStatus,
   isDataLoading: boolean,
-  reviews: Review[],
   activeSorting: string,
 }

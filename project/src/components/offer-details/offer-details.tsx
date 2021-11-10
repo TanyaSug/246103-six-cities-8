@@ -1,5 +1,5 @@
-import { CommentForm } from '../comment-form/comment-form';
-import {ReviewsList} from '../review/reviews-list';
+// import { CommentForm } from '../comment-form/comment-form';
+// import {ReviewsList} from '../review/reviews-list';
 import Map from '../map/map';
 import { NearOffersList } from '../near-offers-list/near-offers-list';
 // import {Review} from '../../types/types';
@@ -12,23 +12,26 @@ import {useEffect} from 'react';
 // import {Dispatch} from 'redux';
 import {ThunkAppDispatch} from '../../types/action-types';
 // import {setActiveCard, updateOffer} from '../../store/action';
-import {getNearByOffersAction} from '../../store/api-actions';
+import {getNearByOffersAction, getReviewsAction} from '../../store/api-actions';
+import ReviewComponent from '../review/review-component';
 
 
-const mapStateToProps = ({offersList, reviews}: State) => ({
+const mapStateToProps = ({offersList}: State) => ({
   offersList,
-  reviews,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   getNearByOffers: (offerId: number) =>  dispatch(getNearByOffersAction(offerId)),
+  getReviews: (offerId: number) =>  dispatch(getReviewsAction(offerId)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
+const ALT_TEXT = 'Photo studio';
+
 export function OfferDetails(props: PropsFromRedux): JSX.Element {
-  const {offersList, reviews, getNearByOffers} = props;
+  const {offersList, getNearByOffers, getReviews} = props;
 
   const history = useHistory();
   const id = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
@@ -36,6 +39,7 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element {
 
   useEffect(() => {
     getNearByOffers(+id);
+    getReviews(+id);
 
   } ,[]);
 
@@ -44,7 +48,7 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element {
   const images = imgList?.slice(0, MAX_IMAGES).map((image, index) => (
     // eslint-disable-next-line react/no-array-index-key
     <div className="property__image-wrapper" key={`${image}-${index}`}>
-      <img className="property__image" src={image} alt="Photo studio" />
+      <img className="property__image" src={image} alt={ALT_TEXT} />
     </div>
   ));
   const goodList = offer?.goods;
@@ -133,9 +137,10 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount"></span></h2>
-                <ReviewsList reviews={reviews} />
-                <CommentForm />
+                {/*<h2 className="reviews__title">Reviews &middot; <span className="reviews__amount"></span></h2>*/}
+                {/*<ReviewsList reviews={offer?.review ?? []} />*/}
+                {/*<CommentForm />*/}
+                <ReviewComponent />
               </section>
             </div>
           </div>

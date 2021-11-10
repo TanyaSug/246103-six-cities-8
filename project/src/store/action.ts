@@ -53,4 +53,8 @@ export const redirectToRoute = (url: AppRoute) => ({
   payload: url,
 } as const);
 
+// export const loadReviews = (reviews: unknown) => ({
+//   type: ActionType.LoadReviews,
+//   payload: reviews,
+// } as const);
 

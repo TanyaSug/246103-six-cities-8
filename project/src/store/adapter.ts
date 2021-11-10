@@ -55,28 +55,26 @@ export const adaptOfferToClient = (offer1: unknown): Offer => {
     throw new Error('invalid arg');
   }
   const offer = offer1;
-  const adaptedOffer: Offer = {
+  return {
     host: adaptHost(offer.host),
     isFavorite: toBooleanDefault(offer.is_favorite, false),
     isPremium: toBooleanDefault(offer.is_premium, false),
     maxAdults: toNumberDefault(offer.max_adults, 0),
     previewImage: toStringDefault(offer.preview_image, ''),
-    id:toNumberDefault(offer.id,0),
-    bedrooms:toNumberDefault(offer.bedrooms,0),
-    city:toCityExact(offer.city),
-    goods:toStringArray(offer.goods),
-    images:toStringArray(offer.images),
-    location:toLocationExact(offer.location),
-    price:toNumberDefault(offer.price,0),
-    rating:toNumberDefault(offer.rating,0),
-    title:toStringDefault(offer.title,''),
-    type:toStringDefault(offer.type,''),
-    description:toStringDefault(offer.description, ''),
-    nearBy:[],
+    id: toNumberDefault(offer.id, 0),
+    bedrooms: toNumberDefault(offer.bedrooms, 0),
+    city: toCityExact(offer.city),
+    goods: toStringArray(offer.goods),
+    images: toStringArray(offer.images),
+    location: toLocationExact(offer.location),
+    price: toNumberDefault(offer.price, 0),
+    rating: toNumberDefault(offer.rating, 0),
+    title: toStringDefault(offer.title, ''),
+    type: toStringDefault(offer.type, ''),
+    description: toStringDefault(offer.description, ''),
+    nearBy: [],
+    review: [],
   };
-
-
-  return adaptedOffer;
 };
 
 //

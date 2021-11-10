@@ -12,7 +12,6 @@ const initialState: State = {
   offersList: [],
   authorizationStatus: AuthorizationStatus.Unknown,
   isDataLoading: false,
-  reviews: [],
 };
 
 const reducer = (state: State = initialState, action: Action):State => {

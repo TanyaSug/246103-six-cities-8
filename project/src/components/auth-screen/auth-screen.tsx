@@ -6,9 +6,10 @@ import {connect, ConnectedProps} from 'react-redux';
 import {FormEvent, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
 import {AppRoute} from '../../const';
+import { A } from '../helper-co/anchor/anchor';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSubmit: (authData: AuthData) => dispatch(loginAction(authData)),
+  onSubmit:(authData: AuthData) => dispatch(loginAction(authData)),
 });
 
 const connector = connect(null, mapDispatchToProps);
@@ -32,6 +33,7 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
         password: passwordRef.current.value,
       });
     }
+    history.push(AppRoute.Main);
   };
   return (
     <div className="page page--gray page--login">
@@ -75,7 +77,7 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
                 />
               </div>
               <button
-                onClick={() => history.push(AppRoute.Main)}
+                // onClick={() => history.push(AppRoute.Main)}
                 className="login__submit form__submit button"
                 type="submit"
               >
@@ -85,9 +87,9 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
+              <A className="locations__item-link" href="#">
                 <span>Amsterdam</span>
-              </a>
+              </A>
             </div>
           </section>
         </div>

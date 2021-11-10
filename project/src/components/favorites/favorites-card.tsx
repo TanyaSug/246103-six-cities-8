@@ -6,6 +6,8 @@ type FavoritesCardProps = {
   offer: Offer,
 }
 
+const ALT_TEXT = 'Place image';
+
 export function FavoriteCard(props: FavoritesCardProps): JSX.Element {
   const {offer} = props;
 
@@ -14,7 +16,7 @@ export function FavoriteCard(props: FavoritesCardProps): JSX.Element {
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <a href={`offers/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="150" height="110"
-            alt="Place image"
+            alt={ALT_TEXT}
           />
         </a>
       </div>

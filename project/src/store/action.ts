@@ -1,7 +1,8 @@
 import {ActionType} from '../types/action-types';
-import {AppRoute, AuthorizationStatus} from '../const';
+import {AppRoute} from '../const';
 import {Offer, Review} from '../types/types';
-// import {createAction} from '@reduxjs/toolkit';
+import {AuthInfo} from '../types/state';
+
 
 export const toggleActiveCity = (city: string) => ({
   type: ActionType.ToggleActiveCity,
@@ -18,8 +19,13 @@ export const getOffers = (offer: Offer[]) => ({
   payload: offer,
 } as const);
 
+export const getFavoritesList = (favorites: Offer[]) => ({
+  type: ActionType.GetFavoritesList,
+  payload: favorites,
+} as const);
+
 export const updateOffer = (updatedOffer: Offer) => ({
-  type: ActionType.ReplaceOffer,
+  type: ActionType.UpdateOffer,
   payload: updatedOffer,
 } as const);
 
@@ -34,9 +40,9 @@ export const loadingData = (value: boolean) => ({
 } as const);
 
 
-export const requireAuthorization = (authStatus: AuthorizationStatus) => ({
+export const requireAuthorization = (userInfo: AuthInfo) => ({
   type: ActionType.RequireAuthorization,
-  payload: authStatus,
+  payload: userInfo,
 } as const);
 
 export const requireLogout = () => ({

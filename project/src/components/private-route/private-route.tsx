@@ -10,11 +10,11 @@ type RenderFuncProps = {
 
 type PrivateRouteProps = RouteProps & {
   render: (props: RenderFuncProps) => JSX.Element;
-  authorizationStatus: AuthorizationStatus;
+  // authorizationStatus: AuthorizationStatus;
 }
 
-const MapStateToProps = ({authorizationStatus}: State) => ({
-  authorizationStatus,
+const MapStateToProps = ({userInfo}: State) => ({
+  userInfo,
 });
 
 const connector = connect(MapStateToProps);
@@ -22,14 +22,14 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & PrivateRouteProps;
 
 function PrivateRoute(props: ConnectedComponentProps): JSX.Element {
-  const {exact, path, render, authorizationStatus} = props;
+  const {exact, path, render, userInfo} = props;
 
   return (
     <Route
       exact={exact}
       path={path}
       render={(routeProps) => (
-        authorizationStatus === AuthorizationStatus.Auth
+        userInfo.authorizationStatus === AuthorizationStatus.Auth
           ? render(routeProps)
           : <Redirect to={AppRoute.SignIn}/>
       )}

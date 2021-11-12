@@ -1,20 +1,26 @@
-import {AppRoute, AuthorizationStatus} from '../const';
-import {redirectToRoute, requireAuthorization, requireLogout, updateOffer} from './action';
+import {AppRoute, AuthorizationStatus, Endpoints} from '../const';
+import {
+  getFavoritesList,
+  getOffers,
+  loadingData,
+  redirectToRoute,
+  requireAuthorization,
+  requireLogout,
+  updateOffer
+} from './action';
 import {Dispatch} from 'redux';
 import {Action, ThunkActionResult} from '../types/action-types';
 import {AxiosInstance} from 'axios';
-import {getOffers, loadingData} from './action';
 import {adaptOfferToClient, adaptReviewToClient} from './adapter';
 import {AuthData, Offer, Review, ReviewData} from '../types/types';
-import {Endpoints} from '../const';
-import {dropToken, saveToken, Token} from '../services/token';
+import {dropToken, saveToken} from '../services/token';
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     // try {
     await api.get(Endpoints.Login)
       .then(() => {
-        dispatch(requireAuthorization(AuthorizationStatus.Auth));
+        dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.NoAuth}));
         dispatch(loadingData(false));
       });
   };
@@ -76,6 +82,35 @@ export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
     }
   };
 
+export const getFavoritesAction = (): ThunkActionResult =>
+  async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
+    try {
+      const {data} = await api.get<unknown>(Endpoints.Favorite);
+      if (!Array.isArray(data)) {
+        throw new Error('data is not array');
+      }
+      const hotels = data.map((hotel: unknown) => adaptOfferToClient(hotel));
+      dispatch(getFavoritesList(hotels));
+    } catch (error) {
+      // @TODO later
+    }
+  };
+
+export const changeFavoritesAction = (offerId: number | undefined, status: number): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    try {
+      const {data} = await api.post(`${Endpoints.Favorite}/${offerId}/${status}`);
+      const hotel = data.map((offer: unknown) => adaptOfferToClient(offer));
+      const offer = _getState().offersList.find((off) => off.id === offerId);
+      if(offer) {
+        const updatedOffer: Offer = {...offer, isFavorite: hotel.isFavorite};
+        dispatch(updateOffer(updatedOffer));
+      }
+    } catch (error) {
+      // @TODO later
+    }
+  };
+
 
 export const getReviewsAction = (offerId: number): ThunkActionResult =>
   async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
@@ -109,8 +144,8 @@ export const sendOfferReview = (offerId: number, {rating, comment}: ReviewData):
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const {data: {token}} = await api.post<{token: Token}>(Endpoints.Login, {email, password});
-    saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    const {data} = await api.post(Endpoints.Login, {email, password});
+    saveToken(data.token);
+    dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth, authEmail: data.email, authAvatar: data.avatar_url}));
     dispatch(redirectToRoute(AppRoute.Main));
   };

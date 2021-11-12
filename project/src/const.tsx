@@ -54,3 +54,5 @@ export const SortingTypes = {
 export const MAX_IMAGES = 6;
 
 export const MIN_LENGTH_REVIEW = 50;
+
+export const ALT_TEXT = 'Place image';

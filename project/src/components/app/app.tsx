@@ -1,7 +1,7 @@
 import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
 import MainScreen from '../main/main-screen';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import { Favorites } from '../favorites/favotites';
+import  Favorites from '../favorites/favotitesScreen';
 import  OfferDetails  from '../offer-details/offer-details';
 import  AuthScreen  from '../auth-screen/auth-screen';
 import { NotFoundScreen } from '../not-found-screen/not-found-screen';
@@ -17,8 +17,8 @@ import browserHistory from '../../browser-history';
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
 
-const mapStateToProps = ({authorizationStatus, isDataLoading, offersList, activeCity}: State) => ({
-  authorizationStatus,
+const mapStateToProps = ({userInfo, isDataLoading, offersList, activeCity}: State) => ({
+  userInfo,
   isDataLoading,
   offersList,
   activeCity,
@@ -29,9 +29,9 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: PropsFromRedux): JSX.Element {
-  const {authorizationStatus, isDataLoading, offersList} = props;
+  const {userInfo, isDataLoading} = props;
   // const offer = offersList.map((hotel) => hotel.id);
-  if (isCheckedAuth(authorizationStatus) || isDataLoading) {
+  if (isCheckedAuth(userInfo.authorizationStatus) || isDataLoading) {
     return (
       <LoadingScreen />
     );
@@ -52,7 +52,7 @@ function App(props: PropsFromRedux): JSX.Element {
         <PrivateRoute
           exact
           path={AppRoute.Favorites}
-          render={() => <Favorites offers={offersList.filter((offer) => offer.isFavorite)}/>}
+          render={() => <Favorites />}
         >
         </PrivateRoute>
         <Route>

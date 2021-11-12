@@ -11,20 +11,22 @@ import {
   redirectToRoute,
   getReviews,
   changeSorting,
-  updateOffer
+  updateOffer,
+  getFavoritesList
 } from '../store/action';
 import {State} from './state';
 
 export enum ActionType {
   ToggleActiveCity = 'places/toggleActiveCity',
   GetOffersList = 'places/getOffersList',
+  GetFavoritesList = 'places/getFavoritesList',
   GetReviews = 'places/getReviews',
   RequireAuthorization = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
   LoadingData = 'data/loadingData',
   SetActiveCard = 'map/makeActiveCard',
   RedirectToRoute = 'places/redirectToRoute',
-  ReplaceOffer = 'places/replaceOffer',
+  UpdateOffer = 'places/replaceOffer',
   ChangeSorting = 'places/changeSorting',
 }
 
@@ -32,6 +34,7 @@ export enum ActionType {
 export type Action =
   | ReturnType<typeof toggleActiveCity>
   | ReturnType<typeof getOffers>
+  | ReturnType<typeof getFavoritesList>
   | ReturnType<typeof getReviews>
   | ReturnType<typeof updateOffer>
   | ReturnType<typeof requireAuthorization>

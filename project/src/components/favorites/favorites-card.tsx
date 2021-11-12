@@ -1,15 +1,27 @@
-import {AppRoute} from '../../const';
+import {ALT_TEXT, AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
 import {Offer} from '../../types/types';
+import {ThunkAppDispatch} from '../../types/action-types';
+import {connect, ConnectedProps} from 'react-redux';
+import {changeFavoritesAction} from '../../store/api-actions';
 
 type FavoritesCardProps = {
   offer: Offer,
 }
+// const mapStateToProps = ({offersList, userInfo}: State) => ({
+//   offersList,
+// });
 
-const ALT_TEXT = 'Place image';
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  onStatusChange:(offerId: number, status: number) => dispatch(changeFavoritesAction(offerId, status)),
+});
 
-export function FavoriteCard(props: FavoritesCardProps): JSX.Element {
-  const {offer} = props;
+const connector = connect(null, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & FavoritesCardProps;
+
+function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
+  const {offer, onStatusChange} = props;
 
   return (
     <article className="favorites__card place-card">
@@ -26,8 +38,11 @@ export function FavoriteCard(props: FavoritesCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price} </b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button"
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
             type="button"
+            onClick={() => {onStatusChange(offer.id, offer.isFavorite  ? 0 : 1);
+            }}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"/>
@@ -44,8 +59,10 @@ export function FavoriteCard(props: FavoritesCardProps): JSX.Element {
         <h2 className="place-card__name">
           <Link  to={AppRoute.OfferDetails}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">Apartment</p>
+        <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );
 }
+
+export default connector(FavoriteCard);

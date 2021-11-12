@@ -2,10 +2,11 @@ import PlaceCard from '../place-card/place-card';
 // import {useState} from 'react';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
+import {sortPlaces} from '../../utils';
 
-const mapStateToProps = ({offersList, activeCity}: State) => ({
-  offersList: offersList.filter((offer) => offer.city.name === activeCity),
-  // hoveredOfferId: hoveredOfferId,
+const mapStateToProps = ({offersList, activeCity, activeSorting}: State) => ({
+  offersList: sortPlaces(offersList
+    .filter((offer) => offer.city.name === activeCity), activeSorting),
 });
 
 const connector = connect(mapStateToProps, {});

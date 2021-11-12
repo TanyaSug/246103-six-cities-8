@@ -17,13 +17,14 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function CitiesList(props: PropsFromRedux): JSX.Element {
+  const {onClick} = props;
 
   return (
     <ul className="locations__list tabs__list">
       {
         CITIES_LIST.map((city) => (
           <li className="locations__item" key={city} >
-            <A onClick={() => props.onClick(city)} className={`locations__item-link tabs__item ${props.activeCity === city ? 'tabs__item--active' : ''}`}>
+            <A onClick={() => onClick(city)} className={`locations__item-link tabs__item ${props.activeCity === city ? 'tabs__item--active' : ''}`}>
               <span>{city}</span>
             </A>
           </li>

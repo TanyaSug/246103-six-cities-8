@@ -7,22 +7,24 @@ import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import {Header} from '../header/header';
 import {useHistory} from 'react-router-dom';
-import {MAX_IMAGES} from '../../const';
+import {AppRoute, AuthorizationStatus, MAX_IMAGES} from '../../const';
 import {useEffect} from 'react';
 // import {Dispatch} from 'redux';
 import {ThunkAppDispatch} from '../../types/action-types';
 // import {setActiveCard, updateOffer} from '../../store/action';
-import {getNearByOffersAction, getReviewsAction} from '../../store/api-actions';
+import {changeFavoritesAction, getNearByOffersAction, getReviewsAction} from '../../store/api-actions';
 import ReviewComponent from '../review/review-component';
 
 
-const mapStateToProps = ({offersList}: State) => ({
+const mapStateToProps = ({offersList, userInfo}: State) => ({
   offersList,
+  userInfo,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   getNearByOffers: (offerId: number) =>  dispatch(getNearByOffersAction(offerId)),
   getReviews: (offerId: number) =>  dispatch(getReviewsAction(offerId)),
+  onFavoriteStatusChange:(offerId: number | undefined, status: number) => dispatch(changeFavoritesAction(offerId, status)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -31,7 +33,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 const ALT_TEXT = 'Photo studio';
 
 export function OfferDetails(props: PropsFromRedux): JSX.Element {
-  const {offersList, getNearByOffers, getReviews} = props;
+  const {offersList, getNearByOffers, getReviews, onFavoriteStatusChange, userInfo} = props;
 
   const history = useHistory();
   const id = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
@@ -59,8 +61,6 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element {
     </li>
   ));
 
-  // eslint-disable-next-line no-console
-  console.log(offer);
   return (
     <div className="page">
       < Header />
@@ -79,7 +79,17 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element {
                 <h1 className="property__name">
                   {offer?.title}
                 </h1>
-                <button className="property__bookmark-button button" type="button">
+                <button
+                  className="property__bookmark-button button"
+                  type="button"
+                  onClick={() => {
+                    userInfo.authorizationStatus === AuthorizationStatus.Auth
+                      ?
+                      onFavoriteStatusChange(offer?.id, offer?.isFavorite  ? 0 : 1)
+                      :
+                      history.push(AppRoute.SignIn);
+                  }}
+                >
                   <svg className="property__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"/>
                   </svg>
@@ -137,9 +147,6 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                {/*<h2 className="reviews__title">Reviews &middot; <span className="reviews__amount"></span></h2>*/}
-                {/*<ReviewsList reviews={offer?.review ?? []} />*/}
-                {/*<CommentForm />*/}
                 <ReviewComponent />
               </section>
             </div>

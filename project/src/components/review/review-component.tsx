@@ -7,9 +7,11 @@ import { useEffect} from 'react';
 import {ReviewsList} from './reviews-list';
 import {CommentForm} from '../comment-form/comment-form';
 import {ReviewData} from '../../types/types';
+import {AuthorizationStatus} from '../../const';
 
-const mapStateToProps = ({offersList}: State) => ({
+const mapStateToProps = ({offersList, userInfo}: State) => ({
   offersList,
+  userInfo,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
@@ -22,7 +24,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 
 function ReviewComponent(props: PropsFromRedux): JSX.Element {
-  const {offersList, getReviews, onSubmit} = props;
+  const {offersList, userInfo, getReviews, onSubmit} = props;
   const history = useHistory();
   const id = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
 
@@ -52,7 +54,9 @@ function ReviewComponent(props: PropsFromRedux): JSX.Element {
     <>
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsCount}</span></h2>
       <ReviewsList reviews={offer?.review ?? []} />
-      <CommentForm onSubmit={handleOnSubmit}/>
+      {userInfo.authorizationStatus === AuthorizationStatus.Auth ?
+        <CommentForm onSubmit={handleOnSubmit}/>
+        : ''}
     </>
   );
 }

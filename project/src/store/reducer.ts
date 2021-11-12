@@ -10,7 +10,10 @@ const initialState: State = {
   activeSorting: SortingTypes.POPULAR,
   activeCardId: undefined,
   offersList: [],
-  authorizationStatus: AuthorizationStatus.Unknown,
+  favoritesList: [],
+  userInfo: {
+    authorizationStatus: AuthorizationStatus.Unknown,
+  },
   isDataLoading: false,
 };
 
@@ -22,15 +25,17 @@ const reducer = (state: State = initialState, action: Action):State => {
       return {...state, activeSorting: action.payload};
     case ActionType.GetOffersList:
       return {...state, offersList: action.payload};
+    case ActionType.GetFavoritesList:
+      return {...state, favoritesList: action.payload};
     case ActionType.RequireAuthorization:
-      return {...state, authorizationStatus: action.payload};
+      return {...state, userInfo: action.payload};
     case ActionType.LoadingData:
       return {...state, isDataLoading: action.payload};
     case ActionType.SetActiveCard:
       return {...state, activeCardId: action.payload};
     case ActionType.RequireLogout:
-      return {...state, authorizationStatus: AuthorizationStatus.NoAuth};
-    case ActionType.ReplaceOffer:
+      return {...state, userInfo: {authorizationStatus: AuthorizationStatus.NoAuth}};
+    case ActionType.UpdateOffer:
       return {...state, offersList: [...state.offersList
         .filter((offer: Offer) => offer.id !== action.payload.id), action.payload] };
 

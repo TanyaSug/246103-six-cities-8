@@ -1,6 +1,7 @@
 import {SortingTypes} from './const';
+import {Offer} from './types/types';
 
-export const sortPlaces = (hotels: any, sortingType: any) => {
+export const sortPlaces = (hotels: Offer[], sortingType: string): Offer[]  => {
   switch (sortingType) {
     case SortingTypes.PRICE_LOW:
       return [...hotels].sort((a, b) => (a.price - b.price));

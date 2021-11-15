@@ -43,6 +43,7 @@ export function CommentForm (props: CommentFormProp): JSX.Element {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
+        maxLength={300}
         value={reviewValue}
         onChange={handleFormTextareaChange}
       >

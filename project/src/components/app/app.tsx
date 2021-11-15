@@ -10,10 +10,9 @@ import {connect, ConnectedProps} from 'react-redux';
 import {State} from '../../types/state';
 import LoadingScreen from '../loading-screen/loading-screen';
 import browserHistory from '../../browser-history';
+import {MainEmpty} from '../main/main-empty';
 
-// import {offers} from '../../mocks/offers';
 
-// type AppProps = Data;
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
 
@@ -29,11 +28,14 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: PropsFromRedux): JSX.Element {
-  const {userInfo, isDataLoading} = props;
-  // const offer = offersList.map((hotel) => hotel.id);
+  const {userInfo, isDataLoading, offersList} = props;
   if (isCheckedAuth(userInfo.authorizationStatus) || isDataLoading) {
     return (
       <LoadingScreen />
+    );
+  } else if (offersList.length < 0) {
+    return (
+      <MainEmpty />
     );
   }
 

@@ -20,6 +20,7 @@ export const checkAuthAction = (): ThunkActionResult =>
     // try {
     await api.get(Endpoints.Login)
       .then(() => {
+        // можно ил это сделать за один вызов
         dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.NoAuth}));
         dispatch(loadingData(false));
       });
@@ -146,6 +147,7 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
   async (dispatch, _getState, api) => {
     const {data} = await api.post(Endpoints.Login, {email, password});
     saveToken(data.token);
+    //можно ли сделать это за один вызов?
     dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth, authEmail: data.email, authAvatar: data.avatar_url}));
     dispatch(redirectToRoute(AppRoute.Main));
   };

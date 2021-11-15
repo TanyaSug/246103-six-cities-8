@@ -43,7 +43,7 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element {
     getNearByOffers(+id);
     getReviews(+id);
 
-  } ,[]);
+  } ,[getNearByOffers,getReviews,id]);
 
   const offer = offersList.find((off) => off.id === +id);
   const imgList = offer?.images;

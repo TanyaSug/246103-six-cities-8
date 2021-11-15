@@ -32,7 +32,7 @@ function FavoritesList(props: PropsFromRedux): JSX.Element {
   useEffect(() => {
     getFavorites();
 
-  }, []);
+  }, [getFavorites]);
 
   return (
     favoritesList.length > 0 ?

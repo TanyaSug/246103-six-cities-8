@@ -32,7 +32,7 @@ function ReviewComponent(props: PropsFromRedux): JSX.Element {
   useEffect(() => {
     getReviews(+id);
 
-  }, []);
+  }, [getReviews, id]);
 
   const offer = offersList.find((off) => off.id === +id);
   const reviewsCount = offer?.review.length;

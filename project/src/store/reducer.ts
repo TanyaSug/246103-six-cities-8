@@ -27,6 +27,9 @@ const reducer = (state: State = initialState, action: Action):State => {
       return {...state, offersList: action.payload};
     case ActionType.GetFavoritesList:
       return {...state, favoritesList: action.payload};
+    case ActionType.DeleteFavoriteOffer:
+      return {...state, favoritesList: state.favoritesList
+        .filter((offer: Offer) => offer.id !== action.payload)};
     case ActionType.RequireAuthorization:
       return {...state, userInfo: action.payload};
     case ActionType.LoadingData:
@@ -36,9 +39,8 @@ const reducer = (state: State = initialState, action: Action):State => {
     case ActionType.RequireLogout:
       return {...state, userInfo: {authorizationStatus: AuthorizationStatus.NoAuth}};
     case ActionType.UpdateOffer:
-      return {...state, offersList: [...state.offersList
-        .filter((offer: Offer) => offer.id !== action.payload.id), action.payload] };
-
+      return {...state, offersList: state.offersList
+        .map((offer: Offer) => offer.id === action.payload.id ? action.payload : offer)};
     default:
       return state;
   }

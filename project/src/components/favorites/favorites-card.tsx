@@ -4,6 +4,7 @@ import {Offer} from '../../types/types';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {connect, ConnectedProps} from 'react-redux';
 import {changeFavoritesAction} from '../../store/api-actions';
+import {getRating} from '../../utils';
 
 type FavoritesCardProps = {
   offer: Offer,
@@ -52,7 +53,7 @@ function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '100%'}}/>
+            <span style={{width: getRating(offer.rating)}}/>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

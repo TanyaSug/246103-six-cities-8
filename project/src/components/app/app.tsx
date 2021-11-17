@@ -10,7 +10,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {State} from '../../types/state';
 import LoadingScreen from '../loading-screen/loading-screen';
 import browserHistory from '../../browser-history';
-import {MainEmpty} from '../main/main-empty';
+// import MainEmpty from '../main/main-empty';
 
 
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
@@ -28,16 +28,17 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: PropsFromRedux): JSX.Element {
-  const {userInfo, isDataLoading, offersList} = props;
+  const {userInfo, isDataLoading} = props;
   if (isCheckedAuth(userInfo.authorizationStatus) || isDataLoading) {
     return (
       <LoadingScreen />
     );
-  } else if (offersList.length < 0) {
-    return (
-      <MainEmpty />
-    );
   }
+  // else if (offersList.length === 0) {
+  //   return (
+  //     <MainEmpty />
+  //   );
+  // }
 
   return (
     <BrowserRouter history={browserHistory}>
@@ -52,8 +53,7 @@ function App(props: PropsFromRedux): JSX.Element {
           <OfferDetails />
         </Route>
         <PrivateRoute
-          exact
-          path={AppRoute.Favorites}
+          exact path={AppRoute.Favorites}
           render={() => <Favorites />}
         >
         </PrivateRoute>

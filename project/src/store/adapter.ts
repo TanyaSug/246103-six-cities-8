@@ -106,18 +106,29 @@ export const adaptOfferToClient = (offer1: unknown): Offer => {
 //   return adaptedOffer;
 // };
 
-export const adaptReviewToClient = (review: any): Review => {
-  const adaptedReview = {
-    ...review,
-    user: {
-      ...review.user,
-      avatarUrl: review.user.avatar_url,
-      isPro: review.user.is_pro,
-    },
+const adaptUser = (user:unknown):Review['user']=>{
+  if(!isRecord(user)){
+    throw new Error('invalid user data');
+  }
+  return{
+    avatarUrl:toStringDefault(user['avatar_url'],''),
+    id:toNumberDefault(user['id'],0),
+    isPro:toBooleanDefault(user['is_pro'],false),
+    name: toStringDefault(user['name'],''),
   };
+};
 
-  delete adaptedReview.user.avatar_url;
-  delete adaptedReview.user.is_pro;
+export const adaptReviewToClient = (review: unknown): Review => {
+  if(!isRecord(review)){
+    throw new Error('invalid data');
+  }
+  const adaptedReview:Review = {
+    comment:toStringDefault(review.comment,''),
+    date:toStringDefault(review.date,''),
+    id:toNumberDefault(review.id,0),
+    rating:toNumberDefault(review.rating,0),
+    user: adaptUser(review.user),
+  };
 
   return adaptedReview;
 };

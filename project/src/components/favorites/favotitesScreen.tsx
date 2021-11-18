@@ -31,14 +31,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function Favorites(props: PropsFromRedux): JSX.Element {
   const {favoritesList} = props;
-  // eslint-disable-next-line no-console
-  console.log(favoritesList);
-  //
-  // useEffect(() => {
-  //   getFavorites();
-  //
-  // }, []);
-  // const favoriteCities = Array.from(new Set(favoritesList.map((offer) => offer.city.name)));
   return (
     <div className={`page ${favoritesList.length > 0 ? '' : 'page page--favorites-empty'}`}>
       <Header />

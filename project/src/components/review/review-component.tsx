@@ -26,18 +26,16 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 function ReviewComponent(props: PropsFromRedux): JSX.Element {
   const {offersList, userInfo, getReviews, onSubmit} = props;
   const history = useHistory();
-  const id = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
+  const id = + history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);//требуется использовать инструменты из набора React-DOM-Router
 
 
   useEffect(() => {
-    getReviews(+id);
+    getReviews(id);
 
-  }, []);
+  }, [getReviews, id]);
 
   const offer = offersList.find((off) => off.id === +id);
   const reviewsCount = offer?.review.length;
-  // eslint-disable-next-line no-console
-  console.log(reviewsCount);
   const handleOnSubmit = (rating: number, comment: string) => {
     if (offer) {
       onSubmit(

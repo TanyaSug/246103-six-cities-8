@@ -14,9 +14,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function OffersList(props: PropsFromRedux): JSX.Element {
   const {offersList} = props;
-  // const [activeCardId, setActiveCardId] = useState<number | undefined>(undefined);
-  // eslint-disable-next-line no-console
-  // console.log(activeCardId);
   return (
     <>
       {offersList.map((offer) => <PlaceCard isMainScreen offer={offer} key={offer.id} />)}

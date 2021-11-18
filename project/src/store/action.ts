@@ -24,6 +24,11 @@ export const getFavoritesList = (favorites: Offer[]) => ({
   payload: favorites,
 } as const);
 
+export const deleteFavoriteOffer = (offerId: number) => ({
+  type: ActionType.DeleteFavoriteOffer,
+  payload: offerId,
+} as const);
+
 export const updateOffer = (updatedOffer: Offer) => ({
   type: ActionType.UpdateOffer,
   payload: updatedOffer,

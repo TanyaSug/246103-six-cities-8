@@ -106,29 +106,41 @@ export const adaptOfferToClient = (offer1: unknown): Offer => {
 //   return adaptedOffer;
 // };
 
-const adaptUser = (user:unknown):Review['user']=>{
+// export const adaptReviewToClient = (review: any): Review => {
+//   const adaptedReview = {
+//     ...review,
+//     user: {
+//       ...review.user,
+//       avatarUrl: review.user.avatar_url,
+//       isPro: review.user.is_pro,
+//     },
+//   };
+//
+//   delete adaptedReview.user.avatar_url;
+//   delete adaptedReview.user.is_pro;
+//
+//   return adaptedReview;
+// };
+const makeUser = (user:unknown):Review['user']=>{
   if(!isRecord(user)){
-    throw new Error('invalid user data');
+    throw new Error('Invalid Argument user');
   }
-  return{
-    avatarUrl:toStringDefault(user['avatar_url'],''),
+  return {
+    avatarUrl: toStringDefault(user['avatar_url'],''),
     id:toNumberDefault(user['id'],0),
-    isPro:toBooleanDefault(user['is_pro'],false),
+    isPro: toBooleanDefault(user['is_pro'],false),
     name: toStringDefault(user['name'],''),
   };
 };
-
 export const adaptReviewToClient = (review: unknown): Review => {
   if(!isRecord(review)){
-    throw new Error('invalid data');
+    throw new Error('invalid argument review');
   }
-  const adaptedReview:Review = {
-    comment:toStringDefault(review.comment,''),
-    date:toStringDefault(review.date,''),
-    id:toNumberDefault(review.id,0),
-    rating:toNumberDefault(review.rating,0),
-    user: adaptUser(review.user),
+  return {
+    comment: toStringDefault(review['comment'], ''),
+    date: toStringDefault(review['date'], ''),
+    id: toNumberDefault(review['id'], 0),
+    rating: toNumberDefault(review['rating'], 0),
+    user: makeUser(review['user']),
   };
-
-  return adaptedReview;
 };

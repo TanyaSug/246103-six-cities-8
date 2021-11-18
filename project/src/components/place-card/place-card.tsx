@@ -1,4 +1,4 @@
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute, AuthorizationStatus, OfferType} from '../../const';
 import {Link, generatePath, useHistory} from 'react-router-dom';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {setActiveCard} from '../../store/action';
@@ -7,6 +7,7 @@ import {Offer} from '../../types/types';
 import {changeFavoritesAction} from '../../store/api-actions';
 import {A} from '../helper-co/anchor/anchor';
 import {State} from '../../types/state';
+import {getRating} from '../../utils';
 
 type PlaceCardProps = {
   offer: Offer,
@@ -60,7 +61,7 @@ function PlaceCard(props: ConnectedComponentProps): JSX.Element {
             onClick={() => {
               userInfo.authorizationStatus === AuthorizationStatus.Auth
                 ?
-                onFavoriteStatusChange(offer.id, offer.isFavorite  ? 0 : 1)
+                onFavoriteStatusChange(offer.id, offer.isFavorite ? 0 : 1)
                 :
                 history.push(AppRoute.SignIn);
             }}
@@ -73,14 +74,14 @@ function PlaceCard(props: ConnectedComponentProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}/>
+            <span style={{width: getRating(offer.rating)}}/>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name" >
           <Link to={generatePath(AppRoute.OfferDetails, {id: offer.id})}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{OfferType[offer.type]}</p>
       </div>
     </article>
   );

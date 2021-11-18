@@ -12,7 +12,8 @@ import {
   getReviews,
   changeSorting,
   updateOffer,
-  getFavoritesList
+  getFavoritesList,
+  deleteFavoriteOffer
 } from '../store/action';
 import {State} from './state';
 
@@ -20,6 +21,7 @@ export enum ActionType {
   ToggleActiveCity = 'places/toggleActiveCity',
   GetOffersList = 'places/getOffersList',
   GetFavoritesList = 'places/getFavoritesList',
+  DeleteFavoriteOffer = 'places/deleteFavoritesList',
   GetReviews = 'places/getReviews',
   RequireAuthorization = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
@@ -35,6 +37,7 @@ export type Action =
   | ReturnType<typeof toggleActiveCity>
   | ReturnType<typeof getOffers>
   | ReturnType<typeof getFavoritesList>
+  | ReturnType<typeof deleteFavoriteOffer>
   | ReturnType<typeof getReviews>
   | ReturnType<typeof updateOffer>
   | ReturnType<typeof requireAuthorization>

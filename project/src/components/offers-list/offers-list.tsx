@@ -14,6 +14,8 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function OffersList(props: PropsFromRedux): JSX.Element {
   const {offersList} = props;
+
+
   return (
     <>
       {offersList.map((offer) => <PlaceCard isMainScreen offer={offer} key={offer.id} />)}

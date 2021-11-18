@@ -1,19 +1,16 @@
-// import { CommentForm } from '../comment-form/comment-form';
-// import {ReviewsList} from '../review/reviews-list';
 import Map from '../map/map';
-import { NearOffersList } from '../near-offers-list/near-offers-list';
-// import {Review} from '../../types/types';
+import  NearOffersList  from '../near-offers-list/near-offers-list';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import {Header} from '../header/header';
 import {useHistory} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus, MAX_IMAGES} from '../../const';
 import {useEffect} from 'react';
-// import {Dispatch} from 'redux';
 import {ThunkAppDispatch} from '../../types/action-types';
-// import {setActiveCard, updateOffer} from '../../store/action';
 import {changeFavoritesAction, getNearByOffersAction, getReviewsAction} from '../../store/api-actions';
 import ReviewComponent from '../review/review-component';
+import {getRating} from '../../utils';
+// import OfferDetailsMap from '../offer-details/offer-details-map';
 
 
 const mapStateToProps = ({offersList, userInfo}: State) => ({
@@ -24,7 +21,7 @@ const mapStateToProps = ({offersList, userInfo}: State) => ({
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   getNearByOffers: (offerId: number) =>  dispatch(getNearByOffersAction(offerId)),
   getReviews: (offerId: number) =>  dispatch(getReviewsAction(offerId)),
-  onFavoriteStatusChange:(offerId: number | undefined, status: number) => dispatch(changeFavoritesAction(offerId, status)),
+  onFavoriteStatusChange:(offerId: number, status: number) => dispatch(changeFavoritesAction(offerId, status)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -32,7 +29,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const ALT_TEXT = 'Photo studio';
 
-export function OfferDetails(props: PropsFromRedux): JSX.Element|null {
+function OfferDetails(props: PropsFromRedux): JSX.Element {
   const {offersList, getNearByOffers, getReviews, onFavoriteStatusChange, userInfo} = props;
 
   const history = useHistory();
@@ -43,29 +40,31 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element|null {
     getNearByOffers(id);
     getReviews(id);
 
-  } ,[getNearByOffers,getReviews,id]);//требуется минимизировать количество преобразований типов (строка - число)
+  } ,[getNearByOffers,getReviews,id]);
 
-  const offer = offersList.find((off) => off.id === id);
-  //Что же показывать, если пришли на неизвестный офер?
-  if(typeof offer === 'undefined'){
-    return null;
-  }
-  const imgList = offer.images;
-  const images = imgList.slice(0, MAX_IMAGES).map((image) => (//картинки и так будут уникальные
-    <div className="property__image-wrapper" key={`${image}`}>
+  const offer = offersList.find((off) => off.id === +id);
+  const imgList = offer?.images ?? [];
+  const images = imgList.slice(0, MAX_IMAGES).map((image, index) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <div className="property__image-wrapper" key={`${image}-${index}`}>
       <img className="property__image" src={image} alt={ALT_TEXT} />
     </div>
   ));
-  const goodList = offer.goods;
-  const goods = goodList.map((good) => ( //фичи по смыслу уникальные
-    <li key={`${good}`} className="property__inside-item">
+  const goodList = offer?.goods ?? [];
+  const goods = goodList.map((good, index) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <li key={`${good}-${index}`} className="property__inside-item">
       {good}
     </li>
   ));
 
+  if (!offer) {
+    return <div>There is no information</div>;
+  }
+
   return (
     <div className="page">
-      < Header />
+      <Header/>
 
       <main className="page__main page__main--property">
         <section className="property">
@@ -82,7 +81,7 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element|null {
                   {offer.title}
                 </h1>
                 <button
-                  className="property__bookmark-button button"
+                  className={`property__bookmark-button ${offer.isFavorite ? 'property__bookmark-button--active' : ''} button`}
                   type="button"
                   onClick={() => {
                     userInfo.authorizationStatus === AuthorizationStatus.Auth
@@ -100,10 +99,10 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element|null {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{width: '80%'}}/>
+                  <span style={{width: getRating(offer.rating)}}/>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">{offer?.rating}</span>
+                <span className="property__rating-value rating__value">{offer.rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
@@ -117,7 +116,7 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element|null {
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;{offer?.price}</b>
+                <b className="property__price-value">&euro;{offer.price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
@@ -161,7 +160,7 @@ export function OfferDetails(props: PropsFromRedux): JSX.Element|null {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <NearOffersList offersList={offer.nearBy ?? []} />
+              <NearOffersList />
             </div>
           </section>
         </div>

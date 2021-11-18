@@ -1,7 +1,7 @@
 import {useEffect, useRef} from 'react';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
-import {Icon, latLng, LatLngExpression, Marker} from 'leaflet';
+import {Icon, latLng, Marker} from 'leaflet';
 import {ICON_ANCHOR, ICON_SIZE, URL_MARKER_ACTIVE, URL_MARKER_DEFAULT} from '../../const';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
@@ -9,9 +9,7 @@ import {Offer} from '../../types/types';
 
 type MapProps = {
   offersList: Offer[],
-  // для решения вопроса о месте рыжего пина добавим его положение в пропсы и будем передавать из деталей
-  // но он необязательный
-  offerLocation?: Offer['location']|undefined,
+  offerLocation?: Offer['location']| undefined,
 }
 const mapStateToProps = ({activeCity, activeCardId}: State) => ({
   activeCity,
@@ -38,8 +36,12 @@ const activeIcon =  new Icon({
   iconAnchor: [20, 40],
 });
 
-const makeMarker = (map:Exclude<ReturnType<typeof useMap>,null>,aLatLng:LatLngExpression,icon:typeof defaultIcon)=>{
-  const marker = new Marker(aLatLng);
+const makeMarker = (map:Exclude<ReturnType<typeof useMap>,null>, location:Offer['location'], icon:typeof defaultIcon)=>{
+
+  const marker = new Marker({
+    lat: location.latitude,
+    lng: location.longitude,
+  });
 
   marker
     .setIcon(icon)
@@ -62,28 +64,13 @@ function Map(props: ConnectedComponentProps) {
     }
     if (map && city) {
       map.panTo(latLng(city.location.latitude, city.location.longitude));
-      const markers  =  filteredOfferList
-        .map((offer) => makeMarker(
-          map,
-          {
-            lat: offer.location.latitude,
-            lng: offer.location.longitude,
-          },
-          defaultIcon),
-        );
+      const markers =  filteredOfferList
+        .map((offer) => makeMarker(map,offer.location, defaultIcon));
       if(typeof offerLocation !== 'undefined'){
-        //если рыжий пин получен - добавим его в массив
-        markers.push(
-          makeMarker(
-            map,
-            [
-              offerLocation.latitude,
-              offerLocation.longitude,
-            ],
-            activeIcon));
+        markers.push(makeMarker(map,offerLocation,activeIcon));
       }
-      markersRef.current = markers;
     }
+
     return () => {
       markersRef.current && deleteMarkers(markersRef.current);
     };

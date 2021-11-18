@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import { useEffect} from 'react';
 import {ReviewsList} from './reviews-list';
-import {CommentForm} from '../comment-form/comment-form';
+import {CommentForm, CommentFormProp} from '../comment-form/comment-form';
 import {ReviewData} from '../../types/types';
 import {AuthorizationStatus} from '../../const';
 
@@ -16,7 +16,18 @@ const mapStateToProps = ({offersList, userInfo}: State) => ({
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   getReviews: (offerId: number) =>  dispatch(getReviewsAction(offerId)),
-  onSubmit:(offerId: number, {rating, comment}: ReviewData) => dispatch(sendOfferReview(offerId, {rating, comment})),
+  onSubmit:(offerId: number,
+    {rating, comment}: ReviewData,
+    setErrorValue: (message: string) => void,
+    setSubmittingFlag: (flag: boolean) => void,
+    resetForm: () => void,
+  ) => dispatch(sendOfferReview(
+    offerId,
+    {rating, comment},
+    setErrorValue,
+    setSubmittingFlag,
+    resetForm),
+  ),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -35,15 +46,29 @@ function ReviewComponent(props: PropsFromRedux): JSX.Element {
   }, [getReviews, id]);
 
   const offer = offersList.find((off) => off.id === +id);
-  const reviewsCount = offer?.review.length;
-  const handleOnSubmit = (rating: number, comment: string) => {
+  if (!offer) {
+    return <div>There is no information</div>;
+  }
+  const reviewsCount = offer.review.length;
+
+  const handleOnSubmit: CommentFormProp['onSubmit'] = (
+    rating: number,
+    comment: string,
+    setErrorValue: (message: string) => void,
+    setSubmittingFlag: (flag: boolean) => void,
+    resetForm: () => void,
+  ) => {
     if (offer) {
       onSubmit(
         offer.id,
         {
           rating,
           comment,
-        });
+        },
+        setErrorValue,
+        setSubmittingFlag,
+        resetForm,
+      );
     }
   };
 
@@ -51,7 +76,7 @@ function ReviewComponent(props: PropsFromRedux): JSX.Element {
   return (
     <>
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsCount}</span></h2>
-      <ReviewsList reviews={offer?.review ?? []} />
+      <ReviewsList reviews={offer.review ?? []} />
       {userInfo.authorizationStatus === AuthorizationStatus.Auth ?
         <CommentForm onSubmit={handleOnSubmit}/>
         : ''}

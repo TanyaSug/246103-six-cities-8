@@ -1,5 +1,6 @@
 import {AppRoute, AuthorizationStatus, Endpoints} from '../const';
 import {
+  deleteFavoriteOffer,
   getFavoritesList,
   getOffers,
   loadingData,
@@ -96,12 +97,13 @@ export const getFavoritesAction = (): ThunkActionResult =>
     }
   };
 
-export const changeFavoritesAction = (offerId: number | undefined, status: number): ThunkActionResult =>
+export const changeFavoritesAction = (offerId: number, status: number): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     try {
-      const {data} = await api.post(`${Endpoints.Favorite}/${offerId}/${status}`);
-      const hotel = data.map((offer: unknown) => adaptOfferToClient(offer));
+      const {data} = await api.post<Offer>(`${Endpoints.Favorite}/${offerId}/${status}`);
+      const hotel =  adaptOfferToClient(data);
       const offer = _getState().offersList.find((off) => off.id === offerId);
+      dispatch(deleteFavoriteOffer(offerId));
       if(offer) {
         const updatedOffer: Offer = {...offer, isFavorite: hotel.isFavorite};
         dispatch(updateOffer(updatedOffer));
@@ -127,19 +129,29 @@ export const getReviewsAction = (offerId: number): ThunkActionResult =>
     }
   };
 
-export const sendOfferReview = (offerId: number, {rating, comment}: ReviewData): ThunkActionResult =>
+export const sendOfferReview = (
+  offerId: number,
+  {rating, comment}: ReviewData,
+  setErrorValue: (message: string) => void,
+  setSubmittingFlag: (flag: boolean) => void,
+  resetForm: () => void,
+): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     try {
+      setSubmittingFlag(true);
       const {data} = await api.post<Review[]>(`${Endpoints.Reviews}/${offerId}`, {rating, comment});
       const review = data.map((comm: unknown) => adaptReviewToClient(comm));
       const offer = _getState().offersList.find((off) => off.id === offerId);
-      if(offer) {
+      if (offer) {
         const updatedOffer: Offer = {...offer, review};
         dispatch(updateOffer(updatedOffer));
+        resetForm();
       }
     } catch (error) {
-      // @TODO later
+      setErrorValue('Error');
     }
+
+    setSubmittingFlag(false);
   };
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>

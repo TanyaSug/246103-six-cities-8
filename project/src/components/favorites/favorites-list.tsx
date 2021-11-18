@@ -32,7 +32,7 @@ function FavoritesList(props: PropsFromRedux): JSX.Element {
   useEffect(() => {
     getFavorites();
 
-  }, [getFavorites]);//а может быть получение фаворитов должен инициировать вышележащей контейнер, вместо того, чтобы монтировать компонент и передавать ему функцию для инициации
+  }, [getFavorites]);
 
   return (
     favoritesList.length > 0 ?

@@ -52,7 +52,16 @@ export const SortingTypes = {
 };
 
 export const MAX_IMAGES = 6;
-
 export const MIN_LENGTH_REVIEW = 50;
-
+export const RATING = 5;
+export const PERCENT =100;
 export const ALT_TEXT = 'Place image';
+
+
+export const OfferType: {[key: string]: string} = {
+  apartment: 'Apartment',
+  room: 'Private room',
+  house: 'House',
+  hotel: 'Hotel',
+};
+

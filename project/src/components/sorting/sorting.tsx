@@ -1,4 +1,4 @@
-import {MouseEvent, useState} from 'react';
+import React, {useState} from 'react';
 import {changeSorting} from '../../store/action';
 import {useDispatch} from 'react-redux';
 import {SortingTypes} from '../../const';
@@ -10,7 +10,7 @@ export function Sorting(): JSX.Element {
     setOpenedSorting((prevState) => !prevState);
   };
 
-  const handleSortingChange = (evt: MouseEvent<HTMLLIElement>) => {
+  const handleSortingChange = (evt: React.MouseEvent<HTMLLIElement>) => {
     dispatch(changeSorting(evt.currentTarget.innerText));
     setOpenedSorting(false);
   };

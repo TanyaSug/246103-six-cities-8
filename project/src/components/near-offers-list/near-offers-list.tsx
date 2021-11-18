@@ -10,7 +10,7 @@ const mapStateToProps = ({offersList, activeCity}: State) => ({
 const connector = connect(mapStateToProps, {});
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export function NearOffersList(props: PropsFromRedux): JSX.Element {
+function NearOffersList(props: PropsFromRedux): JSX.Element {
   const {offersList} = props;
   return (
     <>
@@ -20,3 +20,5 @@ export function NearOffersList(props: PropsFromRedux): JSX.Element {
     </>
   );
 }
+
+export default connector(NearOffersList);

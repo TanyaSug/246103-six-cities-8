@@ -153,7 +153,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map offersList={offer.nearBy ?? []} />
+            <Map offersList={offer.nearBy ?? []} offerLocation={offer.location} />
           </section>
         </section>
         <div className="container">

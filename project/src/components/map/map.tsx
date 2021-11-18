@@ -9,7 +9,7 @@ import {Offer} from '../../types/types';
 
 type MapProps = {
   offersList: Offer[],
-  // currentOffer?: number | undefined,
+  offerLocation?: Offer['location']| undefined,
 }
 const mapStateToProps = ({activeCity, activeCardId}: State) => ({
   activeCity,
@@ -36,8 +36,21 @@ const activeIcon =  new Icon({
   iconAnchor: [20, 40],
 });
 
+const makeMarker = (map:Exclude<ReturnType<typeof useMap>,null>, location:Offer['location'], icon:typeof defaultIcon)=>{
+
+  const marker = new Marker({
+    lat: location.latitude,
+    lng: location.longitude,
+  });
+
+  marker
+    .setIcon(icon)
+    .addTo(map);
+  return marker;
+};
+
 function Map(props: ConnectedComponentProps) {
-  const {offersList, activeCity, activeCardId} = props;
+  const {offersList, activeCity, activeCardId, offerLocation} = props;
   const filteredOfferList = offersList.filter((offer) => offer.city.name === activeCity);
   const city = filteredOfferList.find((offer) => offer.city.name === activeCity)?.city;
   const mapRef = useRef(null);
@@ -51,24 +64,17 @@ function Map(props: ConnectedComponentProps) {
     }
     if (map && city) {
       map.panTo(latLng(city.location.latitude, city.location.longitude));
-      markersRef.current =  filteredOfferList
-        .map((offer) => {
-          const marker = new Marker({
-            lat: offer.location.latitude,
-            lng: offer.location.longitude,
-          });
-
-          marker
-            .setIcon(offer.id === activeCardId  ? activeIcon : defaultIcon)
-            .addTo(map);
-          return marker;
-
-        });
+      const markers =  filteredOfferList
+        .map((offer) => makeMarker(map,offer.location, defaultIcon));
+      if(typeof offerLocation !== 'undefined'){
+        markers.push(makeMarker(map,offerLocation,activeIcon));
+      }
     }
+
     return () => {
       markersRef.current && deleteMarkers(markersRef.current);
     };
-  }, [map, activeCity, activeCardId, filteredOfferList, city]);
+  }, [map, activeCity, activeCardId, filteredOfferList, city, offerLocation]);
 
 
   return <div style={{height: '100%', width: '100%'}} ref={mapRef} />;

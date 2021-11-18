@@ -33,12 +33,12 @@ function OfferDetails(props: PropsFromRedux): JSX.Element {
   const {offersList, getNearByOffers, getReviews, onFavoriteStatusChange, userInfo} = props;
 
   const history = useHistory();
-  const id = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
+  const id = + history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1); //требуется использовать инструменты из React-DOM-Router
 
 
   useEffect(() => {
-    getNearByOffers(+id);
-    getReviews(+id);
+    getNearByOffers(id);
+    getReviews(id);
 
   } ,[getNearByOffers,getReviews,id]);
 
@@ -143,7 +143,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element {
                 </div>
                 <div className="property__description">
                   <p className="property__text">
-                    {offer?.description}
+                    {offer.description}
                   </p>
                 </div>
               </div>
@@ -153,7 +153,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map offersList={offer.nearBy ?? []} />
+            <Map offersList={offer.nearBy ?? []} offerLocation={offer.location} />
           </section>
         </section>
         <div className="container">

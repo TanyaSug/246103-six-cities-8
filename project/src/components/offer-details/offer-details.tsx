@@ -1,5 +1,5 @@
 import Map from '../map/map';
-import { NearOffersList } from '../near-offers-list/near-offers-list';
+import  NearOffersList  from '../near-offers-list/near-offers-list';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import {Header} from '../header/header';
@@ -10,6 +10,7 @@ import {ThunkAppDispatch} from '../../types/action-types';
 import {changeFavoritesAction, getNearByOffersAction, getReviewsAction} from '../../store/api-actions';
 import ReviewComponent from '../review/review-component';
 import {getRating} from '../../utils';
+// import OfferDetailsMap from '../offer-details/offer-details-map';
 
 
 const mapStateToProps = ({offersList, userInfo}: State) => ({
@@ -58,7 +59,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element {
   ));
 
   if (!offer) {
-    return <div>bla</div>;
+    return <div>There is no information</div>;
   }
 
   return (
@@ -159,7 +160,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <NearOffersList offersList={offer.nearBy ?? []} />
+              <NearOffersList />
             </div>
           </section>
         </div>

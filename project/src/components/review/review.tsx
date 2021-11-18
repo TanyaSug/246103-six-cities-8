@@ -26,7 +26,7 @@ export function ReviewItem(props: ReviewItemProps): JSX.Element {
           <p className="reviews__text">
             {review.comment}
           </p>
-          <time className="reviews__time" dateTime="2019-04">{review.date}</time>
+          <time className="reviews__time" dateTime="YYYY-MM">{review.date}</time>
         </div>
       </li>
     </ul>

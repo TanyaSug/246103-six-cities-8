@@ -1,4 +1,4 @@
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute, AuthorizationStatus, OfferType} from '../../const';
 import {Link, generatePath, useHistory} from 'react-router-dom';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {setActiveCard} from '../../store/action';
@@ -81,8 +81,7 @@ function PlaceCard(props: ConnectedComponentProps): JSX.Element {
         <h2 className="place-card__name" >
           <Link to={generatePath(AppRoute.OfferDetails, {id: offer.id})}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
-        {/*  OfferType[offer.type] === */}
+        <p className="place-card__type">{OfferType[offer.type]}</p>
       </div>
     </article>
   );

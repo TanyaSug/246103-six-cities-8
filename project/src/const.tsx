@@ -58,7 +58,7 @@ export const PERCENT =100;
 export const ALT_TEXT = 'Place image';
 
 
-export const OfferType = {
+export const OfferType: {[key: string]: string} = {
   apartment: 'Apartment',
   room: 'Private room',
   house: 'House',

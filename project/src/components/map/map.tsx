@@ -9,6 +9,7 @@ import {Offer} from '../../types/types';
 
 type MapProps = {
   offersList: Offer[],
+  // currentOffer?: number | undefined,
 }
 const mapStateToProps = ({activeCity, activeCardId}: State) => ({
   activeCity,
@@ -58,7 +59,7 @@ function Map(props: ConnectedComponentProps) {
           });
 
           marker
-            .setIcon(offer.id === activeCardId ? activeIcon : defaultIcon)
+            .setIcon(offer.id === activeCardId  ? activeIcon : defaultIcon)
             .addTo(map);
           return marker;
 

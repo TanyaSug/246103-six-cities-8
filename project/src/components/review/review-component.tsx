@@ -46,7 +46,10 @@ function ReviewComponent(props: PropsFromRedux): JSX.Element {
   }, [getReviews, id]);
 
   const offer = offersList.find((off) => off.id === +id);
-  const reviewsCount = offer?.review.length;
+  if (!offer) {
+    return <div>There is no information</div>;
+  }
+  const reviewsCount = offer.review.length;
 
   const handleOnSubmit: CommentFormProp['onSubmit'] = (
     rating: number,
@@ -73,7 +76,7 @@ function ReviewComponent(props: PropsFromRedux): JSX.Element {
   return (
     <>
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsCount}</span></h2>
-      <ReviewsList reviews={offer?.review ?? []} />
+      <ReviewsList reviews={offer.review ?? []} />
       {userInfo.authorizationStatus === AuthorizationStatus.Auth ?
         <CommentForm onSubmit={handleOnSubmit}/>
         : ''}

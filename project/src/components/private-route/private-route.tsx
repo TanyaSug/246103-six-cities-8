@@ -10,7 +10,6 @@ type RenderFuncProps = {
 
 type PrivateRouteProps = RouteProps & {
   render: (props: RenderFuncProps) => JSX.Element;
-  // authorizationStatus: AuthorizationStatus;
 }
 
 const MapStateToProps = ({userInfo}: State) => ({
@@ -37,5 +36,4 @@ function PrivateRoute(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-// export {PrivateRoute};
 export default connector(PrivateRoute);

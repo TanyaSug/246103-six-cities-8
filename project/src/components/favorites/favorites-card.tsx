@@ -1,4 +1,4 @@
-import {ALT_TEXT, AppRoute} from '../../const';
+import {AltText, AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
 import {Offer} from '../../types/types';
 import {ThunkAppDispatch} from '../../types/action-types';
@@ -9,9 +9,6 @@ import {getRating} from '../../utils';
 type FavoritesCardProps = {
   offer: Offer,
 }
-// const mapStateToProps = ({offersList, userInfo}: State) => ({
-//   offersList,
-// });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onStatusChange:(offerId: number, status: number) => dispatch(changeFavoritesAction(offerId, status)),
@@ -29,7 +26,7 @@ function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <a href={`offers/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="150" height="110"
-            alt={ALT_TEXT}
+            alt={AltText.PLACE_IMG}
           />
         </a>
       </div>

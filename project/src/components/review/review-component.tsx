@@ -3,9 +3,9 @@ import {ThunkAppDispatch} from '../../types/action-types';
 import {getReviewsAction, sendOfferReview} from '../../store/api-actions';
 import {connect, ConnectedProps} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import { useEffect} from 'react';
+import {useEffect} from 'react';
 import {ReviewsList} from './reviews-list';
-import {CommentForm, CommentFormProp} from '../comment-form/comment-form';
+import {ReviewForm, CommentFormProp} from '../new-review-form/review-form';
 import {ReviewData} from '../../types/types';
 import {AuthorizationStatus} from '../../const';
 
@@ -36,21 +36,21 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function ReviewComponent(props: PropsFromRedux): JSX.Element {
   const {offersList, userInfo, getReviews, onSubmit} = props;
-  const history = useHistory();
-  const id = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
 
+  const history = useHistory();
+  const id = + history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
 
   useEffect(() => {
-    getReviews(+id);
-
+    getReviews(id);
   }, [getReviews, id]);
 
   const offer = offersList.find((off) => off.id === +id);
+
   if (!offer) {
     return <div>There is no information</div>;
   }
-  const reviewsCount = offer.review.length;
 
+  const reviewsCount = offer.review.length;
   const handleOnSubmit: CommentFormProp['onSubmit'] = (
     rating: number,
     comment: string,
@@ -72,13 +72,12 @@ function ReviewComponent(props: PropsFromRedux): JSX.Element {
     }
   };
 
-
   return (
     <>
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsCount}</span></h2>
       <ReviewsList reviews={offer.review ?? []} />
       {userInfo.authorizationStatus === AuthorizationStatus.Auth ?
-        <CommentForm onSubmit={handleOnSubmit}/>
+        <ReviewForm onSubmit={handleOnSubmit}/>
         : ''}
     </>
   );

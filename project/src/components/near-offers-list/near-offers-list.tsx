@@ -1,7 +1,7 @@
 import PlaceCard from '../place-card/place-card';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
-
+import {NEAR_OFFERS_COUNT} from '../../const';
 
 const mapStateToProps = ({offersList, activeCity}: State) => ({
   offersList: offersList.filter((offer) => offer.city.name === activeCity),
@@ -15,7 +15,7 @@ function NearOffersList(props: PropsFromRedux): JSX.Element {
   return (
     <>
       {offersList
-        .slice(0, 3)
+        .slice(0, NEAR_OFFERS_COUNT)
         .map((offer) => <PlaceCard  offer={offer} key={offer.id} />)}
     </>
   );

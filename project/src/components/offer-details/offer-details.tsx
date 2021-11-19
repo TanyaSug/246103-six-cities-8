@@ -1,17 +1,15 @@
 import Map from '../map/map';
-import  NearOffersList  from '../near-offers-list/near-offers-list';
+import NearOffersList  from '../near-offers-list/near-offers-list';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import {Header} from '../header/header';
 import {useHistory} from 'react-router-dom';
-import {AppRoute, AuthorizationStatus, MAX_IMAGES} from '../../const';
+import {AltText, AppRoute, AuthorizationStatus, MAX_IMAGES, OfferType} from '../../const';
 import {useEffect} from 'react';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {changeFavoritesAction, getNearByOffersAction, getReviewsAction} from '../../store/api-actions';
 import ReviewComponent from '../review/review-component';
 import {getRating} from '../../utils';
-// import OfferDetailsMap from '../offer-details/offer-details-map';
-
 
 const mapStateToProps = ({offersList, userInfo}: State) => ({
   offersList,
@@ -27,45 +25,42 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const ALT_TEXT = 'Photo studio';
 
-function OfferDetails(props: PropsFromRedux): JSX.Element {
+function OfferDetails(props: PropsFromRedux): JSX.Element | null {
   const {offersList, getNearByOffers, getReviews, onFavoriteStatusChange, userInfo} = props;
 
   const history = useHistory();
-  const id = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
+  const id = + history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
 
 
   useEffect(() => {
-    getNearByOffers(+id);
-    getReviews(+id);
-
+    getNearByOffers(id);
+    getReviews(id);
   } ,[getNearByOffers,getReviews,id]);
 
-  const offer = offersList.find((off) => off.id === +id);
-  const imgList = offer?.images ?? [];
-  const images = imgList.slice(0, MAX_IMAGES).map((image, index) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <div className="property__image-wrapper" key={`${image}-${index}`}>
-      <img className="property__image" src={image} alt={ALT_TEXT} />
+  const offer = offersList.find((off) => off.id === id);
+
+  if(typeof offer === 'undefined'){
+    return null;
+  }
+
+  const imgList = offer.images ?? [];
+  const images = imgList.slice(0, MAX_IMAGES).map((image) => (
+    <div className="property__image-wrapper" key={`${image}`}>
+      <img className="property__image" src={image} alt={AltText.PHOTO_STUDIO} />
     </div>
   ));
-  const goodList = offer?.goods ?? [];
-  const goods = goodList.map((good, index) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <li key={`${good}-${index}`} className="property__inside-item">
+
+  const goodList = offer.goods ?? [];
+  const goods = goodList.map((good) => (
+    <li key={`${good}`} className="property__inside-item">
       {good}
     </li>
   ));
 
-  if (!offer) {
-    return <div>There is no information</div>;
-  }
-
   return (
     <div className="page">
       <Header/>
-
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
@@ -106,7 +101,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element {
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {offer.type}
+                  {OfferType[offer.type]}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
                   {offer.bedrooms} Bedrooms
@@ -153,7 +148,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map offersList={offer.nearBy ?? []} />
+            <Map offersList={offer.nearBy ?? []} offerLocation={offer.location} />
           </section>
         </section>
         <div className="container">

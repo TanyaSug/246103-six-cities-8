@@ -1,4 +1,3 @@
-// import {Offer, Review} from '../types/types';
 import {City, Host, Offer, Review} from '../types/types';
 
 const nullHost: Host = {
@@ -9,12 +8,10 @@ const nullHost: Host = {
 };
 
 const isServerHost = (host: unknown): host is Record<string, unknown> => typeof host === 'object' && host !== null;
-
 const toStringDefault = (value: unknown, def: string): string => typeof value === 'string' ? value : def;
 const toNumberDefault = (value: unknown, def: number): number => typeof value === 'number' ? value : def;
 const toBooleanDefault = (value: unknown, def: boolean): boolean => typeof value === 'boolean' ? value : def;
 const toStringArray = (value:unknown):string[] => Array.isArray(value)?value.map((v)=>toStringDefault(v,'')):[];
-
 const isRecord = (offer: unknown): offer is Record<string, unknown> => typeof offer === 'object' && offer !== null;
 
 const toLocationExact = (value:unknown):City['location'] =>{
@@ -77,53 +74,9 @@ export const adaptOfferToClient = (offer1: unknown): Offer => {
   };
 };
 
-//
-// export const adaptOfferToClient = (offer: any): Offer => {
-//   const adaptedOffer = Object.assign(
-//     {},
-//     offer,
-//     {
-//       host: {
-//         ...offer.host,
-//         avatarUrl: offer.host.avatar_url,
-//         isPro: offer.host.is_pro,
-//       },
-//       isFavorite: offer.is_favorite,
-//       isPremium: offer.is_premium,
-//       maxAdults: offer.max_adults,
-//       previewImage: offer.preview_image,
-//     },
-//   );
-//
-//   delete adaptedOffer.host.avatar_url;
-//   delete adaptedOffer.host.is_pro;
-//   delete adaptedOffer.is_favorite;
-//   delete adaptedOffer.is_premium;
-//   delete adaptedOffer.max_adults;
-//   delete adaptedOffer.preview_image;
-//
-//
-//   return adaptedOffer;
-// };
-
-// export const adaptReviewToClient = (review: any): Review => {
-//   const adaptedReview = {
-//     ...review,
-//     user: {
-//       ...review.user,
-//       avatarUrl: review.user.avatar_url,
-//       isPro: review.user.is_pro,
-//     },
-//   };
-//
-//   delete adaptedReview.user.avatar_url;
-//   delete adaptedReview.user.is_pro;
-//
-//   return adaptedReview;
-// };
-const makeUser = (user:unknown):Review['user']=>{
+const adaptUser = (user:unknown):Review['user']=>{
   if(!isRecord(user)){
-    throw new Error('Invalid Argument user');
+    throw new Error('Invalid user data');
   }
   return {
     avatarUrl: toStringDefault(user['avatar_url'],''),
@@ -132,15 +85,16 @@ const makeUser = (user:unknown):Review['user']=>{
     name: toStringDefault(user['name'],''),
   };
 };
+
 export const adaptReviewToClient = (review: unknown): Review => {
   if(!isRecord(review)){
-    throw new Error('invalid argument review');
+    throw new Error('Invalid data');
   }
   return {
-    comment: toStringDefault(review['comment'], ''),
-    date: toStringDefault(review['date'], ''),
-    id: toNumberDefault(review['id'], 0),
-    rating: toNumberDefault(review['rating'], 0),
-    user: makeUser(review['user']),
+    comment: toStringDefault(review.comment, ''),
+    date: toStringDefault(review.date, ''),
+    id: toNumberDefault(review.id, 0),
+    rating: toNumberDefault(review.rating, 0),
+    user: adaptUser(review.user),
   };
 };

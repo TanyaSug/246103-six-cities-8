@@ -1,6 +1,5 @@
-// import {Offer} from '../index';
-import { ThunkAction, ThunkDispatch} from 'redux-thunk';
-import { AxiosInstance } from 'axios';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import {AxiosInstance} from 'axios';
 import {
   toggleActiveCity,
   getOffers,
@@ -49,5 +48,4 @@ export type Action =
 
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
-
 export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Action>;

@@ -22,6 +22,7 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   setActive: (cardInfo: number | undefined) =>  dispatch(setActiveCard(cardInfo)),
   onFavoriteStatusChange:(offerId: number, status: number) => dispatch(changeFavoritesAction(offerId, status)),
 });
+
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & PlaceCardProps;
@@ -46,7 +47,7 @@ function PlaceCard(props: ConnectedComponentProps): JSX.Element {
       </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <A href="#">
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>
+          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt={offer.description}/>
         </A>
       </div>
       <div className="place-card__info">

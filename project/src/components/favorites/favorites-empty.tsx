@@ -1,6 +1,3 @@
-// import { Logo } from '../logo/logo';
-// import {A} from '../helper-co/anchor/anchor';
-
 export function FavoritesEmpty(): JSX.Element {
   return (
 

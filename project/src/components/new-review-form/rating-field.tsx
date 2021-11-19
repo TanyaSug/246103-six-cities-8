@@ -6,6 +6,7 @@ type RatingFieldProps = {
   disabled: boolean,
   onChange: (evt: ChangeEvent<HTMLInputElement>) => void,
 }
+
 export function RatingField(props: RatingFieldProps): JSX.Element {
   const {value, checked, disabled, onChange} = props;
   return (

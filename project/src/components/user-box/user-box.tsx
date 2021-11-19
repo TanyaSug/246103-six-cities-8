@@ -1,9 +1,7 @@
 import {Link, useHistory} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus, SIGN_IN, SIGN_OUT} from '../../const';
 import {State} from '../../types/state';
-// import {requireLogout} from '../../store/action';
 import {connect, ConnectedProps} from 'react-redux';
-// import {Dispatch} from 'redux';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {logoutAction} from '../../store/api-actions';
 import {A} from '../helper-co/anchor/anchor';

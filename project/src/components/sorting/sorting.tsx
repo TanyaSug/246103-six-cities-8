@@ -6,6 +6,7 @@ import {SortingTypes} from '../../const';
 export function Sorting(): JSX.Element {
   const dispatch = useDispatch();
   const [openedSorting, setOpenedSorting] = useState(false);
+
   const handleSortingClick = () => {
     setOpenedSorting((prevState) => !prevState);
   };
@@ -26,7 +27,7 @@ export function Sorting(): JSX.Element {
       </span>
       {openedSorting &&
       <ul className="places__options places__options--custom places__options--opened" data-testid="places-options">
-        {Object.values(SortingTypes).map((sortingType, id) => (
+        {Object.values(SortingTypes).map((sortingType) => (
           <li className= "places__option places__option--active"
             key={sortingType}
             tabIndex={0}

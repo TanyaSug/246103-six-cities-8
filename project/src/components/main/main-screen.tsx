@@ -1,16 +1,15 @@
-import  OffersCount  from './offers-count';
-import { Header } from '../header/header';
-import { Sorting } from '../sorting/sorting';
+import {Header} from '../header/header';
+import {Sorting} from '../sorting/sorting';
 import  OffersList  from '../offers-list/offers-list';
 import  CitiesList  from '../cities-list/cities-list';
 import MainScreenMap from './main-screen-map';
 import {MainEmpty} from './main-empty';
 import {State} from '../../types/state';
+import OffersCount from '../offers-count/offers-count';
 import {connect, ConnectedProps} from 'react-redux';
 
 const mapStateToProps = ({offersList}: State) => ({
   offersList,
-
 });
 
 const connector = connect(mapStateToProps, {});

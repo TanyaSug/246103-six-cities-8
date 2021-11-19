@@ -1,8 +1,7 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
-import {MIN_LENGTH_REVIEW, Titles} from '../../const';
+import {MIN_LENGTH_REVIEW, Titles, RATING_VALUES} from '../../const';
 import { RatingField } from './rating-field';
 
-const values = ['5', '4', '3', '2', '1'];
 export type CommentFormProp = {
   onSubmit: (
     rating: number,
@@ -14,7 +13,7 @@ export type CommentFormProp = {
 }
 
 
-export function CommentForm (props: CommentFormProp): JSX.Element {
+export function ReviewForm (props: CommentFormProp): JSX.Element {
   const {onSubmit} = props;
 
   const [ratingValue, setRatingValue] = useState<string>('');
@@ -32,8 +31,6 @@ export function CommentForm (props: CommentFormProp): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    // const {currentTarget: form} = evt;
-    // form.reset();
     onSubmit(
       +ratingValue,
       reviewValue,
@@ -44,14 +41,13 @@ export function CommentForm (props: CommentFormProp): JSX.Element {
         setReviewValue('');
       },
     );
-
   };
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
       <label className="reviews__label form__label" htmlFor="review">{Titles.YourReview }</label>
       <div className="reviews__rating-form form__rating">
-        {values.map((value) => <RatingField onChange={handleFormRatingChange} value={value} checked={ratingValue === value} disabled={submittingFlag} key={value} />)}
+        {RATING_VALUES.map((value) => <RatingField onChange={handleFormRatingChange} value={value} checked={ratingValue === value} disabled={submittingFlag} key={value} />)}
       </div>
       <textarea
         disabled={submittingFlag}

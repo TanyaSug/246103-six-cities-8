@@ -4,7 +4,7 @@ import {Dispatch} from 'redux';
 import {Action} from '../../types/action-types';
 import {State} from '../../types/state';
 import {toggleActiveCity} from '../../store/action';
-import { A } from '../helper-co/anchor/anchor';
+import {A} from '../helper-co/anchor/anchor';
 
 const mapStateToProps = ({activeCity}: State) => ({
   activeCity,
@@ -13,6 +13,7 @@ const mapStateToProps = ({activeCity}: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onClick: (city: string) =>  dispatch(toggleActiveCity(city)),
 });
+
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 

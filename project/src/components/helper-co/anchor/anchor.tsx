@@ -1,4 +1,4 @@
-import { HTMLProps } from 'react';
+import {HTMLProps} from 'react';
 
 export function A(p:Partial<HTMLProps<HTMLAnchorElement>>):JSX.Element {
   const { href: pref, children, ...rest } = p;

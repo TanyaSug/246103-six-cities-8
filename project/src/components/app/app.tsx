@@ -4,13 +4,12 @@ import {AppRoute, AuthorizationStatus} from '../../const';
 import  Favorites from '../favorites/favotitesScreen';
 import  OfferDetails  from '../offer-details/offer-details';
 import  AuthScreen  from '../auth-screen/auth-screen';
-import { NotFoundScreen } from '../not-found-screen/not-found-screen';
+import {NotFoundScreen} from '../not-found-screen/not-found-screen';
 import  PrivateRoute  from '../private-route/private-route';
 import {connect, ConnectedProps} from 'react-redux';
 import {State} from '../../types/state';
 import LoadingScreen from '../loading-screen/loading-screen';
 import browserHistory from '../../browser-history';
-// import MainEmpty from '../main/main-empty';
 
 
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
@@ -24,7 +23,6 @@ const mapStateToProps = ({userInfo, isDataLoading, offersList, activeCity}: Stat
 });
 
 const connector = connect(mapStateToProps);
-
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: PropsFromRedux): JSX.Element {
@@ -34,11 +32,6 @@ function App(props: PropsFromRedux): JSX.Element {
       <LoadingScreen />
     );
   }
-  // else if (offersList.length === 0) {
-  //   return (
-  //     <MainEmpty />
-  //   );
-  // }
 
   return (
     <BrowserRouter history={browserHistory}>

@@ -1,7 +1,6 @@
 import {ActionType} from '../types/action-types';
 import {AppRoute} from '../const';
-import {Offer, Review} from '../types/types';
-import {AuthInfo} from '../types/state';
+import {AuthInfo, Offer, Review} from '../types/types';
 
 
 export const toggleActiveCity = (city: string) => ({
@@ -64,8 +63,4 @@ export const redirectToRoute = (url: AppRoute) => ({
   payload: url,
 } as const);
 
-// export const loadReviews = (reviews: unknown) => ({
-//   type: ActionType.LoadReviews,
-//   payload: reviews,
-// } as const);
 

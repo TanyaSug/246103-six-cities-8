@@ -16,22 +16,16 @@ import {adaptOfferToClient, adaptReviewToClient} from './adapter';
 import {AuthData, Offer, Review, ReviewData} from '../types/types';
 import {dropToken, saveToken} from '../services/token';
 
+
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    // try {
     await api.get(Endpoints.Login)
       .then(() => {
         dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.NoAuth}));
         dispatch(loadingData(false));
-      });
+      })
+      .catch ((error) => {throw new Error(error);});
   };
-  //     catch (error) {
-  //     // @TODO later
-  //   }
-  //   finally {
-  //     dispatch(loadingData(false));
-  //   }
-  // };
 
 
 export const logoutAction = (): ThunkActionResult =>
@@ -47,12 +41,10 @@ export const fetchOffersAction = (): ThunkActionResult =>
     try {
       const {data} = await api.get<unknown>(Endpoints.Offers);
       if (!Array.isArray(data)) {
-        throw new Error('data is not array');
+        throw new Error('Data is not array');
       }
       const hotels = data.map((hotel: unknown) => adaptOfferToClient(hotel));
       dispatch(getOffers(hotels));
-    } catch (error) {
-      // @TODO later
     }
     finally {
       dispatch(loadingData(false));
@@ -62,11 +54,10 @@ export const fetchOffersAction = (): ThunkActionResult =>
 
 export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
   async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
-    // dispatch(loadingData(true));
     try {
       const {data} = await api.get<unknown>(`${Endpoints.Offers}/${offerId}/nearby`);
       if (!Array.isArray(data)) {
-        throw new Error('data is not array');
+        throw new Error('Data is not array');
       }
       const nearBy = data.map((offer: unknown) => adaptOfferToClient(offer));
       const offer = _getState().offersList.find((off) => off.id === offerId);
@@ -75,11 +66,8 @@ export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
         const updatedOffer: Offer = {...offer, nearBy};
         dispatch(updateOffer(updatedOffer));
       }
-    } catch (error) {
-      // @TODO later
-    }
-    finally {
-      // dispatch(loadingData(false));
+    }  catch (error) {
+      throw new Error(error);
     }
   };
 
@@ -88,12 +76,12 @@ export const getFavoritesAction = (): ThunkActionResult =>
     try {
       const {data} = await api.get<unknown>(Endpoints.Favorite);
       if (!Array.isArray(data)) {
-        throw new Error('data is not array');
+        throw new Error('Data is not array');
       }
       const hotels = data.map((hotel: unknown) => adaptOfferToClient(hotel));
       dispatch(getFavoritesList(hotels));
     } catch (error) {
-      // @TODO later
+      throw new Error(error);
     }
   };
 
@@ -108,8 +96,8 @@ export const changeFavoritesAction = (offerId: number, status: number): ThunkAct
         const updatedOffer: Offer = {...offer, isFavorite: hotel.isFavorite};
         dispatch(updateOffer(updatedOffer));
       }
-    } catch (error) {
-      // @TODO later
+    }  catch (error) {
+      throw new Error(error);
     }
   };
 
@@ -125,7 +113,7 @@ export const getReviewsAction = (offerId: number): ThunkActionResult =>
         dispatch(updateOffer(updatedOffer));
       }
     } catch (error) {
-      // @TODO later
+      throw new Error(error);
     }
   };
 

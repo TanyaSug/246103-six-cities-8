@@ -1,6 +1,4 @@
-import {AuthorizationStatus} from '../const';
-import {Offer} from './types';
-
+import {AuthInfo, Offer} from './types';
 
 export type State = {
   activeCity: string,
@@ -10,10 +8,4 @@ export type State = {
   userInfo: AuthInfo,
   isDataLoading: boolean,
   activeSorting: string,
-}
-
-export type AuthInfo = {
-  authorizationStatus: AuthorizationStatus,
-  authAvatar?: string,
-  authEmail?: string,
 }

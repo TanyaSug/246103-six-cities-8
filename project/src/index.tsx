@@ -20,8 +20,8 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api)),
     applyMiddleware(redirect),
   ));
+
 (store.dispatch as ThunkAppDispatch)(checkAuthAction());
-// store.dispatch(getOffers(offers));
 (store.dispatch as ThunkAppDispatch)(fetchOffersAction());
 
 ReactDOM.render(

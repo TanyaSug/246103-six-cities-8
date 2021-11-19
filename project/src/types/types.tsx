@@ -1,3 +1,11 @@
+import {AuthorizationStatus} from '../const';
+
+export type AuthInfo = {
+  authorizationStatus: AuthorizationStatus,
+  authAvatar?: string,
+  authEmail?: string,
+}
+
 export type Offer = {
   id: number,
   images: string[],

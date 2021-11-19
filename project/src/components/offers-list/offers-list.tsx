@@ -1,5 +1,4 @@
 import PlaceCard from '../place-card/place-card';
-// import {useState} from 'react';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import {sortPlaces} from '../../utils';
@@ -14,7 +13,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function OffersList(props: PropsFromRedux): JSX.Element {
   const {offersList} = props;
-
 
   return (
     <>

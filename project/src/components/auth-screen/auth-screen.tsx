@@ -6,18 +6,21 @@ import {connect, ConnectedProps} from 'react-redux';
 import {FormEvent, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
 import {AppRoute} from '../../const';
-import { A } from '../helper-co/anchor/anchor';
+import {A} from '../helper-co/anchor/anchor';
+import {toggleActiveCity} from '../../store/action';
+import {randomCity} from '../../utils';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onSubmit:(authData: AuthData) => dispatch(loginAction(authData)),
+  onClick: (city: string) =>  dispatch(toggleActiveCity(city)),
 });
 
 const connector = connect(null, mapDispatchToProps);
-
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function AuthScreen(props: PropsFromRedux): JSX.Element {
-  const {onSubmit} = props;
+  const {onSubmit, onClick} = props;
+  const city = randomCity;
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -77,7 +80,6 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
                 />
               </div>
               <button
-                // onClick={() => history.push(AppRoute.Main)}
                 className="login__submit form__submit button"
                 type="submit"
               >
@@ -87,8 +89,8 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <A className="locations__item-link" href="#">
-                <span>Amsterdam</span>
+              <A className="locations__item-link" href="#" onClick={() => onClick(city)}>
+                <span>{city}</span>
               </A>
             </div>
           </section>
@@ -98,5 +100,4 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
   );
 }
 
-// export {AuthScreen};
 export default connector(AuthScreen);

@@ -5,17 +5,12 @@ import {ThunkAppDispatch} from '../../types/action-types';
 import {getFavoritesAction} from '../../store/api-actions';
 import {connect, ConnectedProps} from 'react-redux';
 import {useEffect} from 'react';
-// import {Offer} from '../../types/types';
 import {Titles} from '../../const';
 import {FavoritesEmpty} from './favorites-empty';
 
 const mapStateToProps = ({favoritesList}: State) => ({
   favoritesList,
 });
-// type FavoritesListProps = {
-//   offers: Offer[],
-//   city: string,
-// }
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   getFavorites: () =>  dispatch(getFavoritesAction()),
@@ -23,7 +18,6 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
-// type ConnectedComponentProps = PropsFromRedux & FavoritesListProps;
 
 function FavoritesList(props: PropsFromRedux): JSX.Element {
   const {getFavorites, favoritesList} = props;
@@ -31,7 +25,6 @@ function FavoritesList(props: PropsFromRedux): JSX.Element {
 
   useEffect(() => {
     getFavorites();
-
   }, [getFavorites]);
 
   return (
@@ -39,7 +32,7 @@ function FavoritesList(props: PropsFromRedux): JSX.Element {
       <section className="favorites">
         <h1 className="favorites__title">{Titles.FavoriteTitle}</h1>
         <ul className="favorites__list">
-          {favoriteCities.map((city, index) => {
+          {favoriteCities.map((city) => {
             const favoriteCityOffers = favoritesList.filter((place) => place.city.name === city);
             return (
               <li className="favorites__locations-items" key={city}>

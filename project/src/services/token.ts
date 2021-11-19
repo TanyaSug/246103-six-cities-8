@@ -1,6 +1,6 @@
-const AUTH_TOKEN_KEY_NAME = 'favorite-hotel-token';
+import {AUTH_TOKEN_KEY_NAME} from '../const';
 
-export type Token = string;
+type Token = string;
 
 export const getToken = (): Token => {
   const token = localStorage.getItem(AUTH_TOKEN_KEY_NAME);

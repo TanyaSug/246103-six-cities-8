@@ -1,7 +1,6 @@
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 
-
 const mapStateToProps = ({offersList, activeCity}: State) => ({
   offersList: offersList.filter((offer) => offer.city.name === activeCity),
 });

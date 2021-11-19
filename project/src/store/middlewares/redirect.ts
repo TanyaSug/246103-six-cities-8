@@ -3,7 +3,6 @@ import {Middleware} from 'redux';
 import {reducer} from '../reducer';
 import {ActionType} from '../../types/action-types';
 
-
 type Reducer = ReturnType<typeof reducer>;
 
 export const redirect: Middleware<unknown, Reducer> =

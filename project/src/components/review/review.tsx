@@ -1,11 +1,18 @@
 import {Review} from '../../types/types';
-
+import {EN_US} from '../../const';
 
 type ReviewItemProps = {
   review: Review,
 }
+
 export function ReviewItem(props: ReviewItemProps): JSX.Element {
   const {review} = props;
+
+  const reviewDate = new Date(review.date).toLocaleDateString(EN_US, {
+    month: 'long',
+    year: 'numeric',
+  });
+
   return (
     <ul className="reviews__list">
       <li className="reviews__item">
@@ -26,7 +33,7 @@ export function ReviewItem(props: ReviewItemProps): JSX.Element {
           <p className="reviews__text">
             {review.comment}
           </p>
-          <time className="reviews__time" dateTime="YYYY-MM">{review.date}</time>
+          <time className="reviews__time" dateTime={review.date}>{reviewDate}</time>
         </div>
       </li>
     </ul>

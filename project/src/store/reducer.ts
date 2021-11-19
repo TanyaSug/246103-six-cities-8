@@ -2,7 +2,6 @@ import {State} from '../types/state';
 import {AuthorizationStatus, CITIES_LIST, SortingTypes} from '../const';
 import {Action, ActionType} from '../types/action-types';
 import {Offer} from '../types/types';
-// import {offers} from '../mocks/offers';
 
 
 const initialState: State = {

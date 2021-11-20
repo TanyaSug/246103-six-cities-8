@@ -15,16 +15,42 @@ import {AxiosInstance} from 'axios';
 import {adaptOfferToClient, adaptReviewToClient} from './adapter';
 import {AuthData, Offer, Review, ReviewData} from '../types/types';
 import {dropToken, saveToken} from '../services/token';
+import { isRecord } from '../utils';
 
+const HTTP_UNAUTHORIZED = 401;
+
+
+const unknownErrorToString = (error:unknown):string=>`${error}`;
+const check401 = (error:unknown)=>{
+  if(!isRecord(error)){
+    return false;
+  }
+  const {response} = error;
+  if(!isRecord(response)){
+    return false;
+  }
+  const {status} = response;
+  if(typeof status === 'number' && status === HTTP_UNAUTHORIZED){
+    return true;
+  }
+  return false;
+};
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     await api.get(Endpoints.Login)
       .then(() => {
-        dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.NoAuth}));
+        dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth}));
         dispatch(loadingData(false));
       })
-      .catch ((error) => {throw new Error(error);});
+      .catch ((error:unknown) => {
+        if(check401(error)){
+          dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.NoAuth}));
+          dispatch(loadingData(false));
+          return;
+        }
+        throw new Error(unknownErrorToString(error));
+      });
   };
 
 
@@ -67,7 +93,7 @@ export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
         dispatch(updateOffer(updatedOffer));
       }
     }  catch (error) {
-      throw new Error(error);
+      throw new Error(unknownErrorToString(error));
     }
   };
 
@@ -81,7 +107,7 @@ export const getFavoritesAction = (): ThunkActionResult =>
       const hotels = data.map((hotel: unknown) => adaptOfferToClient(hotel));
       dispatch(getFavoritesList(hotels));
     } catch (error) {
-      throw new Error(error);
+      throw new Error(unknownErrorToString(error));
     }
   };
 
@@ -97,7 +123,7 @@ export const changeFavoritesAction = (offerId: number, status: number): ThunkAct
         dispatch(updateOffer(updatedOffer));
       }
     }  catch (error) {
-      throw new Error(error);
+      throw new Error(unknownErrorToString(error));
     }
   };
 
@@ -113,7 +139,7 @@ export const getReviewsAction = (offerId: number): ThunkActionResult =>
         dispatch(updateOffer(updatedOffer));
       }
     } catch (error) {
-      throw new Error(error);
+      throw new Error(unknownErrorToString(error));
     }
   };
 

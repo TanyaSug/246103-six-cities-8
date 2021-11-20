@@ -1,5 +1,5 @@
 import {CITIES_LIST, PERCENT, RATING, SortingTypes} from './const';
-import {Offer} from './types/types';
+import {Offer, Review} from './types/types';
 
 export const sortPlaces = (hotels: Offer[], sortingType: string): Offer[]  => {
   switch (sortingType) {
@@ -18,4 +18,9 @@ export const getRating = (part = 0):string => `${(PERCENT * part) / RATING}%`;
 
 export const randomCity = CITIES_LIST[Math.floor(Math.random() * CITIES_LIST.length)];
 
-export const sortReviews = ((a: any, b: any) => (a.date - b.date));
+const compareLessThan = (a:string,b:string) => a<b?-1:0;
+
+export const sortReviews = ((a: Pick<Review,'date'>, b: Pick<Review,'date'>): number => (a.date > b.date?1:compareLessThan(a.date, b.date)));
+
+export const isRecord = (offer: unknown): offer is Record<string, unknown> => typeof offer === 'object' && offer !== null;
+

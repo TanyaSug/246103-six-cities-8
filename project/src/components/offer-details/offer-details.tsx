@@ -1,5 +1,5 @@
 import Map from '../map/map';
-import NearOffersList  from '../near-offers-list/near-offers-list';
+import {NearOffersList}  from '../near-offers-list/near-offers-list';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import {Header} from '../header/header';
@@ -11,9 +11,10 @@ import {changeFavoritesAction, getNearByOffersAction, getReviewsAction} from '..
 import ReviewComponent from '../review/review-component';
 import {getRating} from '../../utils';
 
-const mapStateToProps = ({offersList, userInfo}: State) => ({
+const mapStateToProps = ({offersList, userInfo, offerDetailsCardId}: State) => ({
   offersList,
   userInfo,
+  offerDetailsCardId,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
@@ -27,18 +28,18 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 
 function OfferDetails(props: PropsFromRedux): JSX.Element | null {
-  const {offersList, getNearByOffers, getReviews, onFavoriteStatusChange, userInfo} = props;
+  const { offersList, getNearByOffers, getReviews, onFavoriteStatusChange, userInfo, offerDetailsCardId } = props;
 
   const history = useHistory();
   const id = + history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
 
 
   useEffect(() => {
-    getNearByOffers(id);
-    getReviews(id);
-  } ,[getNearByOffers,getReviews,id]);
+    getNearByOffers(offerDetailsCardId ?? id);
+    getReviews(offerDetailsCardId ?? id);
+  } ,[getNearByOffers,getReviews,offerDetailsCardId, id]);
 
-  const offer = offersList.find((off) => off.id === id);
+  const offer = offersList.find((off) => off.id === (offerDetailsCardId ?? id));
 
   if(typeof offer === 'undefined'){
     return null;
@@ -47,7 +48,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element | null {
   const imgList = offer.images ?? [];
   const images = imgList.slice(0, MAX_IMAGES).map((image) => (
     <div className="property__image-wrapper" key={`${image}`}>
-      <img className="property__image" src={image} alt={AltText.PHOTO_STUDIO} />
+      <img className="property__image" src={image} alt={AltText.PhotoStudio} />
     </div>
   ));
 
@@ -154,9 +155,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element | null {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <div className="near-places__list places__list">
-              <NearOffersList />
-            </div>
+            <NearOffersList  nearBy={offer.nearBy}/>
           </section>
         </div>
       </main>

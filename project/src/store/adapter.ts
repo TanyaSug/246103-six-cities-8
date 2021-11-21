@@ -1,4 +1,5 @@
 import {City, Host, Offer, Review} from '../types/types';
+import {isRecord} from '../utils';
 
 const nullHost: Host = {
   avatarUrl: '',
@@ -12,7 +13,6 @@ const toStringDefault = (value: unknown, def: string): string => typeof value ==
 const toNumberDefault = (value: unknown, def: number): number => typeof value === 'number' ? value : def;
 const toBooleanDefault = (value: unknown, def: boolean): boolean => typeof value === 'boolean' ? value : def;
 const toStringArray = (value:unknown):string[] => Array.isArray(value)?value.map((v)=>toStringDefault(v,'')):[];
-const isRecord = (offer: unknown): offer is Record<string, unknown> => typeof offer === 'object' && offer !== null;
 
 const toLocationExact = (value:unknown):City['location'] =>{
   if(!isRecord(value)){

@@ -1,11 +1,10 @@
 import {AppRoute, AuthorizationStatus, OfferType} from '../../const';
 import {Link, generatePath, useHistory} from 'react-router-dom';
 import {ThunkAppDispatch} from '../../types/action-types';
-import {setActiveCard} from '../../store/action';
+import {setActiveCard, setOfferDetailsCardId} from '../../store/action';
 import {connect, ConnectedProps} from 'react-redux';
 import {Offer} from '../../types/types';
 import {changeFavoritesAction} from '../../store/api-actions';
-import {A} from '../helper-co/anchor/anchor';
 import {State} from '../../types/state';
 import {getRating} from '../../utils';
 
@@ -20,6 +19,7 @@ const mapStateToProps = ({userInfo}: State) => ({
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   setActive: (cardInfo: number | undefined) =>  dispatch(setActiveCard(cardInfo)),
+  setOfferDetailsCard: (cardInfo: number | undefined) =>  dispatch(setOfferDetailsCardId(cardInfo)),
   onFavoriteStatusChange:(offerId: number, status: number) => dispatch(changeFavoritesAction(offerId, status)),
 });
 
@@ -28,7 +28,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & PlaceCardProps;
 
 function PlaceCard(props: ConnectedComponentProps): JSX.Element {
-  const {offer, setActive, isMainScreen, onFavoriteStatusChange, userInfo} = props;
+  const {offer, setActive, isMainScreen, onFavoriteStatusChange, userInfo, setOfferDetailsCard} = props;
   const history = useHistory();
 
   return (
@@ -46,9 +46,7 @@ function PlaceCard(props: ConnectedComponentProps): JSX.Element {
         <span>Premium</span>
       </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <A href="#">
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt={offer.description}/>
-        </A>
+        <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt={offer.description}/>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -75,12 +73,18 @@ function PlaceCard(props: ConnectedComponentProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: getRating(offer.rating)}}/>
+            <span style={{width: Math.round(getRating(offer.rating))}}/>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name" >
-          <Link to={generatePath(AppRoute.OfferDetails, {id: offer.id})}>{offer.title}</Link>
+        <h2 className="place-card__name">
+          <Link
+            onClick={() => {
+              setOfferDetailsCard(offer.id);
+            }}
+            to={generatePath(AppRoute.OfferDetails, {id: offer.id})}
+          >{offer.title}
+          </Link>
         </h2>
         <p className="place-card__type">{OfferType[offer.type]}</p>
       </div>

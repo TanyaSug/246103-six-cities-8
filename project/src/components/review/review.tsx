@@ -1,5 +1,6 @@
 import {Review} from '../../types/types';
 import {EN_US} from '../../const';
+import {getRating} from '../../utils';
 
 type ReviewItemProps = {
   review: Review,
@@ -26,7 +27,7 @@ export function ReviewItem(props: ReviewItemProps): JSX.Element {
         <div className="reviews__info">
           <div className="reviews__rating rating">
             <div className="reviews__stars rating__stars">
-              <span style={{width: '80%'}}/>
+              <span style={{width: Math.round(getRating(review.rating))}}/>
               <span className="visually-hidden">{review.rating}</span>
             </div>
           </div>

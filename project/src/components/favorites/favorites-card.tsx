@@ -1,5 +1,4 @@
-import {AltText, AppRoute} from '../../const';
-import {Link} from 'react-router-dom';
+import {AltText} from '../../const';
 import {Offer} from '../../types/types';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {connect, ConnectedProps} from 'react-redux';
@@ -26,7 +25,7 @@ function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <a href={`offers/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="150" height="110"
-            alt={AltText.PLACE_IMG}
+            alt={AltText.PlaceImg}
           />
         </a>
       </div>
@@ -50,13 +49,11 @@ function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: getRating(offer.rating)}}/>
+            <span style={{width: `${getRating(offer.rating)}%`}}/>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name">
-          <Link  to={AppRoute.OfferDetails}>{offer.title}</Link>
-        </h2>
+        <h2 className="place-card__name">{offer.title}</h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
     </article>

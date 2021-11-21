@@ -44,9 +44,9 @@ export const loadingData = (value: boolean) => ({
 } as const);
 
 
-export const requireAuthorization = (userInfo: AuthInfo) => ({
+export const requireAuthorization = (userInfo: AuthInfo, loading?: boolean) => ({
   type: ActionType.RequireAuthorization,
-  payload: userInfo,
+  payload: {userInfo, loading},
 } as const);
 
 export const requireLogout = () => ({
@@ -55,6 +55,11 @@ export const requireLogout = () => ({
 
 export const setActiveCard = (id: number | undefined) => ({
   type: ActionType.SetActiveCard,
+  payload: id,
+} as const);
+
+export const setOfferDetailsCardId = (id: number | undefined) => ({
+  type: ActionType.SetOfferDetailsCard,
   payload: id,
 } as const);
 

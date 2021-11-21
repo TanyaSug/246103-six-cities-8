@@ -1,4 +1,4 @@
-import {AppRoute, AuthorizationStatus, Endpoints} from '../const';
+import {AppRoute, AuthorizationStatus, Endpoints, HttpCode, NUMBER} from '../const';
 import {
   deleteFavoriteOffer,
   getFavoritesList,
@@ -15,16 +15,39 @@ import {AxiosInstance} from 'axios';
 import {adaptOfferToClient, adaptReviewToClient} from './adapter';
 import {AuthData, Offer, Review, ReviewData} from '../types/types';
 import {dropToken, saveToken} from '../services/token';
+import {isRecord} from '../utils';
 
+const unknownErrorToString = (error:unknown):string=>`${error}`;
+const check401 = (error:unknown)=>{
+  if(!isRecord(error)){
+    return false;
+  }
+  const {response} = error;
+  if(!isRecord(response)){
+    return false;
+  }
+  const {status} = response;
+  return typeof status === NUMBER && status === HttpCode.Unauthorized;
+};
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     await api.get(Endpoints.Login)
-      .then(() => {
-        dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.NoAuth}));
-        dispatch(loadingData(false));
+      .then(({data}) => {
+        dispatch(requireAuthorization({
+          authorizationStatus: AuthorizationStatus.Auth,
+          authEmail: data.email,
+          authAvatar: data.avatar_url,
+        }, false));
       })
-      .catch ((error) => {throw new Error(error);});
+      .catch ((error:unknown) => {
+        if(check401(error)){
+          dispatch(requireAuthorization({
+            authorizationStatus: AuthorizationStatus.NoAuth}, false));
+          return;
+        }
+        throw new Error(unknownErrorToString(error));
+      });
   };
 
 
@@ -67,7 +90,7 @@ export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
         dispatch(updateOffer(updatedOffer));
       }
     }  catch (error) {
-      throw new Error(error);
+      throw new Error(unknownErrorToString(error));
     }
   };
 
@@ -81,7 +104,7 @@ export const getFavoritesAction = (): ThunkActionResult =>
       const hotels = data.map((hotel: unknown) => adaptOfferToClient(hotel));
       dispatch(getFavoritesList(hotels));
     } catch (error) {
-      throw new Error(error);
+      throw new Error(unknownErrorToString(error));
     }
   };
 
@@ -97,7 +120,7 @@ export const changeFavoritesAction = (offerId: number, status: number): ThunkAct
         dispatch(updateOffer(updatedOffer));
       }
     }  catch (error) {
-      throw new Error(error);
+      throw new Error(unknownErrorToString(error));
     }
   };
 
@@ -113,7 +136,7 @@ export const getReviewsAction = (offerId: number): ThunkActionResult =>
         dispatch(updateOffer(updatedOffer));
       }
     } catch (error) {
-      throw new Error(error);
+      throw new Error(unknownErrorToString(error));
     }
   };
 
@@ -144,7 +167,7 @@ export const sendOfferReview = (
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const {data} = await api.post(Endpoints.Login, {email, password});
+    const {data} = await api.post(Endpoints.Login, { email, password });
     saveToken(data.token);
     dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth, authEmail: data.email, authAvatar: data.avatar_url}));
     dispatch(redirectToRoute(AppRoute.Main));

@@ -1,5 +1,5 @@
 import {City, Host, Offer, Review} from '../types/types';
-import { isRecord } from '../utils';
+import {isRecord} from '../utils';
 
 const nullHost: Host = {
   avatarUrl: '',

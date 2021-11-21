@@ -6,8 +6,9 @@ import {Offer} from '../types/types';
 
 const initialState: State = {
   activeCity: CITIES_LIST[0],
-  activeSorting: SortingTypes.POPULAR,
+  activeSorting: SortingTypes.Popular,
   activeCardId: undefined,
+  offerDetailsCardId: undefined,
   offersList: [],
   favoritesList: [],
   userInfo: {
@@ -30,11 +31,13 @@ const reducer = (state: State = initialState, action: Action):State => {
       return {...state, favoritesList: state.favoritesList
         .filter((offer: Offer) => offer.id !== action.payload)};
     case ActionType.RequireAuthorization:
-      return {...state, userInfo: action.payload};
+      return {...state, userInfo: action.payload.userInfo, isDataLoading: action.payload.loading ?? false };
     case ActionType.LoadingData:
       return {...state, isDataLoading: action.payload};
     case ActionType.SetActiveCard:
       return {...state, activeCardId: action.payload};
+    case ActionType.SetOfferDetailsCard:
+      return {...state, offerDetailsCardId: action.payload};
     case ActionType.RequireLogout:
       return {...state, userInfo: {authorizationStatus: AuthorizationStatus.NoAuth}};
     case ActionType.UpdateOffer:

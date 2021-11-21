@@ -1,4 +1,4 @@
-import {AppRoute, AuthorizationStatus, Endpoints} from '../const';
+import {AppRoute, AuthorizationStatus, Endpoints, HttpCode, NUMBER} from '../const';
 import {
   deleteFavoriteOffer,
   getFavoritesList,
@@ -15,10 +15,7 @@ import {AxiosInstance} from 'axios';
 import {adaptOfferToClient, adaptReviewToClient} from './adapter';
 import {AuthData, Offer, Review, ReviewData} from '../types/types';
 import {dropToken, saveToken} from '../services/token';
-import { isRecord } from '../utils';
-
-const HTTP_UNAUTHORIZED = 401;
-
+import {isRecord} from '../utils';
 
 const unknownErrorToString = (error:unknown):string=>`${error}`;
 const check401 = (error:unknown)=>{
@@ -30,23 +27,23 @@ const check401 = (error:unknown)=>{
     return false;
   }
   const {status} = response;
-  if(typeof status === 'number' && status === HTTP_UNAUTHORIZED){
-    return true;
-  }
-  return false;
+  return typeof status === NUMBER && status === HttpCode.Unauthorized;
 };
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     await api.get(Endpoints.Login)
-      .then(() => {
-        dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth}));
-        dispatch(loadingData(false));
+      .then(({data}) => {
+        dispatch(requireAuthorization({
+          authorizationStatus: AuthorizationStatus.Auth,
+          authEmail: data.email,
+          authAvatar: data.avatar_url,
+        }, false));
       })
       .catch ((error:unknown) => {
         if(check401(error)){
-          dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.NoAuth}));
-          dispatch(loadingData(false));
+          dispatch(requireAuthorization({
+            authorizationStatus: AuthorizationStatus.NoAuth}, false));
           return;
         }
         throw new Error(unknownErrorToString(error));
@@ -170,7 +167,7 @@ export const sendOfferReview = (
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const {data} = await api.post(Endpoints.Login, {email, password});
+    const {data} = await api.post(Endpoints.Login, { email, password });
     saveToken(data.token);
     dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth, authEmail: data.email, authAvatar: data.avatar_url}));
     dispatch(redirectToRoute(AppRoute.Main));

@@ -12,7 +12,7 @@ import {
   changeSorting,
   updateOffer,
   getFavoritesList,
-  deleteFavoriteOffer
+  deleteFavoriteOffer, setOfferDetailsCardId
 } from '../store/action';
 import {State} from './state';
 
@@ -26,6 +26,7 @@ export enum ActionType {
   RequireLogout = 'user/requireLogout',
   LoadingData = 'data/loadingData',
   SetActiveCard = 'map/makeActiveCard',
+  SetOfferDetailsCard = 'map/makeOfferDetailsCard ',
   RedirectToRoute = 'places/redirectToRoute',
   UpdateOffer = 'places/replaceOffer',
   ChangeSorting = 'places/changeSorting',
@@ -43,6 +44,7 @@ export type Action =
   | ReturnType<typeof requireLogout>
   | ReturnType<typeof loadingData>
   | ReturnType<typeof setActiveCard>
+  | ReturnType<typeof setOfferDetailsCardId>
   | ReturnType<typeof changeSorting>
   | ReturnType<typeof redirectToRoute>;
 

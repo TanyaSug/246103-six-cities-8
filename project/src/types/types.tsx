@@ -68,6 +68,8 @@ export type Host = {
 export type AuthData = {
   login: string,
   password: string,
+  onSuccess?: (()=>void) | undefined,
+  onFail?: ((error:unknown)=>void)|undefined,
 };
 
 export type ReviewData = {

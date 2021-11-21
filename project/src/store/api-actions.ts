@@ -165,10 +165,20 @@ export const sendOfferReview = (
     setSubmittingFlag(false);
   };
 
-export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
+export const loginAction = ({login: email, password, onSuccess, onFail}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const {data} = await api.post(Endpoints.Login, { email, password });
-    saveToken(data.token);
-    dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth, authEmail: data.email, authAvatar: data.avatar_url}));
-    dispatch(redirectToRoute(AppRoute.Main));
+    try{
+      const {data} = await api.post(Endpoints.Login, { email, password });
+      saveToken(data.token);
+      dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth, authEmail: data.email, authAvatar: data.avatar_url}));
+      dispatch(redirectToRoute(AppRoute.Main));
+      if(typeof onSuccess === 'function'){
+        onSuccess();
+      }
+    }
+    catch(error){
+      if(typeof onFail === 'function'){
+        onFail(error);
+      }
+    }
   };

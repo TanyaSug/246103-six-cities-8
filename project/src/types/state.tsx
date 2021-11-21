@@ -1,9 +1,12 @@
-import {Offer} from '../index';
-import {AuthorizationStatus} from '../const';
+import {AuthInfo, Offer} from './types';
 
 export type State = {
   activeCity: string,
+  activeCardId: number | undefined,
+  offerDetailsCardId: number | undefined,
   offersList: Offer[],
-  authorizationStatus: AuthorizationStatus,
-  isDataLoaded: boolean,
+  favoritesList: Offer[],
+  userInfo: AuthInfo,
+  isDataLoading: boolean,
+  activeSorting: string,
 }

@@ -1,25 +1,48 @@
 import {State} from '../types/state';
-import {AuthorizationStatus, CITIES_LIST} from '../const';
+import {AuthorizationStatus, CITIES_LIST, SortingTypes} from '../const';
 import {Action, ActionType} from '../types/action-types';
-// import {offers} from '../mocks/offers';
+import {Offer} from '../types/types';
 
 
 const initialState: State = {
   activeCity: CITIES_LIST[0],
+  activeSorting: SortingTypes.Popular,
+  activeCardId: undefined,
+  offerDetailsCardId: undefined,
   offersList: [],
-  authorizationStatus: AuthorizationStatus.Unknown,
-  isDataLoaded: false,
+  favoritesList: [],
+  userInfo: {
+    authorizationStatus: AuthorizationStatus.Unknown,
+  },
+  isDataLoading: false,
 };
 
 const reducer = (state: State = initialState, action: Action):State => {
   switch (action.type) {
     case ActionType.ToggleActiveCity:
       return {...state, activeCity: action.payload};
+    case ActionType.ChangeSorting:
+      return {...state, activeSorting: action.payload};
     case ActionType.GetOffersList:
-      // return {...state, offersList: action.payload.filter((offer) => offer.city.name === state.activeCity)};
       return {...state, offersList: action.payload};
+    case ActionType.GetFavoritesList:
+      return {...state, favoritesList: action.payload};
+    case ActionType.DeleteFavoriteOffer:
+      return {...state, favoritesList: state.favoritesList
+        .filter((offer: Offer) => offer.id !== action.payload)};
     case ActionType.RequireAuthorization:
-      return {...state, authorizationStatus: action.payload, isDataLoaded: true};
+      return {...state, userInfo: action.payload.userInfo, isDataLoading: action.payload.loading ?? false };
+    case ActionType.LoadingData:
+      return {...state, isDataLoading: action.payload};
+    case ActionType.SetActiveCard:
+      return {...state, activeCardId: action.payload};
+    case ActionType.SetOfferDetailsCard:
+      return {...state, offerDetailsCardId: action.payload};
+    case ActionType.RequireLogout:
+      return {...state, userInfo: {authorizationStatus: AuthorizationStatus.NoAuth}};
+    case ActionType.UpdateOffer:
+      return {...state, offersList: state.offersList
+        .map((offer: Offer) => offer.id === action.payload.id ? action.payload : offer)};
     default:
       return state;
   }

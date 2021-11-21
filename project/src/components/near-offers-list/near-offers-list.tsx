@@ -1,20 +1,19 @@
 import PlaceCard from '../place-card/place-card';
-import {Offer} from '../../index';
-import {useState} from 'react';
+import {NEAR_OFFERS_COUNT} from '../../const';
+import {Offer} from '../../types/types';
 
-type OffersListProps = {
-  offers: Offer[],
+type NearOffersListProps = {
+  nearBy: Offer[];
 }
-export function NearOffersList(props: OffersListProps): JSX.Element {
-  const {offers} = props;
-  const [activeCardId, setActiveCardId] = useState<number | undefined>(undefined);
-  // eslint-disable-next-line no-console
-  console.log(activeCardId);
+
+export function NearOffersList(props: NearOffersListProps): JSX.Element {
+  const {nearBy} = props;
   return (
-    <>
-      {offers
-        .slice(0, 3)
-        .map((offer) => <PlaceCard setActive={setActiveCardId} offer={offer} key={offer.id} />)}
-    </>
+    <div className="near-places__list places__list">
+      {nearBy
+        .slice(0, NEAR_OFFERS_COUNT)
+        .map((offer) => <PlaceCard  offer={offer} key={offer.id} />)}
+    </div>
   );
 }
+

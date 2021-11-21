@@ -1,10 +1,19 @@
-import { Review } from '../../index';
+import {Review} from '../../types/types';
+import {EN_US} from '../../const';
+import {getRating} from '../../utils';
 
 type ReviewItemProps = {
   review: Review,
 }
+
 export function ReviewItem(props: ReviewItemProps): JSX.Element {
   const {review} = props;
+
+  const reviewDate = new Date(review.date).toLocaleDateString(EN_US, {
+    month: 'long',
+    year: 'numeric',
+  });
+
   return (
     <ul className="reviews__list">
       <li className="reviews__item">
@@ -18,14 +27,14 @@ export function ReviewItem(props: ReviewItemProps): JSX.Element {
         <div className="reviews__info">
           <div className="reviews__rating rating">
             <div className="reviews__stars rating__stars">
-              <span style={{width: '80%'}}/>
+              <span style={{width: Math.round(getRating(review.rating))}}/>
               <span className="visually-hidden">{review.rating}</span>
             </div>
           </div>
           <p className="reviews__text">
             {review.comment}
           </p>
-          <time className="reviews__time" dateTime="2019-04-24">{review.date}</time>
+          <time className="reviews__time" dateTime={review.date}>{reviewDate}</time>
         </div>
       </li>
     </ul>

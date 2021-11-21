@@ -1,20 +1,31 @@
-import {Offer} from '../../index';
-import {AppRoute} from '../../const';
-import {Link} from 'react-router-dom';
+import {AltText} from '../../const';
+import {Offer} from '../../types/types';
+import {ThunkAppDispatch} from '../../types/action-types';
+import {connect, ConnectedProps} from 'react-redux';
+import {changeFavoritesAction} from '../../store/api-actions';
+import {getRating} from '../../utils';
 
 type FavoritesCardProps = {
   offer: Offer,
 }
 
-export function FavoritesCard(props: FavoritesCardProps): JSX.Element {
-  const {offer} = props;
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  onStatusChange:(offerId: number, status: number) => dispatch(changeFavoritesAction(offerId, status)),
+});
+
+const connector = connect(null, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & FavoritesCardProps;
+
+function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
+  const {offer, onStatusChange} = props;
 
   return (
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <a href={`offers/${offer.id}`}>
           <img className="place-card__image" src={offer.previewImage} width="150" height="110"
-            alt="Place image"
+            alt={AltText.PlaceImg}
           />
         </a>
       </div>
@@ -24,8 +35,11 @@ export function FavoritesCard(props: FavoritesCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price} </b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button"
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
             type="button"
+            onClick={() => {onStatusChange(offer.id, offer.isFavorite  ? 0 : 1);
+            }}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"/>
@@ -35,15 +49,15 @@ export function FavoritesCard(props: FavoritesCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '100%'}}/>
+            <span style={{width: `${getRating(offer.rating)}%`}}/>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name">
-          <Link  to={AppRoute.OfferDetails}>{offer.title}</Link>
-        </h2>
-        <p className="place-card__type">Apartment</p>
+        <h2 className="place-card__name">{offer.title}</h2>
+        <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );
 }
+
+export default connector(FavoriteCard);

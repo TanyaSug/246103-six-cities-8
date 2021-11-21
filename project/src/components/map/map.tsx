@@ -1,24 +1,25 @@
 import {useEffect, useRef} from 'react';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map';
-import {Icon, latLng, Marker} from 'leaflet';
-import {ICON_ANCHOR, ICON_SIZE, URL_MARKER_DEFAULT} from '../../const';
+import {Icon, latLng, Marker, LatLngExpression} from 'leaflet';
+import {ICON_ANCHOR, ICON_SIZE, URL_MARKER_ACTIVE, URL_MARKER_DEFAULT} from '../../const';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
+import {Offer} from '../../types/types';
 
-// type MapProps = {
-//   city: City;
-//   // points: Point[]
-//   // selectedPoint: Point | undefined;
-// };
+type MapProps = {
+  offersList: Offer[],
+  offerLocation?: Offer['location'] | undefined,
+}
 
-const mapStateToProps = ({offersList, activeCity}: State) => ({
-  offersList: offersList.filter((offer) => offer.city.name === activeCity),
-  activeCity: activeCity,
+const mapStateToProps = ({activeCity, activeCardId}: State) => ({
+  activeCity,
+  activeCardId,
 });
 
 const connector = connect(mapStateToProps, {});
 type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & MapProps;
 
 const deleteMarkers = (markers: Marker[]) => {
   markers.forEach((marker) => marker.remove());
@@ -30,19 +31,27 @@ const defaultIcon =  new Icon({
   iconAnchor: ICON_ANCHOR,
 });
 
-// const activeIcon =  new Icon({
-//   iconUrl: URL_MARKER_ACTIVE,
-//   iconSize: [40, 40],
-//   iconAnchor: [20, 40],
-// });
+const activeIcon =  new Icon({
+  iconUrl: URL_MARKER_ACTIVE,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
 
-function Map(props: PropsFromRedux) {
-  const {offersList, activeCity} = props;
-  const city = offersList.find((offer) => offer.city.name === activeCity)?.city;
+const makeMarker = (map: Exclude<ReturnType<typeof useMap>, null>, aLatLng: LatLngExpression, icon: typeof defaultIcon) => {
+  const marker = new Marker(aLatLng);
+
+  marker
+    .setIcon(icon)
+    .addTo(map);
+  return marker;
+};
+
+function Map(props: ConnectedComponentProps) {
+  const {offersList, activeCity, activeCardId, offerLocation} = props;
+  const filteredOfferList = offersList.filter((offer) => offer.city.name === activeCity);
+  const city = filteredOfferList.find((offer) => offer.city.name === activeCity)?.city;
   const mapRef = useRef(null);
   const markersRef = useRef<Marker[] | null>(null);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const map = useMap(mapRef, city);
 
   useEffect(() => {
@@ -50,34 +59,36 @@ function Map(props: PropsFromRedux) {
       deleteMarkers(markersRef.current);
       markersRef.current = null;
     }
+
     if (map && city) {
       map.panTo(latLng(city.location.latitude, city.location.longitude));
-      //   map.eachLayer((layer) => map.removeLayer(layer));
-      markersRef.current =  offersList
-        .map((offer) => offer.location)
-        .map((offer) => {
-          const marker = new Marker({
-            lat: offer.latitude,
-            lng: offer.longitude,
-          });
+      const markers  =  filteredOfferList
+        .map((offer) => makeMarker(
+          map,
+          {
+            lat: offer.location.latitude,
+            lng: offer.location.longitude,
+          },
+          offer.id === activeCardId ? activeIcon : defaultIcon),
+        );
 
-          marker
-            .setIcon(defaultIcon)
-          //   selectedPoint
-          //     ? activeIcon
-          //     : defaultIcon,
-          // )
-          // map.addLayer(marker);
-            .addTo(map);
-          return marker;
-
-        });
+      if(typeof offerLocation !== 'undefined'){
+        markers.push(
+          makeMarker(
+            map,
+            [
+              offerLocation.latitude,
+              offerLocation.longitude,
+            ],
+            activeIcon));
+      }
+      markersRef.current = markers;
     }
+
     return () => {
       markersRef.current && deleteMarkers(markersRef.current);
     };
-  }, [map, offersList, activeCity]);
-
+  }, [map, activeCity, activeCardId, filteredOfferList, city, offerLocation]);
 
   return <div style={{height: '100%', width: '100%'}} ref={mapRef} />;
 }

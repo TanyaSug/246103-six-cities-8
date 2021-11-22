@@ -43,7 +43,6 @@ export const loadingData = (value: boolean) => ({
   payload: value,
 } as const);
 
-
 export const requireAuthorization = (userInfo: AuthInfo, loading?: boolean) => ({
   type: ActionType.RequireAuthorization,
   payload: {userInfo, loading},

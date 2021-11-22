@@ -9,6 +9,8 @@ type RatingFieldProps = {
 
 export function RatingField(props: RatingFieldProps): JSX.Element {
   const {value, checked, disabled, onChange} = props;
+  // eslint-disable-next-line no-console
+  console.log(value);
   return (
     <>
       <input

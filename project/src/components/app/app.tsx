@@ -15,19 +15,16 @@ import browserHistory from '../../browser-history';
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
 
-const mapStateToProps = ({userInfo, isDataLoading, offersList, activeCity}: State) => ({
-  userInfo,
-  isDataLoading,
-  offersList,
-  activeCity,
+const mapStateToProps = ({userInfo, isDataLoading}: State) => ({
+  stillLoading: isCheckedAuth(userInfo.authorizationStatus) || isDataLoading,
 });
 
 const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: PropsFromRedux): JSX.Element {
-  const {userInfo, isDataLoading} = props;
-  if (isCheckedAuth(userInfo.authorizationStatus) || isDataLoading) {
+  const {stillLoading} = props;
+  if (stillLoading) {
     return (
       <LoadingScreen />
     );

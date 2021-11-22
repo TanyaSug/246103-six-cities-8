@@ -1,4 +1,4 @@
-import {AltText} from '../../const';
+import {AltText, OfferType} from '../../const';
 import {Offer} from '../../types/types';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {connect, ConnectedProps} from 'react-redux';
@@ -54,7 +54,7 @@ function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">{offer.title}</h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{OfferType[offer.type]}</p>
       </div>
     </article>
   );

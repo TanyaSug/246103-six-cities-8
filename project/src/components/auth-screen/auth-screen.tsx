@@ -15,6 +15,11 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onClick: (city: string) =>  dispatch(toggleActiveCity(city)),
 });
 
+const MIN_PASSWORD_LENGTH = 2;
+const passwordPattern = /^(?=.*[0-9])(?=.*[a-zA-Z])$/;
+const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const RED_BORDER = 'red';
+
 const connector = connect(null, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -37,6 +42,18 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
       });
     }
     history.push(AppRoute.Main);
+  };
+  const handleInputValue = () => {
+    if (loginRef.current !== null && passwordRef.current !== null) {
+      const login = loginRef.current.value;
+      const password = passwordRef.current.value;
+
+      if (!emailPattern.test(login)) {
+        loginRef.current.style.borderColor = RED_BORDER;
+      } else if (!passwordPattern.test(password)) {
+        passwordRef.current.style.borderColor = RED_BORDER;
+      }
+    }
   };
   return (
     <div className="page page--gray page--login">
@@ -66,6 +83,7 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
                   type="email"
                   name="email"
                   placeholder="Email"
+                  onChange={handleInputValue}
                   required
                 />
               </div>
@@ -76,6 +94,8 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
                   type="password"
                   name="password"
                   placeholder="Password"
+                  minLength={MIN_PASSWORD_LENGTH}
+                  onChange={handleInputValue}
                   required
                 />
               </div>

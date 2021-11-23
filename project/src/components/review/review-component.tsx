@@ -1,21 +1,20 @@
 import {State} from '../../types/state';
 import {ThunkAppDispatch} from '../../types/action-types';
-import {getReviewsAction, sendOfferReview} from '../../store/api-actions';
+import { sendOfferReview} from '../../store/api-actions';
 import {connect, ConnectedProps} from 'react-redux';
-import {useHistory} from 'react-router-dom';
-import {useEffect} from 'react';
+
 import {ReviewsList} from './reviews-list';
 import {ReviewForm, CommentFormProp} from '../new-review-form/review-form';
-import {ReviewData} from '../../types/types';
+import {Offer, ReviewData} from '../../types/types';
 import {AuthorizationStatus} from '../../const';
 
 const mapStateToProps = ({offersList, userInfo}: State) => ({
-  offersList,
+  // offersList,
   userInfo,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  getReviews: (offerId: number) =>  dispatch(getReviewsAction(offerId)),
+  // getReviews: (offerId: number) =>  dispatch(getReviewsAction(offerId)),
   onSubmit:(offerId: number,
     {rating, comment}: ReviewData,
     setErrorValue: (message: string) => void,
@@ -32,23 +31,25 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
+type ReviewComponentProps = {
+  offer: Offer;
+}
 
+function ReviewComponent(props: PropsFromRedux & ReviewComponentProps): JSX.Element {
+  const {userInfo, onSubmit, offer} = props;
 
-function ReviewComponent(props: PropsFromRedux): JSX.Element {
-  const {offersList, userInfo, getReviews, onSubmit} = props;
-
-  const history = useHistory();
-  const id = + history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
-
-  useEffect(() => {
-    getReviews(id);
-  }, [getReviews, id]);
-
-  const offer = offersList.find((off) => off.id === +id);
-
-  if (!offer) {
-    return <div>There is no information</div>;
-  }
+  // const history = useHistory();
+  // const id = + history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
+  //
+  // useEffect(() => {
+  //   getReviews(id);
+  // }, [getReviews, id]);
+  //
+  // const offer = offersList.find((off) => off.id === +id);
+  //
+  // if (!offer) {
+  //   return <div>There is no information</div>;
+  // }
 
   const reviewsCount = offer.review.length;
   const handleOnSubmit: CommentFormProp['onSubmit'] = (

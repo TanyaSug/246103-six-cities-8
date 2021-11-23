@@ -1,10 +1,9 @@
-import {AppRoute, AuthorizationStatus, Endpoints, HttpCode, NUMBER} from '../const';
+import { AuthorizationStatus, Endpoints, HttpCode, NUMBER} from '../const';
 import {
   deleteFavoriteOffer,
   getFavoritesList,
   getOffers,
   loadingData,
-  redirectToRoute,
   requireAuthorization,
   requireLogout,
   updateOffer
@@ -77,7 +76,7 @@ export const fetchOffersAction = (): ThunkActionResult =>
   };
 
 
-export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
+export const getNearByOffersAction = (offerId: number | string, setErrorValue: (message: string) => void): ThunkActionResult =>
   async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
     try {
       const {data} = await api.get<unknown>(`${Endpoints.Offers}/${offerId}/nearby`);
@@ -92,7 +91,17 @@ export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
         dispatch(updateOffer(updatedOffer));
       }
     }  catch (error) {
-      throw new Error (unknownErrorToString(error));
+      // const {response} = error;
+      // if( response.status === HttpCode.NotFound) {
+      //   dispatch(redirectToRoute(AppRoute.Error));
+      //   return;
+      // }
+      // throw new Error (unknownErrorToString(error));
+      if (isRecord(error) && typeof error.message === 'string') {
+        setErrorValue(error.message);
+      } else {
+        setErrorValue('Have no idea what was going on');
+      }
     }
   };
 
@@ -127,7 +136,7 @@ export const changeFavoritesAction = (offerId: number, status: number): ThunkAct
   };
 
 
-export const getReviewsAction = (offerId: number): ThunkActionResult =>
+export const getReviewsAction = (offerId: number | string, setErrorValue: (message: string) => void): ThunkActionResult =>
   async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
     try {
       const {data} = await api.get<Review[]>(`${Endpoints.Reviews}/${offerId}`);
@@ -138,7 +147,18 @@ export const getReviewsAction = (offerId: number): ThunkActionResult =>
         dispatch(updateOffer(updatedOffer));
       }
     } catch (error) {
-      throw new Error (unknownErrorToString(error));
+      // const {response} = error;
+      // if( response.status === HttpCode.NotFound) {
+      //   dispatch(redirectToRoute(AppRoute.Error));
+      //   return;
+      // }
+      // throw new Error (unknownErrorToString(error));
+
+      if (isRecord(error) && typeof error.message === 'string') {
+        setErrorValue(error.message);
+      } else {
+        setErrorValue('Have no idea what was going on');
+      }
     }
   };
 
@@ -176,7 +196,6 @@ export const loginAction = ({login: email, password, onSuccess, onFail}: AuthDat
       const {data} = await api.post(Endpoints.Login, { email, password });
       saveToken(data.token);
       dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth, authEmail: data.email, authAvatar: data.avatar_url}));
-      dispatch(redirectToRoute(AppRoute.Main));
       if (typeof onSuccess === 'function') {
         onSuccess();
       }

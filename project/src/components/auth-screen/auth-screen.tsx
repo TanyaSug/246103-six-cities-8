@@ -89,7 +89,7 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
                   type="password"
                   name="password"
                   placeholder="Password, minimum 1 character and 1 digital"
-                  pattern={'(?=.*\\d)(?=.*[a-zA-Z]).{2,}'}
+                  pattern={'(?=.*\\d)(?=.*[a-zA-Zа-яА-ЯёЁ]).{2,}'}
                   minLength={MIN_PASSWORD_LENGTH}
                   required
                 />

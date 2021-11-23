@@ -53,9 +53,6 @@ function App(props: PropsFromRedux): JSX.Element {
           render={() => <Favorites />}
         >
         </PrivateRoute>
-        <Route exact path={AppRoute.Error}>
-          <NotFoundScreen />
-        </Route>
         <Route>
           <NotFoundScreen />
         </Route>

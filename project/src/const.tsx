@@ -5,12 +5,10 @@ export enum AppRoute {
   OfferDetails = '/offer/:id',
   Favorites = '/favorites',
   Main = '/',
-  Error = '/error',
 }
 
 export enum HttpCode {
   Unauthorized = 401,
-  NotFound = 404,
 }
 
 export enum Endpoints {

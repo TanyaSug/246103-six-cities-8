@@ -1,4 +1,4 @@
-import { AuthorizationStatus, Endpoints, HttpCode, NUMBER} from '../const';
+import {AuthorizationStatus, Endpoints, HttpCode, NUMBER} from '../const';
 import {
   deleteFavoriteOffer,
   getFavoritesList,
@@ -17,7 +17,6 @@ import {dropToken, saveToken} from '../services/token';
 import {isRecord} from '../utils';
 
 const unknownErrorToString = (error: unknown): string => `${error}`;
-
 const check401 = (error: unknown) => {
 
   if (!isRecord (error)) {
@@ -51,7 +50,6 @@ export const checkAuthAction = (): ThunkActionResult =>
       });
   };
 
-
 export const logoutAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     await api.delete(Endpoints.Logout);
@@ -75,7 +73,6 @@ export const fetchOffersAction = (): ThunkActionResult =>
     }
   };
 
-
 export const getNearByOffersAction = (offerId: number | string, setErrorValue: (message: string) => void): ThunkActionResult =>
   async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
     try {
@@ -91,12 +88,6 @@ export const getNearByOffersAction = (offerId: number | string, setErrorValue: (
         dispatch(updateOffer(updatedOffer));
       }
     }  catch (error) {
-      // const {response} = error;
-      // if( response.status === HttpCode.NotFound) {
-      //   dispatch(redirectToRoute(AppRoute.Error));
-      //   return;
-      // }
-      // throw new Error (unknownErrorToString(error));
       if (isRecord(error) && typeof error.message === 'string') {
         setErrorValue(error.message);
       } else {
@@ -135,7 +126,6 @@ export const changeFavoritesAction = (offerId: number, status: number): ThunkAct
     }
   };
 
-
 export const getReviewsAction = (offerId: number | string, setErrorValue: (message: string) => void): ThunkActionResult =>
   async (dispatch: Dispatch<Action>, _getState, api: AxiosInstance): Promise<void> => {
     try {
@@ -147,13 +137,6 @@ export const getReviewsAction = (offerId: number | string, setErrorValue: (messa
         dispatch(updateOffer(updatedOffer));
       }
     } catch (error) {
-      // const {response} = error;
-      // if( response.status === HttpCode.NotFound) {
-      //   dispatch(redirectToRoute(AppRoute.Error));
-      //   return;
-      // }
-      // throw new Error (unknownErrorToString(error));
-
       if (isRecord(error) && typeof error.message === 'string') {
         setErrorValue(error.message);
       } else {

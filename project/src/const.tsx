@@ -30,6 +30,11 @@ export enum Titles {
   YourReview = 'Your review',
 }
 
+export enum FavoriteStatus {
+  NotFavorite,
+  Favorite,
+}
+
 export const AUTH_TOKEN_KEY_NAME = 'favorite-hotel-token';
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_ACTIVE = 'img/pin-active.svg';
@@ -48,6 +53,8 @@ export const PERCENT = 100;
 export const NEAR_OFFERS_COUNT = 3;
 export const EN_US = 'en-US';
 export const MAX_LENGTH_REVIEW = 300;
+export const LOGIN_ERROR_MESSAGE = 'Failed to login';
+export const MIN_PASSWORD_LENGTH = 2;
 
 export const SortingTypes = {
   Popular: 'Popular',
@@ -67,6 +74,11 @@ export const OfferType: {[key: string]: string} = {
   room: 'Private room',
   house: 'House',
   hotel: 'Hotel',
+} as const;
+
+export const DateFormatOptions = {
+  month: 'long',
+  year: 'numeric',
 } as const;
 
 

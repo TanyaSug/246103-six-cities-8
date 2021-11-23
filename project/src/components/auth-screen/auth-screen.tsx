@@ -2,34 +2,36 @@ import {Logo} from '../logo/logo';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {AuthData} from '../../types/types';
 import {loginAction} from '../../store/api-actions';
-import {connect, ConnectedProps} from 'react-redux';
-import {FormEvent, useRef, useState} from 'react';
+import {connect, ConnectedProps, useDispatch} from 'react-redux';
+import React, {FormEvent, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {AppRoute} from '../../const';
+import {AppRoute, LOGIN_ERROR_MESSAGE, MIN_PASSWORD_LENGTH} from '../../const';
 import {A} from '../helper-co/anchor/anchor';
 import {toggleActiveCity} from '../../store/action';
 import {randomCity} from '../../utils';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onSubmit:(authData: AuthData) => dispatch(loginAction(authData)),
-  onClick: (city: string) =>  dispatch(toggleActiveCity(city)),
 });
-
-const LOGIN_ERROR_MESSAGE = 'Failed to login';
-const MIN_PASSWORD_LENGTH = 2;
 
 const connector = connect(null, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function AuthScreen(props: PropsFromRedux): JSX.Element {
-  const {onSubmit, onClick} = props;
+  const {onSubmit} = props;
+
+  const dispatch = useDispatch();
+  const history = useHistory();
   const city = randomCity;
+
+  const handleRandomCityClick = () => {
+    dispatch(toggleActiveCity(city));
+    history.push(AppRoute.Main);
+  };
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
-
-  const history = useHistory();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -38,11 +40,12 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
       onSubmit({
         login: loginRef.current.value,
         password: passwordRef.current.value,
-        onSuccess: () => { history.push(AppRoute.Main);},
-        onFail: () => {setErrorMessage(LOGIN_ERROR_MESSAGE);},
+        onSuccess: () => history.push(AppRoute.Main),
+        onFail: () => setErrorMessage(LOGIN_ERROR_MESSAGE),
       });
     }
   };
+
   const handleChange = () => setErrorMessage('');
 
   return (
@@ -88,7 +91,6 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
                   placeholder="Password, minimum 1 character and 1 digital"
                   pattern={'(?=.*\\d)(?=.*[a-zA-Z]).{2,}'}
                   minLength={MIN_PASSWORD_LENGTH}
-                  // onChange={handleInputValue}
                   required
                 />
               </div>
@@ -102,7 +104,7 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <A className="locations__item-link" href="#" onClick={() => onClick(city)}>
+              <A className="locations__item-link" onClick={handleRandomCityClick}>
                 <span>{city}</span>
               </A>
             </div>

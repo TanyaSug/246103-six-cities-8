@@ -1,4 +1,4 @@
-import {AppRoute, AuthorizationStatus, OfferType} from '../../const';
+import {AppRoute, AuthorizationStatus, FavoriteStatus, OfferType} from '../../const';
 import {Link, generatePath, useHistory} from 'react-router-dom';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {setActiveCard, setOfferDetailsCardId} from '../../store/action';
@@ -60,7 +60,7 @@ function PlaceCard(props: ConnectedComponentProps): JSX.Element {
             onClick={() => {
               userInfo.authorizationStatus === AuthorizationStatus.Auth
                 ?
-                onFavoriteStatusChange(offer.id, offer.isFavorite ? 0 : 1)
+                onFavoriteStatusChange(offer.id, offer.isFavorite ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite)
                 :
                 history.push(AppRoute.SignIn);
             }}

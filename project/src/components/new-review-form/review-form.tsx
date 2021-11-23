@@ -11,7 +11,6 @@ export type CommentFormProp = {
     resetForm: () => void,
   ) => void;
 }
-// const REVIEW_ERROR_MESSAGE = 'You have an error';
 
 export function ReviewForm (props: CommentFormProp): JSX.Element {
   const {onSubmit} = props;

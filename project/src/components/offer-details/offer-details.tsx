@@ -4,7 +4,7 @@ import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import {Header} from '../header/header';
 import {useHistory} from 'react-router-dom';
-import {AltText, AppRoute, AuthorizationStatus, MAX_IMAGES, OfferType} from '../../const';
+import {AltText, AppRoute, AuthorizationStatus, FavoriteStatus, MAX_IMAGES, OfferType} from '../../const';
 import {useEffect} from 'react';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {changeFavoritesAction, getNearByOffersAction, getReviewsAction} from '../../store/api-actions';
@@ -82,7 +82,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element | null {
                   onClick={() => {
                     userInfo.authorizationStatus === AuthorizationStatus.Auth
                       ?
-                      onFavoriteStatusChange(offer.id, offer.isFavorite  ? 0 : 1)
+                      onFavoriteStatusChange(offer.id, offer.isFavorite  ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite)
                       :
                       history.push(AppRoute.SignIn);
                   }}

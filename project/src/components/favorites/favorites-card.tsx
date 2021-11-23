@@ -1,4 +1,4 @@
-import {AltText, OfferType} from '../../const';
+import {AltText, FavoriteStatus, OfferType} from '../../const';
 import {Offer} from '../../types/types';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {connect, ConnectedProps} from 'react-redux';
@@ -38,7 +38,7 @@ function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
           <button
             className="place-card__bookmark-button place-card__bookmark-button--active button"
             type="button"
-            onClick={() => {onStatusChange(offer.id, offer.isFavorite  ? 0 : 1);
+            onClick={() => {onStatusChange(offer.id, offer.isFavorite  ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite);
             }}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">

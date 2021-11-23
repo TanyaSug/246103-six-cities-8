@@ -1,5 +1,5 @@
 import {Review} from '../../types/types';
-import {EN_US} from '../../const';
+import {DateFormatOptions, EN_US} from '../../const';
 import {getRating} from '../../utils';
 
 type ReviewItemProps = {
@@ -9,10 +9,7 @@ type ReviewItemProps = {
 export function ReviewItem(props: ReviewItemProps): JSX.Element {
   const {review} = props;
 
-  const reviewDate = new Date(review.date).toLocaleDateString(EN_US, {
-    month: 'long',
-    year: 'numeric',
-  });
+  const reviewDate = new Date(review.date).toLocaleDateString(EN_US, DateFormatOptions);
 
   return (
     <ul className="reviews__list">

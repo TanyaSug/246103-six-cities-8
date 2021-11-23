@@ -1,9 +1,18 @@
 import React, {useState} from 'react';
 import {changeSorting} from '../../store/action';
-import {useDispatch} from 'react-redux';
+import {connect, ConnectedProps, useDispatch} from 'react-redux';
 import {SortingTypes} from '../../const';
+import {State} from '../../types/state';
 
-export function Sorting(): JSX.Element {
+const mapStateToProps = ({activeSorting}: State) => ({
+  activeSorting,
+});
+
+const connector = connect(mapStateToProps, {});
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function Sorting(props: PropsFromRedux): JSX.Element {
+  const {activeSorting} = props;
   const dispatch = useDispatch();
   const [openedSorting, setOpenedSorting] = useState(false);
 
@@ -20,7 +29,7 @@ export function Sorting(): JSX.Element {
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by </span>
       <span className="places__sorting-type" tabIndex={0}  onClick={handleSortingClick}>
-                  Popular
+        {activeSorting}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"/>
         </svg>
@@ -39,3 +48,4 @@ export function Sorting(): JSX.Element {
     </form>
   );
 }
+export default connector(Sorting);

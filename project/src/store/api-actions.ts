@@ -17,13 +17,15 @@ import {AuthData, Offer, Review, ReviewData} from '../types/types';
 import {dropToken, saveToken} from '../services/token';
 import {isRecord} from '../utils';
 
-const unknownErrorToString = (error:unknown):string=>`${error}`;
-const check401 = (error:unknown)=>{
-  if(!isRecord(error)){
+const unknownErrorToString = (error: unknown): string => `${error}`;
+
+const check401 = (error: unknown) => {
+
+  if (!isRecord (error)) {
     return false;
   }
   const {response} = error;
-  if(!isRecord(response)){
+  if (!isRecord (response)) {
     return false;
   }
   const {status} = response;
@@ -32,8 +34,8 @@ const check401 = (error:unknown)=>{
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.get(Endpoints.Login)
-      .then(({data}) => {
+    await api.get (Endpoints.Login)
+      .then (({data}) => {
         dispatch(requireAuthorization({
           authorizationStatus: AuthorizationStatus.Auth,
           authEmail: data.email,
@@ -41,12 +43,12 @@ export const checkAuthAction = (): ThunkActionResult =>
         }, false));
       })
       .catch ((error:unknown) => {
-        if(check401(error)){
+        if (check401 (error)) {
           dispatch(requireAuthorization({
             authorizationStatus: AuthorizationStatus.NoAuth}, false));
           return;
         }
-        throw new Error(unknownErrorToString(error));
+        throw new Error (unknownErrorToString(error));
       });
   };
 
@@ -64,7 +66,7 @@ export const fetchOffersAction = (): ThunkActionResult =>
     try {
       const {data} = await api.get<unknown>(Endpoints.Offers);
       if (!Array.isArray(data)) {
-        throw new Error('Data is not array');
+        throw new Error ('Data is not array');
       }
       const hotels = data.map((hotel: unknown) => adaptOfferToClient(hotel));
       dispatch(getOffers(hotels));
@@ -80,7 +82,7 @@ export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
     try {
       const {data} = await api.get<unknown>(`${Endpoints.Offers}/${offerId}/nearby`);
       if (!Array.isArray(data)) {
-        throw new Error('Data is not array');
+        throw new Error ('Data is not array');
       }
       const nearBy = data.map((offer: unknown) => adaptOfferToClient(offer));
       const offer = _getState().offersList.find((off) => off.id === offerId);
@@ -90,7 +92,7 @@ export const getNearByOffersAction = (offerId: number): ThunkActionResult =>
         dispatch(updateOffer(updatedOffer));
       }
     }  catch (error) {
-      throw new Error(unknownErrorToString(error));
+      throw new Error (unknownErrorToString(error));
     }
   };
 
@@ -104,7 +106,7 @@ export const getFavoritesAction = (): ThunkActionResult =>
       const hotels = data.map((hotel: unknown) => adaptOfferToClient(hotel));
       dispatch(getFavoritesList(hotels));
     } catch (error) {
-      throw new Error(unknownErrorToString(error));
+      throw new Error (unknownErrorToString(error));
     }
   };
 
@@ -120,7 +122,7 @@ export const changeFavoritesAction = (offerId: number, status: number): ThunkAct
         dispatch(updateOffer(updatedOffer));
       }
     }  catch (error) {
-      throw new Error(unknownErrorToString(error));
+      throw new Error (unknownErrorToString(error));
     }
   };
 
@@ -131,12 +133,12 @@ export const getReviewsAction = (offerId: number): ThunkActionResult =>
       const {data} = await api.get<Review[]>(`${Endpoints.Reviews}/${offerId}`);
       const review = data.map((comment: unknown) => adaptReviewToClient(comment));
       const offer = _getState().offersList.find((off) => off.id === offerId);
-      if(offer) {
+      if (offer) {
         const updatedOffer: Offer = {...offer, review};
         dispatch(updateOffer(updatedOffer));
       }
     } catch (error) {
-      throw new Error(unknownErrorToString(error));
+      throw new Error (unknownErrorToString(error));
     }
   };
 
@@ -159,24 +161,23 @@ export const sendOfferReview = (
         resetForm();
       }
     } catch (error) {
-      setErrorValue(error.message);
+      if (isRecord(error) && typeof error.message === 'string') {
+        setErrorValue(error.message);
+      } else {
+        setErrorValue('Have no idea what was going on');
+      }
     }
-
     setSubmittingFlag(false);
   };
 
 export const loginAction = ({login: email, password, onSuccess, onFail}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    // const {data} = await api.post(Endpoints.Login, { email, password });
-    // saveToken(data.token);
-    // dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth, authEmail: data.email, authAvatar: data.avatar_url}));
-    // dispatch(redirectToRoute(AppRoute.Main));
     try{
       const {data} = await api.post(Endpoints.Login, { email, password });
       saveToken(data.token);
       dispatch(requireAuthorization({authorizationStatus: AuthorizationStatus.Auth, authEmail: data.email, authAvatar: data.avatar_url}));
       dispatch(redirectToRoute(AppRoute.Main));
-      if(typeof onSuccess === 'function'){
+      if (typeof onSuccess === 'function') {
         onSuccess();
       }
     }

@@ -1,4 +1,4 @@
-import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
+import {Switch, Route, Router as BrowserRouter, Redirect} from 'react-router-dom';
 import MainScreen from '../main/main-screen';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import  Favorites from '../favorites/favotitesScreen';
@@ -17,13 +17,15 @@ export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean
 
 const mapStateToProps = ({userInfo, isDataLoading}: State) => ({
   stillLoading: isCheckedAuth(userInfo.authorizationStatus) || isDataLoading,
+  userInfo,
 });
 
 const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: PropsFromRedux): JSX.Element {
-  const {stillLoading} = props;
+  const {stillLoading, userInfo} = props;
+
   if (stillLoading) {
     return (
       <LoadingScreen />
@@ -37,7 +39,11 @@ function App(props: PropsFromRedux): JSX.Element {
           <MainScreen />
         </Route>
         <Route exact path={AppRoute.SignIn}>
-          <AuthScreen />
+          { userInfo.authorizationStatus === AuthorizationStatus.Auth
+            ?
+            <Redirect to={AppRoute.Main} />
+            :
+            <AuthScreen />}
         </Route>
         <Route exact path={AppRoute.OfferDetails}>
           <OfferDetails />

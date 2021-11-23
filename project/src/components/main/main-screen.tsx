@@ -1,5 +1,5 @@
 import {Header} from '../header/header';
-import {Sorting} from '../sorting/sorting';
+import Sorting from '../sorting/sorting';
 import  OffersList  from '../offers-list/offers-list';
 import  CitiesList  from '../cities-list/cities-list';
 import MainScreenMap from './main-screen-map';

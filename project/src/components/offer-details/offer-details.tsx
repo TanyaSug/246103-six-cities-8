@@ -11,10 +11,11 @@ import {changeFavoritesAction, getNearByOffersAction, getReviewsAction} from '..
 import ReviewComponent from '../review/review-component';
 import {getRating} from '../../utils';
 
-const mapStateToProps = ({offersList, userInfo, offerDetailsCardId}: State) => ({
+const mapStateToProps = ({offersList, userInfo, offerDetailsCardId, favoritesList}: State) => ({
   offersList,
   userInfo,
   offerDetailsCardId,
+  favoritesList,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
@@ -28,7 +29,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 
 function OfferDetails(props: PropsFromRedux): JSX.Element | null {
-  const { offersList, getNearByOffers, getReviews, onFavoriteStatusChange, userInfo, offerDetailsCardId } = props;
+  const { favoritesList, offersList, getNearByOffers, getReviews, onFavoriteStatusChange, userInfo, offerDetailsCardId } = props;
 
   const history = useHistory();
   const id = + history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
@@ -37,7 +38,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element | null {
   useEffect(() => {
     getNearByOffers(offerDetailsCardId ?? id);
     getReviews(offerDetailsCardId ?? id);
-  } ,[getNearByOffers,getReviews,offerDetailsCardId, id]);
+  } ,[getNearByOffers,getReviews,offerDetailsCardId, id, favoritesList]);
 
   const offer = offersList.find((off) => off.id === (offerDetailsCardId ?? id));
 
@@ -155,7 +156,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element | null {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <NearOffersList  nearBy={offer.nearBy}/>
+            <NearOffersList  nearBy={offer.nearBy} />
           </section>
         </div>
       </main>

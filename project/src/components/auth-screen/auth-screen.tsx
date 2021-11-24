@@ -6,7 +6,7 @@ import {connect, ConnectedProps, useDispatch} from 'react-redux';
 import React, {FormEvent, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {AppRoute, LOGIN_ERROR_MESSAGE, MIN_PASSWORD_LENGTH} from '../../const';
-import {A} from '../helper-co/anchor/anchor';
+import {Anchor} from '../helper-co/anchor/anchor';
 import {toggleActiveCity} from '../../store/action';
 import {randomCity} from '../../utils';
 
@@ -104,9 +104,9 @@ function AuthScreen(props: PropsFromRedux): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <A className="locations__item-link" onClick={handleRandomCityClick}>
+              <Anchor className="locations__item-link" onClick={handleRandomCityClick}>
                 <span>{city}</span>
-              </A>
+              </Anchor>
             </div>
           </section>
         </div>

@@ -1,7 +1,7 @@
 import {Switch, Route, Router as BrowserRouter, Redirect} from 'react-router-dom';
 import MainScreen from '../main/main-screen';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import  Favorites from '../favorites/favotitesScreen';
+import  FavoritesScreen from '../favorites/favotites-screen';
 import  OfferDetails  from '../offer-details/offer-details';
 import  AuthScreen  from '../auth-screen/auth-screen';
 import {NotFoundScreen} from '../not-found-screen/not-found-screen';
@@ -50,7 +50,7 @@ function App(props: PropsFromRedux): JSX.Element {
         </Route>
         <PrivateRoute
           exact path={AppRoute.Favorites}
-          render={() => <Favorites />}
+          render={() => <FavoritesScreen />}
         >
         </PrivateRoute>
         <Route>

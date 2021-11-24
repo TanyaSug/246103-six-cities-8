@@ -1,5 +1,5 @@
-import {A} from '../helper-co/anchor/anchor';
-import FavoriteCard from './favorites-card';
+import {Anchor} from '../helper-co/anchor/anchor';
+import FavoritesCard from './favorites-card';
 import {State} from '../../types/state';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {getFavoritesAction} from '../../store/api-actions';
@@ -38,13 +38,13 @@ function FavoritesList(props: PropsFromRedux): JSX.Element {
               <li className="favorites__locations-items" key={city}>
                 <div className="favorites__locations locations locations--current">
                   <div className="locations__item">
-                    <A className="locations__item-link" href="#">
+                    <Anchor className="locations__item-link" href="#">
                       <span>{city}</span>
-                    </A>
+                    </Anchor>
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {favoriteCityOffers.map((offer) => <FavoriteCard offer={offer} key={offer.id}/>)}
+                  {favoriteCityOffers.map((offer) => <FavoritesCard offer={offer} key={offer.id}/>)}
                 </div>
               </li>
             );

@@ -1,4 +1,4 @@
-import {ReviewItem} from './review';
+import {ReviewItem} from './review-item';
 import {Review} from '../../types/types';
 import {sortReviews} from '../../utils';
 import {REVIEW_COUNT} from '../../const';

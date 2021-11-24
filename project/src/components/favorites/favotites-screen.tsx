@@ -1,5 +1,5 @@
 import {Header} from '../header/header';
-import {A} from '../helper-co/anchor/anchor';
+import {Anchor} from '../helper-co/anchor/anchor';
 import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import FavoritesList from './favorites-list';
@@ -11,7 +11,7 @@ const mapStateToProps = ({favoritesList}: State) => ({
 const connector = connect(mapStateToProps, {});
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function Favorites(props: PropsFromRedux): JSX.Element {
+function FavoritesScreen(props: PropsFromRedux): JSX.Element {
   const {favoritesList} = props;
 
   return (
@@ -23,12 +23,12 @@ function Favorites(props: PropsFromRedux): JSX.Element {
         </div>
       </main>
       <footer className="footer container">
-        <A className="footer__logo-link" href="/">
+        <Anchor className="footer__logo-link" href="/">
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33"/>
-        </A>
+        </Anchor>
       </footer>
     </div>
   );
 }
 
-export default connector(Favorites);
+export default connector(FavoritesScreen);

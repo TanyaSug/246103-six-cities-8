@@ -17,7 +17,7 @@ const connector = connect(null, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & FavoritesCardProps;
 
-function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
+function FavoritesCard(props: ConnectedComponentProps): JSX.Element {
   const {offer, onStatusChange} = props;
 
   return (
@@ -60,4 +60,4 @@ function FavoriteCard(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export default connector(FavoriteCard);
+export default connector(FavoritesCard);

@@ -4,7 +4,7 @@ import {Dispatch} from 'redux';
 import {Action} from '../../types/action-types';
 import {State} from '../../types/state';
 import {toggleActiveCity} from '../../store/action';
-import {A} from '../helper-co/anchor/anchor';
+import {Anchor} from '../helper-co/anchor/anchor';
 
 const mapStateToProps = ({activeCity}: State) => ({
   activeCity,
@@ -25,9 +25,9 @@ function CitiesList(props: PropsFromRedux): JSX.Element {
       {
         CITIES_LIST.map((city) => (
           <li className="locations__item" key={city} >
-            <A onClick={() => onClick(city)} className={`locations__item-link tabs__item ${props.activeCity === city ? 'tabs__item--active' : ''}`}>
+            <Anchor onClick={() => onClick(city)} className={`locations__item-link tabs__item ${props.activeCity === city ? 'tabs__item--active' : ''}`}>
               <span>{city}</span>
-            </A>
+            </Anchor>
           </li>
         ))
       }

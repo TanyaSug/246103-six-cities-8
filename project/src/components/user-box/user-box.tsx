@@ -4,7 +4,7 @@ import {State} from '../../types/state';
 import {connect, ConnectedProps} from 'react-redux';
 import {ThunkAppDispatch} from '../../types/action-types';
 import {logoutAction} from '../../store/api-actions';
-import {A} from '../helper-co/anchor/anchor';
+import {Anchor} from '../helper-co/anchor/anchor';
 
 
 const mapStateToProps = ({userInfo}: State) => ({
@@ -35,14 +35,14 @@ function UserBox(props: PropsFromRedux): JSX.Element {
               </Link>
             </li>
             <li className="header__nav-item">
-              <A className="header__nav-link" href="#">
+              <Anchor className="header__nav-link" href="#">
                 <span onClick={() => {
                   onUserLogoutClick();
                   history.push(AppRoute.Main);
                 }}
                 > {SIGN_OUT}
                 </span>
-              </A>
+              </Anchor>
             </li>
           </>
           :

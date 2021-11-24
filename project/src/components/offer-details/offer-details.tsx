@@ -42,7 +42,7 @@ function OfferDetails(props: PropsFromRedux): JSX.Element | null {
       getNearByOffers(offerDetailsCardId ?? id, setErrorNearByMessage);
       getReviews(offerDetailsCardId ?? id, setErrorReviewMessage);
     }
-  } ,[favoritesList, getNearByOffers, getReviews, offer, offersList.length, id, offerDetailsCardId]);
+  } ,[favoritesList, getNearByOffers, getReviews, offersList.length, id, offerDetailsCardId]);
 
   const imgList = offer?.images ?? [];
   const images = imgList.slice(0, MAX_IMAGES).map((image) => (
